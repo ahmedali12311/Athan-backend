@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/properties/uuid_obj_null.json",
+    "description": "uuid object null property schema",
+    "type": ["object", "null"],
+    "additionalProperties": true,
+    "required": ["id"],
+    "properties": {
+        "id": {
+            "type": ["string", "null"],
+            "format": "uuid"
+        }
+    }
+}

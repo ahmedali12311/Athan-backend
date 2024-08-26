@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <title>Json Schema Page</title>
+</head>
+
+<body class="bg-slate-800">
+  <div class="flex flex-col h-screen">
+    <div class="shadow-md shadow-slate-900 rounded m-auto border border-sky-500 p-8 bg-slate-700">
+      <h1 class="text-2xl font-bold text-sky-200">Json Schema</h1>
+      <hr class="my-2 border-sky-500" />
+      <h2 class="text-lg font-bold text-sky-300">Models</h2>
+      <hr class="my-2 border-sky-500" />
+      <ol class="list-inside list-disc">
+        {{ range $v := .Models }}<li class="list-item">
+          <a href="{{ $v }}" class="hover:text-sky-500">{{ $v }}</a>
+        </li>{{ end }}
+      </ol>
+
+      <hr class="my-2 border-sky-500" />
+      <h2 class="text-lg font-bold text-sky-300">Properties</h2>
+      <hr class="my-2 border-sky-500" />
+      <ol class="list-inside list-disc">
+        {{ range $v := .Props }}<li class="list-item">
+          <a href="{{ $v }}" class="hover:text-sky-500">{{ $v }}</a>
+        </li>{{ end }}
+      </ol>
+    </div>
+  </div>
+</body>
+
+</html>

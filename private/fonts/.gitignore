@@ -1,0 +1,8 @@
+*
+!/tajawal
+!/tajawal/*
+!/xb-riyaz
+!/xb-riyaz/*
+!.gitignore
+!ibm-arabic-bold.ttf
+!ibm-arabic.ttf

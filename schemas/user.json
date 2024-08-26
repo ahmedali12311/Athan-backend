@@ -1,0 +1,142 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/user.json",
+    "description": "user model schema",
+    "type": "object",
+    "additionalProperties": true,
+    "if": {
+        "properties": {
+            "is_anon": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "required": [
+            "name"
+        ],
+        "properties": {
+            "name": {
+                "type": [
+                    "string"
+                ],
+                "minLength": 1,
+                "maxLength": 255
+            }
+        }
+    },
+    "else": {
+        "anyOf": [
+            {
+                "required": [
+                    "phone",
+                    "roles"
+                ]
+            },
+            {
+                "required": [
+                    "email",
+                    "roles"
+                ]
+            }
+        ],
+        "properties": {
+            "name": {
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "minLength": 1,
+                "maxLength": 255
+            }
+        }
+    },
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "img": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "thumb": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "phone": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "minLength": 4,
+            "maxLength": 255
+        },
+        "email": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "email",
+            "minLength": 3,
+            "maxLength": 255
+        },
+        "birthdate": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "date"
+        },
+        "gender": {
+            "$ref": "%DOMAIN%/properties/gender.json"
+        },
+        "location": {
+            "$ref": "%DOMAIN%/properties/point_null.json"
+        },
+        "is_disabled": {
+            "type": "boolean"
+        },
+        "is_notifiable": {
+            "type": "boolean"
+        },
+        "is_anon": {
+            "type": "boolean"
+        },
+        "is_confirmed": {
+            "type": "boolean"
+        },
+        "is_deleted": {
+            "type": "boolean"
+        },
+        "is_verified": {
+            "type": "boolean"
+        },
+        "created_at": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "roles": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+                "type": "number"
+            }
+        },
+        "permissions": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+                "type": "number"
+            }
+        }
+    }
+}

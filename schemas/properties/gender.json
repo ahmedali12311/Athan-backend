@@ -1,0 +1,9 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/properties/gender.json",
+    "description": "gender property schema",
+    "type": ["string", "null"],
+    "enum": [null, "male", "female"],
+    "minLength": 4,
+    "maxLength": 6
+}

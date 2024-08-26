@@ -1,0 +1,196 @@
+user = "مستخدم"
+office = "مكتب"
+partner_request = "طلب شراكة"
+office_partner = "مكتب الشريك"
+office_customer = "الزبون"
+money_transfer_request = "طلب تحويل أموال"
+banner = "راية"
+category = "الصنف"
+document = "مستند"
+permission = "صلاحية"
+role = "دور"
+setting = "إعدادات"
+token = "توكن"
+user_notification = "إشعار المستخدم"
+fcm_notification = "FCM Notification"
+image = "صورة"
+
+[BadRequest]
+description = "bad request"
+other = "طلب خاطئ."
+
+[Conflict]
+description = "data entry conflict, could be unique violation, data race or invalid foreign key, etc"
+other = "تعارض في إدخال البيانات."
+
+[DeletedAccount]
+description = "user account has been deleted."
+other = "هذا الحساب تم حذفه. رجاء قم بتسجيل حساب جديد أو تواصل مع إدارة التطبيق."
+
+[DisabledAccount]
+description = "user account has been disabled."
+other = "هذا الحساب تم تعطيله. رجاء تواصل مع إدارة التطبيق."
+
+[InputValidation]
+description = "input validation error."
+other = "خطأ في التحقق من صحة الإدخال."
+
+[InternalServerError]
+description = "internal server error."
+other = "واجه الخادم مشكلة وتعذر عليه معالجة طلبك."
+
+[InvalidCredentials]
+description = "user credentials are not valid."
+other = "بيانات دخول خاطئة."
+
+[JwtExpired]
+description = "jwt token passed expiration."
+other = "نفذت فترة صلاحيات الدخول، رجاء قم بتسجيل الدخول مجددا."
+
+[MethodNotAllowed]
+description = "not allowed http verb for route."
+other = "الطريقة غير مسموحة."
+
+[ModelDisabled]
+description = "a requested model record is disabled"
+other = "مكون {{.Model}} معطل لا يمكن استخدامه حاليا رجاء تواصل مع إدارة التطبيق."
+
+[ModelNotFound]
+description = "a requested model record is not found"
+other = "لم يتم العثور على {{.Model}}."
+
+[NotFound]
+description = "a requested uri is not found"
+other = "لم يتم العثور على هذا الرابط."
+
+[NotPermitted]
+description = "user does not have sufficient scopes to modify the resource"
+other = "يجب أن يمتلك المستخدم احد هذه الصلاحيات: [ {{ .Allowed }} ] الصلاحيات الحالية: [ {{ .CtxScopes }} ]"
+
+[OutOfScopeError]
+description = "an error that is out of scope of api usage"
+other = "خطأ خارج نطاق التطبيق."
+
+[PgeCheckConstraintViolation]
+description = "database: check constraint violation"
+other = "يحتوي هذا السجل على بيانات غير متناسقة أو خارج النطاق."
+
+[PgeDefaultErr]
+description = "database: default database error."
+other = "database error."
+
+[PgeForeignKeyViolationDelete]
+description = "database: foreign key violation"
+other = "لا يمكن حذف هذا السجل لاعتماد سجلات اخرى عليه: {{ .ForeignKey }}"
+
+[PgeForeignKeyViolationModify]
+description = "database: foreign key violation"
+other = "لا يمكن تعديل أو إضافة هذا السجل لاعتماده على سجلات اخرى: {{ .ForeignKey }}"
+
+[PgeNotNullConstraintViolation]
+description = "database: not null constraint violation"
+other = "بعض القيم المطلوبة فارغة."
+
+[PgeUniqueConstraintViolation]
+description = "database: unique constraint violation"
+other = "يحتوي هذا السجل على بيانات مكررة تتعارض مع ما هو موجود مسبقاً في قاعدة البيانات."
+
+[ProfileCleared]
+description = "user data has been deleted."
+other = "تم حذف بياناتك من التطبيق."
+
+[UnDestroyableCategory]
+description = "not allowed to delete core categories or ones with children."
+other = "لا يسمح بحذف تصنيفات أساسية أو تصنيفات تمتلك فروع."
+
+[UnauthorizedAccess]
+description = "user is not authorized to access a resource."
+other = "دخول غير مصرح"
+
+[UnsupportedLocation]
+description = "unsupported location."
+other = "location point of {{.Model}} not supported."
+
+[ValidateBool]
+description = "validate input as a boolean."
+other = "يجب أن يكون قيمة نصية ترمز إلى قيمة منطقية."
+
+[ValidateCategoryInput]
+description = "category not found, or does not belong to super parent."
+other = "التصنيف غير موجود أو انه فرع من تصنيف رئيسي آخر."
+
+[ValidateCategoryParent]
+description = "not allowed for category to be parent to itself."
+other = "التصنيف لا يمكن أن يكون فرع من نفسه."
+
+[ValidateDate]
+description = "validate input as a date format."
+other = "يجب أن يكون تاريخ صحيح."
+
+[ValidateEmail]
+description = "input must be a valid mail address"
+other = "يجب أن يكون بريد الكتروني صحيح"
+
+[ValidateExistsInDB]
+description = "validate input exists in the database."
+other = "غير موجود في السجلات."
+
+[ValidateID]
+description = "validate input as a id."
+other = "يجب أن يكون رقم معرف صحيح."
+
+[ValidateInt]
+description = "validate input as an integer."
+other = "يجب أن يكون عددًا صحيحًا."
+
+[ValidateMustBeGtZero]
+description = "value must be greater than 0"
+other = "يجب أن يكون أكبر من 0"
+
+[ValidateMustBeGteFloatValue]
+description = "value must be greater than or equal value"
+other = "يجب أن يكون أكبر من أو يساوي {{ .Value }}"
+
+[ValidateMustBeGteZero]
+description = "value must be greater than or equal 0"
+other = "يجب أن تكون القيمة أكبر من أو تساوي 0"
+
+[ValidateMustBeInList]
+description = "the element must belong to list items"
+other = "يجب أن يكون من إحدى القيم: {{ .List }}. "
+
+[ValidateMustBeLteValue]
+description = "value must be less than or equal value"
+other = "يجب أن تكون القيمة أقل من أو يساوي {{ .Value }}"
+
+[ValidateMustHaveRole]
+description = "user must have the selected role"
+other = "يجب أن يحتوي المستخدم على الدور: {{ .Role }}"
+
+[ValidateNotEmptyRoles]
+description = "user must have at least one role"
+other = "يجب أن يمتلك المستخدم دور واحد على الأقل"
+
+[ValidateNotExistsInDB]
+description = "validate input not existing in the database."
+other = "already existing record."
+
+[ValidatePasswordConfirmationNoMatch]
+description = "input password must match password_confirmation"
+other = "كلمة السر و التأكيد غير متطابقة."
+
+[ValidateRequired]
+description = "input value must not be empty."
+other = "حقل مطلوب."
+
+[ValidateRequiredArray]
+description = "required array input."
+other = "لائحة مطلوبة"
+
+[ValidateRequiredFloat]
+description = "validate input as a float."
+other = "يجب أن يكون عددًا حقيقيًا."
+
+[ValidateUUID]
+description = "validate input as a uuid."
+other = "يجب أن يكون معرّف عالمي فريد صحيح."

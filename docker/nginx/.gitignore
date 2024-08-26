@@ -1,0 +1,15 @@
+*
+
+!certbot
+!certbot/conf
+!certbot/www
+!certbot/Makefile
+
+!conf
+conf/*
+!conf/nginx.conf
+
+!logs
+logs/*
+
+!.gitignore

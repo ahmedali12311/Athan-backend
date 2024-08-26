@@ -1,0 +1,46 @@
+# roles
+# admin 2
+# merchant 3 
+# customer 4
+
+[[users]]
+id = "322f3e97-4e7e-4c2e-a765-1c0ce517f2f8"
+name = "superadmin"
+phone = "218920000000"
+email = "superadmin@sadeem-tech.com"
+password = "password"
+role = 1
+
+[[users]]
+id = "280a8eb8-8add-4287-a33b-c21a4ada2eaf"
+name = "admin"
+phone = "218920000001"
+email = "admin@sadeem-tech.com"
+password = "password"
+role = 2
+
+# [[users]]
+# id = "f97721e4-8471-4513-9c51-d21326df4f18"
+# name = "شخص 1"
+# phone = "218923305940"
+# email = "customer1@example.com"
+# password = "password"
+# role = 3
+
+# [[users]]
+# id = "d4c47f29-349c-489c-92ea-4ddd98345d68"
+# name = "شخص 2"
+# phone = "218923305941"
+# email = "customer2@example.com"
+# password = "password"
+# role = 3
+
+# [[users]]
+# id = "83b762a7-9dbb-4eb7-bf87-bb672286c114"
+# name = "شخص 3"
+# phone = "218923305942"
+# email = "customer3@example.com"
+# password = "password"
+# role = 3
+
+

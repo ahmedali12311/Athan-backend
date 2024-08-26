@@ -1,0 +1,40 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/permission.json",
+    "description": "permission model schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["method", "path", "model","action", "scope"],
+    "properties": {
+        "id": {
+            "type": "number",
+            "minimum": 0
+        },
+        "method": {
+            "type": "string",
+            "enum": ["GET", "PUT", "POST", "DELETE"],
+            "minLength": 3,
+            "maxLength": 6
+        },
+        "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "model": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        },
+        "scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+        }
+    }
+}

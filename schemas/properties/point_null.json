@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/properties/point_null.json",
+    "description": "point null property schema",
+    "type": ["object", "null"],
+    "additionalProperties": false,
+    "properties": {
+        "type": {
+            "type": ["string", "null"],
+            "enum": ["Point", null]
+        },
+        "coordinates": {
+            "type": ["array", "null"],
+            "minItems": 0,
+            "maxItems": 2,
+            "items": {
+                "type": "number"
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+[[settings]]
+id = 1
+key = "app_name"
+value = "اسم التطبيق"
+is_disabled = false
+is_readonly = false
+field_type = "text"
+data_type = "string"
+
+[[settings]]
+id = 2
+key =  "about"
+value = "عن التطبيق"
+is_disabled = false
+is_readonly = false
+field_type = "textarea"
+data_type = "string"

@@ -1,0 +1,11 @@
+*
+!/fonts
+!/pdf
+!/documents
+!*.html
+!*.css
+!*.tmpl
+!../public/uploads-v2/logo.png
+!.gitignore
+!logo.png
+!testingfolder

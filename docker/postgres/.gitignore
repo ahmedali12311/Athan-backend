@@ -1,0 +1,11 @@
+*
+
+!data
+data/*
+!data/.gitignore
+
+!root
+root/*
+
+!pg_hba.conf
+!.gitignore

@@ -1,0 +1,21 @@
+spare_parts = "3fa90f8c-6da5-470f-bcfc-548ce145f250"
+oil = "69d94f3f-b88b-452e-888f-c15d9f704d86"
+
+
+# parents =============================================
+[[categories]]
+id = "3fa90f8c-6da5-470f-bcfc-548ce145f250"
+name = "قطع غيار السيارات"
+depth = 0
+sort = 0
+is_disabled = false
+is_readonly = false
+
+
+[[categories]]
+id = "69d94f3f-b88b-452e-888f-c15d9f704d86"
+name = "الزيوت"
+depth = 0
+sort = 0
+is_disabled = false
+is_readonly = false

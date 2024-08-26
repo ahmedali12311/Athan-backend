@@ -1,0 +1,197 @@
+user = "User"
+office = "Office"
+partner_request = "Partner Request"
+office_partner = "Office Partner"
+office_customer = "Customer"
+money_transfer_request = "Money Transfer Request"
+banner = "Banner"
+category = "Category"
+document = "Document"
+permission = "Permission"
+role = "Role"
+setting = "Setting"
+token = "Token"
+user_notification = "User Notification"
+fcm_notification = "FCM Notification"
+image = "Image"
+
+
+[BadRequest]
+description = "bad request"
+other = "Bad Request."
+
+[Conflict]
+description = "data entry conflict, could be unique violation, data race or invalid foreign key, etc"
+other = "data input conflict detected."
+
+[DeletedAccount]
+description = "user account has been deleted."
+other = "user account has been deleted. please make a new account or contact app administrators"
+
+[DisabledAccount]
+description = "user account has been disabled."
+other = "user account has been disabled. please contact app administrators"
+
+[InputValidation]
+description = "input validation error."
+other = "input validation error."
+
+[InternalServerError]
+description = "internal server error."
+other = "the server encountered a problem and could not process your request."
+
+[InvalidCredentials]
+description = "user credentials are not valid."
+other = "invalid credentials."
+
+[JwtExpired]
+description = "jwt token passed expiration."
+other = "token expired, please login again."
+
+[MethodNotAllowed]
+description = "not allowed http verb for route."
+other = "Method Not Allowed."
+
+[ModelDisabled]
+description = "a requested model record is disabled"
+other = "{{.Model}} has been disabled."
+
+[ModelNotFound]
+description = "a requested model record is not found"
+other = "{{.Model}} not found."
+
+[NotFound]
+description = "a requested uri is not found"
+other = "resource not found."
+
+[NotPermitted]
+description = "user does not have sufficient scopes to modify the resource"
+other = "user must have any of the following scopes: [ {{ .Allowed }} ] provided scopes: [ {{ .CtxScopes }} ]"
+
+[OutOfScopeError]
+description = "an error that is out of scope of api usage"
+other = "out of scope error."
+
+[PgeCheckConstraintViolation]
+description = "database: check constraint violation"
+other = "this record contains inconsistent or out-of-range data."
+
+[PgeDefaultErr]
+description = "database: default database error."
+other = "database error."
+
+[PgeForeignKeyViolationDelete]
+description = "database: foreign key violation"
+other = "unable to delete record, violates foreign key: {{ .ForeignKey }}"
+
+[PgeForeignKeyViolationModify]
+description = "database: foreign key violation"
+other = "unable to modify record, violates foreign key: {{ .ForeignKey }}"
+
+[PgeNotNullConstraintViolation]
+description = "database: not null constraint violation"
+other = "some required values are empty."
+
+[PgeUniqueConstraintViolation]
+description = "database: unique constraint violation"
+other = "this record contains duplicated data that conflicts with what is already in the database."
+
+[ProfileCleared]
+description = "user data has been deleted."
+other = "your data has been deleted from the application."
+
+[UnDestroyableCategory]
+description = "not allowed to delete core categories or ones with children."
+other = "not allowed to delete core categories or ones with children."
+
+[UnauthorizedAccess]
+description = "user is not authorized to access a resource."
+other = "unauthorized access."
+
+[UnsupportedLocation]
+description = "unsupported location."
+other = "location point of {{.Model}} not supported."
+
+[ValidateBool]
+description = "validate input as a boolean."
+other = "must be a valid boolean."
+
+[ValidateCategoryInput]
+description = "category not found, or does not belong to super parent."
+other = "category doesn't exist or it's sub of a different super parent."
+
+[ValidateCategoryParent]
+description = "not allowed for category to be parent to itself."
+other = "category can't be parent to itself."
+
+[ValidateDate]
+description = "validate input as a date format."
+other = "must not be a valid date format."
+
+[ValidateEmail]
+description = "input must be a valid mail address"
+other = "must be a valid email address."
+
+[ValidateExistsInDB]
+description = "validate input exists in the database."
+other = "does not exist in the records."
+
+[ValidateID]
+description = "validate input as a id."
+other = "must be valid id."
+
+[ValidateInt]
+description = "validate input as an integer."
+other = "must be a valid integer."
+
+[ValidateMustBeGtZero]
+description = "value must be greater than 0"
+other = "value must be greater than 0"
+
+[ValidateMustBeGteFloatValue]
+description = "value must be greater than or equal value"
+other = "value must be greater than or equal {{ .Value }}"
+
+[ValidateMustBeGteZero]
+description = "value must be greater than or equal 0"
+other = "value must be greater than or equal 0"
+
+[ValidateMustBeInList]
+description = "the element must belong to list items"
+other = "must be one of values: {{ .List }}."
+
+[ValidateMustBeLteValue]
+description = "value must be less than or equal value"
+other = "value must be less than or equal {{ .Value }}"
+
+[ValidateMustHaveRole]
+description = "user must have the selected role"
+other = "user must have role: {{ .Role }}."
+
+[ValidateNotEmptyRoles]
+description = "user must have at least one role"
+other = "user must have at least one role"
+
+[ValidateNotExistsInDB]
+description = "validate input not existing in the database."
+other = "already existing record."
+
+[ValidatePasswordConfirmationNoMatch]
+description = "input password must match password_confirmation"
+other = "password and Confirmation don't match."
+
+[ValidateRequired]
+description = "input value must not be empty."
+other = "required field."
+
+[ValidateRequiredArray]
+description = "required array input."
+other = "required array."
+
+[ValidateRequiredFloat]
+description = "validate input as a float."
+other = "must be a valid float."
+
+[ValidateUUID]
+description = "validate input as a uuid."
+other = "must be valid uuid."

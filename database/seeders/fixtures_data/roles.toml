@@ -1,0 +1,15 @@
+[[roles]]
+id = 1
+name = "superadmin"
+
+[[roles]]
+id = 2
+name = "admin"
+
+[[roles]]
+id = 3
+name = "office"
+
+[[roles]]
+id = 4
+name = "customer"
