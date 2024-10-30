@@ -6,6 +6,7 @@ const (
 	KeySadeemOTPURL = "sadeem_otp_url"
 	KeySadeemOTPKey = "sadeem_otp_key"
 	KeySadeemOTPJWT = "sadeem_otp_jwt"
+	KeySadeemOTPEnv = "sadeem_otp_env"
 	// EndpointV1Pins appended to the Settins.URL and sent as POST
 	EndpointV1Pins = "/api/v1/pins"
 )
@@ -14,6 +15,8 @@ type Settings struct {
 	Key string
 	JWT string
 	URL string
+	// Env Should be development or production
+	Env string
 }
 
 // 1 request: send otp

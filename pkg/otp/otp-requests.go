@@ -17,10 +17,14 @@ func Request(settings *Settings, input *Input) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	path := settings.URL + EndpointV1Pins + "?key=" + settings.Key
+	if settings.Env != "production" {
+		path += "&test"
+	}
 	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodPost,
-		settings.URL+EndpointV1Pins+"?key="+settings.Key,
+		path,
 		bytes.NewBuffer(jsonInput),
 	)
 	if err != nil {
