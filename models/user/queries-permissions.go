@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/ahmedalkabir/finder"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"github.com/m-row/finder"
 )
 
 func (m *Queries) GetPermissions(user *Model, conn finder.Connection) error {

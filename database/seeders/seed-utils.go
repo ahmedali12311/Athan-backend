@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 	"github.com/pkg/errors"
 )
 

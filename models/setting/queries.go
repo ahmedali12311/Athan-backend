@@ -5,8 +5,8 @@ import (
 
 	"app/model"
 
-	"github.com/ahmedalkabir/finder"
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/finder"
 )
 
 type Queries struct {

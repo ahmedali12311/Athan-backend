@@ -10,7 +10,7 @@ import (
 	"app/model"
 	"app/pkg/validator"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 )
 
 const (

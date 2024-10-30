@@ -12,7 +12,7 @@ import (
 	"app/pkg/gis"
 	"app/pkg/validator"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 
 	"github.com/google/uuid"
 )

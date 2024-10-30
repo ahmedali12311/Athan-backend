@@ -280,19 +280,3 @@ func (t *Translations) NotPermitted(ctxScopes, allowed []string) string {
 		},
 	})
 }
-
-func (t *Translations) SubscriptionCostGreaterThanWalletCredit(
-	cost, credit float64,
-) string {
-	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{
-			ID:          "SubscriptionCostGreaterThanWalletCredit",
-			Description: "subscription cost greater than wallet credit",
-			Other:       "subscription cost ({{ .Cost }}) greater than wallet credit ({{ .Credit }}), please recharge your wallet before making the trip.",
-		},
-		TemplateData: map[string]float64{
-			"Cost":   cost,
-			"Credit": credit,
-		},
-	})
-}

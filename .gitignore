@@ -1,8 +1,6 @@
 vendor
 .env
-.env.development
-.env.prod
-.env.do
+!docker/builds/**/.env
 .idea
 tmp
 main

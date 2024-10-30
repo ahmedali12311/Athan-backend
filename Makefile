@@ -64,28 +64,34 @@ CONTAINER_TAG:=${APP_VER}.$(shell git rev-list --count HEAD).$(shell git describ
 CONTAINER_IMG:=${CONTAINER_NAME}:${CONTAINER_TAG}
 
 # hub.docker.com: Production
-.PHONY: dh dh/down dh/local dh/local/down dh/push db/conn volumes prune ps inspect
+.PHONY: dh dh/down dh/local dh/local/down dh/factory dh/factory/down dh/push db/conn volumes prune ps inspect
 dh:
 	export CONTAINER_TAG=${CONTAINER_TAG}
-	docker compose -f docker-compose-dh.yml up --build -d
+	docker compose -f ./docker/builds/lab/docker-compose.yml up --build -d
 dh/down:
-	docker compose -f docker-compose-dh.yml down
+	docker compose -f ./docker/builds/lab/docker-compose.yml down
 
 dh/local:
 	export CONTAINER_TAG=${CONTAINER_TAG}
-	docker compose -f docker-compose-dh-local.yml up --build -d
+	docker compose -f ./docker/builds/local/docker-compose.yml up --build -d
 dh/local/down:
-	docker compose -f docker-compose-dh-local.yml down
+	docker compose -f ./docker/builds/local/docker-compose.yml down
 
 dh/push: dh
-	docker tag sadeem/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_IMG}
-	docker tag sadeem/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_NAME}:latest
-	docker push ${CONTAINER_REG}/${CONTAINER_NAME} -a
+	docker tag sadeemtech/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_IMG}
+	docker tag sadeemtech/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_NAME}:latest
+	docker push ${CONTAINER_REG}/${CONTAINER_IMG}
+	docker push ${CONTAINER_REG}/${CONTAINER_NAME}:latest
+dh/factory:
+	export CONTAINER_TAG=${CONTAINER_NAME}:factory
+	docker compose -f ./docker/builds/factory/docker-compose.yml up --build -d
+	docker push ${CONTAINER_REG}/${CONTAINER_NAME}:factory
+dh/factory/down:
+	docker compose -f ./docker/builds/factory/docker-compose.yml down
+
 db/conn:
 	psql ${CONNECTION_STRING}
-volumes:
-	docker volume create pale_skull_public && \
-    docker volume create pale_skull_private
+
 prune:
 	docker system prune -a -f --volumes
 ps:

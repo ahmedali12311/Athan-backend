@@ -12,9 +12,9 @@ import (
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
 	"github.com/Masterminds/squirrel"
-	"github.com/ahmedalkabir/finder"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
+	"github.com/m-row/finder"
 )
 
 type Models struct {

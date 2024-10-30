@@ -8,9 +8,9 @@ import (
 	"app/model"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/ahmedalkabir/finder"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/finder"
 )
 
 var inserts = &[]string{

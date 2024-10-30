@@ -9,7 +9,7 @@ import (
 
 	"app/model"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 )
 
 var (

@@ -8,8 +8,8 @@ import (
 	"app/model"
 	"app/pkg/validator"
 
-	"github.com/ahmedalkabir/finder"
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
 )
 
 const (

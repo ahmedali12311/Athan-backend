@@ -1,5 +1,5 @@
 # BUILDER ---------------------------------------------------------------------
-FROM golang:1.22.2-alpine3.19 AS builder
+FROM --platform=linux/amd64 golang:1.22.2-alpine3.19 AS builder
 
 WORKDIR /build
 
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     -o main ./
 
 # FINAL APP -------------------------------------------------------------------
-FROM scratch
+FROM --platform=linux/amd64 scratch
 
 WORKDIR /
 
@@ -27,9 +27,9 @@ COPY --from=builder ["/build/main", "/main"]
 COPY --from=builder ["/build/public", "/public"]
 COPY --from=builder ["/build/private", "/private"]
 COPY --from=builder ["/build/database/migrations/", "/migrations"]
-COPY --from=builder ["/build/database/seeders/", "/database/seeders"]
+COPY --from=builder ["/build/database/seeders/", "/seeders"]
 COPY --from=builder ["/build/json_google", "/json_google"]
-COPY --from=builder ["/build/.env.local", "/.env"]
+COPY --from=builder ["/build/docker/builds/lab/.env", "/.env"]
 COPY --from=builder ["/build/active.ar.toml", "/active.ar.toml"]
 COPY --from=builder ["/build/active.en.toml", "/active.en.toml"]
 COPY --from=builder ["/etc/ssl/certs/ca-certificates.crt", "/etc/ssl/certs/ca-certificates.crt"]

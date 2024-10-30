@@ -13,8 +13,8 @@ import (
 	"app/pkg/generics"
 	"app/translations"
 
-	"github.com/ahmedalkabir/finder"
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/finder"
 
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"

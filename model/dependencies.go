@@ -8,8 +8,8 @@ import (
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
 	"github.com/Masterminds/squirrel"
-	"github.com/ahmedalkabir/finder"
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
 )
 
 type Dependencies struct {

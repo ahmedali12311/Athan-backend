@@ -7,7 +7,6 @@ require (
 	github.com/BurntSushi/toml v1.3.2
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/ahmedalkabir/filematcher v0.0.4
-	github.com/ahmedalkabir/finder v0.0.7
 	github.com/ahmedalkabir/garabic v0.0.0-20240527214656-11fe9ba772f4
 	github.com/disintegration/imaging v1.6.2
 	github.com/fatih/color v1.16.0
@@ -22,6 +21,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/labstack/gommon v0.4.2
+	github.com/m-row/finder v0.0.8
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/nwidger/jsoncolor v0.3.2
 	github.com/pelletier/go-toml/v2 v2.2.1

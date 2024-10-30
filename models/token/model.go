@@ -8,7 +8,7 @@ import (
 	"app/model"
 	"app/pkg/pgtypes"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 
 	"github.com/google/uuid"
 )

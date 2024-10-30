@@ -1,20 +1,14 @@
-user = "User"
-office = "Office"
-partner_request = "Partner Request"
-office_partner = "Office Partner"
-office_customer = "Customer"
-money_transfer_request = "Money Transfer Request"
 banner = "Banner"
 category = "Category"
 document = "Document"
+fcm_notification = "FCM Notification"
+image = "Image"
 permission = "Permission"
 role = "Role"
 setting = "Setting"
 token = "Token"
+user = "User"
 user_notification = "User Notification"
-fcm_notification = "FCM Notification"
-image = "Image"
-
 
 [BadRequest]
 description = "bad request"

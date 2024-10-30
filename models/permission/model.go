@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 )
 
 type Model struct {

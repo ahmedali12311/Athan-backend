@@ -3,7 +3,7 @@ package role
 import (
 	"app/model"
 
-	"github.com/ahmedalkabir/finder"
+	"github.com/m-row/finder"
 
 	"github.com/labstack/echo/v4"
 )

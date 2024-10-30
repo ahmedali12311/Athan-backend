@@ -1,0 +1,12 @@
+services:
+  stain-stingray:
+    container_name: "${CONTAINER_NAME}"
+    image: "sadeemtech/${CONTAINER_NAME}:${CONTAINER_TAG}"
+    restart: always
+    expose:
+      - "${PORT}"
+    build:
+      context: ../../../
+      dockerfile: ./docker/builds/lab/Dockerfile
+      args:
+        CONNECTION_STRING: "${CONNECTION_STRING}"
