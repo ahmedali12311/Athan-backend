@@ -11,7 +11,7 @@ import (
 	"app/config"
 	"app/pkg/validator"
 
-	firebase "firebase.google.com/go"
+	firebase "firebase.google.com/go/v4"
 	"github.com/golang-jwt/jwt/v4"
 )
 

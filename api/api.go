@@ -16,8 +16,8 @@ import (
 	"app/models/user"
 	"app/utilities"
 
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/messaging"
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/messaging"
 	"github.com/jmoiron/sqlx"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/rs/zerolog"

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/url"
 
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/messaging"
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/messaging"
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/m-row/finder"

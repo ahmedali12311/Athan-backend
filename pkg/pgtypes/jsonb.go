@@ -54,3 +54,52 @@ func (j *JSONB) SetMap(jsonbMapData map[string]any) error {
 	}
 	return json.Unmarshal([]byte(castData), &jsonbMapData)
 }
+
+// JSONBSTR used to store map[string]string to postgres jsonb column
+type JSONBSTR map[string]string
+
+func (j *JSONBSTR) Value() (driver.Value, error) {
+	if j == nil {
+		return nil, nil
+	}
+	encodedJSONCategories, err := json.Marshal(*j)
+	if err != nil {
+		return nil, err
+	}
+	return string(encodedJSONCategories), nil
+}
+
+func (j *JSONBSTR) Scan(src any) error {
+	mapData := map[string]string{}
+	switch src := src.(type) {
+	case string:
+		err := json.Unmarshal([]byte(src), &mapData)
+		if err != nil {
+			return err
+		}
+	case []byte:
+		if err := json.Unmarshal(src, &mapData); err != nil {
+			return err
+		}
+	case nil:
+		*j = nil
+		return nil
+	default:
+		*j = nil
+		return errors.New("unknown jsonbstr map")
+	}
+	*j = mapData
+	return nil
+}
+
+func (j *JSONBSTR) SetMap(jsonbMapData map[string]any) error {
+	dataVal, err := j.Value()
+	if err != nil {
+		return err
+	}
+	castData, ok := dataVal.(string)
+	if !ok {
+		return errors.New("error casting json data to string")
+	}
+	return json.Unmarshal([]byte(castData), &jsonbMapData)
+}

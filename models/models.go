@@ -3,15 +3,17 @@ package models
 import (
 	"app/model"
 	"app/models/category"
+	"app/models/fcm_notification"
 	"app/models/permission"
 	"app/models/role"
 	"app/models/setting"
 	"app/models/token"
 	"app/models/user"
+	"app/models/user_notification"
 	"app/models/wallet"
 
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/messaging"
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/messaging"
 	"github.com/Masterminds/squirrel"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
@@ -22,13 +24,15 @@ type Models struct {
 	DB *sqlx.DB
 	QB *squirrel.StatementBuilderType
 
-	Category   *category.Queries
-	Permission *permission.Queries
-	Role       *role.Queries
-	Setting    *setting.Queries
-	Token      *token.Queries
-	User       *user.Queries
-	Wallet     *wallet.Queries
+	Category         *category.Queries
+	Permission       *permission.Queries
+	Role             *role.Queries
+	Setting          *setting.Queries
+	Token            *token.Queries
+	User             *user.Queries
+	Wallet           *wallet.Queries
+	FcmNotification  *fcm_notification.Queries
+	UserNotification *user_notification.Queries
 }
 
 func Setup(
@@ -64,8 +68,10 @@ func Setup(
 		Setting: setting.New(d),
 		Token:   token.New(d),
 
-		User:   user.New(d),
-		Wallet: wallet.New(d),
+		User:             user.New(d),
+		Wallet:           wallet.New(d),
+		FcmNotification:  fcm_notification.New(d),
+		UserNotification: user_notification.New(d),
 	}
 }
 
