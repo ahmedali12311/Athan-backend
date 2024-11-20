@@ -3,6 +3,7 @@ package user_controller
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,8 +11,10 @@ import (
 	"app/config"
 	"app/controller"
 	"app/models/user"
+	"app/pkg/generics"
 
 	"github.com/labstack/echo/v4"
+	"golang.org/x/exp/rand"
 )
 
 type ControllerAuth struct {
@@ -219,4 +222,190 @@ func (c *ControllerAuth) Logout(ctx echo.Context) error {
 // GenCookie(tokenResponse.Token, config.TimeNow().Add(config.JwtExpiry))
 // 	ctx.SetCookie(&cookie)
 // 	return ctx.JSON(http.StatusOK, tokenResponse)
+// }
+
+func (c *ControllerAuth) ForgetMyPassword(ctx echo.Context) error {
+	var result user.Model
+
+	v, err := c.GetValidator(ctx, result.ModelName())
+	if err != nil {
+		return err
+	}
+
+	// Delete the password field from the data to ensure it doesn't get updated
+	v.Data.Del("password")
+
+	valid, err := result.MergeForgetPassword(v)
+	if err != nil {
+		return c.APIErr.Firebase(ctx, err)
+	}
+	if !valid {
+		return c.APIErr.InputValidation(ctx, v)
+	}
+	if err := c.Models.User.GetOne(&result); err != nil {
+		return c.APIErr.Database(ctx, err, &result)
+	}
+
+	expires := time.Now().UTC().Add(5 * time.Minute)
+
+	if result.PinExpiry != nil {
+		if time.Now().UTC().Before(*result.PinExpiry) {
+			message := fmt.Sprintf(
+				"pin still active, try submitting again in %.2f seconds",
+				result.PinExpiry.Sub(time.Now().UTC()).Seconds(),
+			)
+			return ctx.JSON(http.StatusOK, map[string]any{
+				"message": message,
+			})
+		}
+	}
+
+	rng := rand.New(rand.NewSource(uint64(time.Now().UnixNano())))
+	result.Pin = generics.Ptr(fmt.Sprintf("%d", rng.Intn(900000)+100000))
+	result.PinExpiry = &expires
+
+	if err := c.Models.User.UpdateOne(&result, c.Models.DB); err != nil {
+		return c.APIErr.Database(ctx, err, &result)
+	}
+
+	// email way from pale-skull
+	// if err := c.Models.User.SendPasswordResetEmail(&result); err != nil {
+	// 	return c.APIErr.BadRequest(ctx, err)
+	// }
+
+	return ctx.JSON(
+		http.StatusOK,
+		map[string]string{
+			"status":  "success",
+			"message": "A password reset PIN has been sent to your email. Please check your inbox.",
+		},
+	)
+}
+
+func (c *ControllerAuth) ResetPassword(ctx echo.Context) error {
+	var result user.Model
+	v, err := c.GetValidator(ctx, result.ModelName())
+	if err != nil {
+		return err
+	}
+
+	valid, err := result.MergeForgetPassword(v)
+	if err != nil {
+		return c.APIErr.Firebase(ctx, err)
+	}
+	if !valid {
+		return c.APIErr.InputValidation(ctx, v)
+	}
+
+	var pin string
+
+	v.AssignString("pin", &pin)
+	v.Check(pin != "", "pin", v.T.ValidateRequired())
+	if !v.Valid() {
+		return c.APIErr.InputValidation(ctx, v)
+	}
+	result.Pin = &pin
+
+	if err := c.Models.User.GetOne(&result); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return c.APIErr.InvalidCredentials(ctx)
+		}
+		return c.APIErr.Database(ctx, err, &result)
+	}
+
+	if result.PinExpiry != nil {
+		if !time.Now().UTC().Before(*result.PinExpiry) {
+			message := fmt.Sprintf(
+				"pin expired %.2f seconds ago, please request another code",
+				result.PinExpiry.Sub(time.Now().UTC()).Abs().Seconds(),
+			)
+			return ctx.JSON(http.StatusOK, map[string]any{
+				"status":  "error",
+				"message": message,
+			})
+		}
+	}
+	result.Pin = nil
+	result.PinExpiry = nil
+	if err := c.Models.User.UpdateOne(&result, c.Models.DB); err != nil {
+		c.APIErr.LoggedOnly(ctx, err)
+	}
+	tokenResponse, err := result.GenTokenResponse()
+	if err != nil {
+		return c.APIErr.InternalServer(ctx, err)
+	}
+	cookie := result.GenCookie(
+		tokenResponse.Token,
+		time.Now().Add(config.JwtExpiry),
+	)
+	ctx.SetCookie(&cookie)
+	return ctx.JSON(http.StatusOK, tokenResponse)
+}
+
+// OTP WAY from royal-helix
+// func (c *ControllerAuth) ForgetMyPassword(ctx echo.Context) error {
+// 	var result user.Model
+
+// 	v, err := c.GetValidator(ctx, result.ModelName())
+// 	if err != nil {
+// 		return err
+// 	}
+// 	valid, err := result.MergeForgetPassword(v, false)
+// 	if err != nil {
+// 		return c.APIErr.Firebase(ctx, err)
+// 	}
+// 	if !valid {
+// 		return c.APIErr.InputValidation(ctx, v)
+// 	}
+// 	if err := c.Models.User.GetOne(&result); err != nil {
+// 		return c.APIErr.Database(ctx, err, &result)
+// 	}
+
+// 	tx, err := c.Models.DB.Beginx()
+// 	if err != nil {
+// 		return c.APIErr.InternalServer(ctx, err)
+// 	}
+// 	defer func() { _ = tx.Rollback() }()
+
+// 	expires := time.Now().UTC().Add(5 * time.Minute)
+
+// 	settings, err := c.Models.Setting.GetForOTP()
+// 	if err != nil {
+// 		return c.APIErr.Database(ctx, err, &result)
+// 	}
+// 	input := &otp.Input{
+// 		Phone: *result.Phone,
+// 	}
+// 	if result.PinExpiry != nil {
+// 		if time.Now().UTC().Before(*result.PinExpiry) {
+// 			message := fmt.Sprintf(
+// 				"otp still active, try submitting again in %.2f seconds",
+// 				result.PinExpiry.Sub(time.Now().UTC()).Seconds(),
+// 			)
+// 			return ctx.JSON(http.StatusOK, map[string]any{
+// 				"status":  "succuess",
+// 				"message": message,
+// 				// FIX: remove and replace by http response
+// 				"pin": result.Pin,
+// 			})
+// 		}
+// 	}
+
+// 	response, err := otp.Request(settings, input)
+// 	if err != nil {
+// 		return ctx.JSON(response.Status, response)
+// 	}
+// 	result.Pin = &response.Pin
+// 	result.PinExpiry = &expires
+// 	if err := c.Models.User.UpdateOne(&result, tx); err != nil {
+// 		return c.APIErr.Database(ctx, err, &result)
+// 	}
+// 	if err = tx.Commit(); err != nil {
+// 		return c.APIErr.InternalServer(ctx, err)
+// 	}
+
+// 	return ctx.JSON(
+// 		response.Status,
+// 		response,
+// 	)
 // }

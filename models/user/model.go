@@ -186,7 +186,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 
 	// Special merge logic ----------------------------------------------------
 	m.MergePhone(v)
-	m.MergeEmailPassword(v, isInsert)
+	m.MergeEmailPassword(v, isInsert, false)
 
 	// sets the user as anonymous if no email or phone is entered -------------
 	if isInsert && m.Phone == nil && m.Email == nil {

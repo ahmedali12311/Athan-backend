@@ -166,3 +166,9 @@ func (m *Model) MergeLogin(
 	}
 	return v.Valid(), nil
 }
+
+func (m *Model) MergeForgetPassword(v *validator.Validator) (bool, error) {
+	m.MergeEmailPassword(v, false, true)
+
+	return true, nil
+}

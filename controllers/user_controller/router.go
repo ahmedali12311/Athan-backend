@@ -26,6 +26,9 @@ func (m *Controllers) SetAuthRoutes(
 
 	// requires jwt
 	d.E.GET("/logout", m.Auth.Logout).Name = "auth:logout:public"
+
+	d.E.POST("/forget-my-password", m.Auth.ForgetMyPassword).Name = "auth:forget-my-password:public"
+	d.E.POST("/reset-password", m.Auth.ResetPassword).Name = "auth:reset-password:public"
 }
 
 func (m *Controllers) SetProfileRoutes(

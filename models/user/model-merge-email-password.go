@@ -4,7 +4,7 @@ import (
 	"app/pkg/validator"
 )
 
-func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert bool) {
+func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert, isResetPassword bool) {
 	var oldpw string
 	data := v.Data
 
@@ -38,7 +38,7 @@ func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert bool) {
 			return
 		}
 	}
-	if !isInsert && !hasOLDPW && hasPW {
+	if !isInsert && !hasOLDPW && hasPW && !isResetPassword {
 		v.Check(false, keyOLDPW, v.T.ValidateRequired())
 		return
 	}
@@ -65,7 +65,7 @@ func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert bool) {
 			return
 		}
 
-		if !isInsert && hasOLDPW {
+		if !isInsert && hasOLDPW && !isResetPassword {
 			oldpw = data.Values.Get(keyOLDPW)
 			if oldpw == "" {
 				v.Check(false, keyOLDPW, v.T.ValidateRequired())
@@ -80,7 +80,7 @@ func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert bool) {
 		if err := m.Password.Set(pw); err != nil {
 			v.Check(false, keyPW, err.Error())
 		}
-		if !isInsert {
+		if !isInsert && !isResetPassword {
 			err := m.Password.CheckPreviousPassword(v, m.ID.String())
 			if err != nil {
 				v.Check(false, keyOLDPW, err.Error())
