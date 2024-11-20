@@ -168,3 +168,13 @@ func (t *Translations) JwtExpired() string {
 		},
 	})
 }
+
+func (t *Translations) TransactionDeclined() string {
+	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "TransactionDeclined",
+			Description: "Transaction declined due to insufficient balance.",
+			Other:       "Transaction declined: The debit amount exceeds the available balance in the wallet.",
+		},
+	})
+}

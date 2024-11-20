@@ -9,6 +9,7 @@ import (
 	"app/controllers/setting_controller"
 	"app/controllers/token_controller"
 	"app/controllers/user_controller"
+	"app/controllers/wallet_controller"
 )
 
 type Controllers struct {
@@ -23,6 +24,7 @@ type Controllers struct {
 	Setting *setting_controller.Controllers
 	Token   *token_controller.Controllers
 	User    *user_controller.Controllers
+	Wallet  *wallet_controller.Controllers
 }
 
 func Setup(d *controller.Dependencies) *Controllers {
@@ -34,5 +36,6 @@ func Setup(d *controller.Dependencies) *Controllers {
 		Setting:    setting_controller.Get(d),
 		Token:      token_controller.Get(d),
 		User:       user_controller.Get(d),
+		Wallet:     wallet_controller.Get(d),
 	}
 }

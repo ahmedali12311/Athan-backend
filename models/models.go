@@ -8,6 +8,7 @@ import (
 	"app/models/setting"
 	"app/models/token"
 	"app/models/user"
+	"app/models/wallet"
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
@@ -27,6 +28,7 @@ type Models struct {
 	Setting    *setting.Queries
 	Token      *token.Queries
 	User       *user.Queries
+	Wallet     *wallet.Queries
 }
 
 func Setup(
@@ -62,7 +64,8 @@ func Setup(
 		Setting: setting.New(d),
 		Token:   token.New(d),
 
-		User: user.New(d),
+		User:   user.New(d),
+		Wallet: wallet.New(d),
 	}
 }
 

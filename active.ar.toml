@@ -94,6 +94,10 @@ other = "يحتوي هذا السجل على بيانات مكررة تتعار�
 description = "user data has been deleted."
 other = "تم حذف بياناتك من التطبيق."
 
+[TransactionDeclined]
+description = "Transaction declined due to insufficient balance."
+other = "تم رفض المعاملة: المبلغ المخصوم يتجاوز الرصيد المتاح في المحفظة."
+
 [UnDestroyableCategory]
 description = "not allowed to delete core categories or ones with children."
 other = "لا يسمح بحذف تصنيفات أساسية أو تصنيفات تمتلك فروع."

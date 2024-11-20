@@ -94,6 +94,10 @@ other = "this record contains duplicated data that conflicts with what is alread
 description = "user data has been deleted."
 other = "your data has been deleted from the application."
 
+[TransactionDeclined]
+description = "Transaction declined due to insufficient balance."
+other = "Transaction declined: The debit amount exceeds the available balance in the wallet."
+
 [UnDestroyableCategory]
 description = "not allowed to delete core categories or ones with children."
 other = "not allowed to delete core categories or ones with children."
