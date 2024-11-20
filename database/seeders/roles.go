@@ -1,61 +1,48 @@
 package seeders
 
 import (
+	"log"
+
+	"app/models/role"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
-	"github.com/pkg/errors"
 )
 
-// Roles ===================================================
-type Role struct {
-	ID   int    `toml:"id"`
-	Name string `toml:"name"`
-}
-
-type Roles struct {
-	Elements []Role `toml:"roles"`
-}
-
-func (Roles) File() string {
-	return "roles.toml"
-}
-
-func (Roles) Table() string {
-	return "roles"
-}
-
-func (s *Roles) Seed(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
+func Roles(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
 		"id",
 		"name",
 	}
-
-	for _, v := range s.Elements {
+	for i := range roles {
 		values := []any{
-			v.ID,
-			v.Name,
+			roles[i].ID,
+			roles[i].Name,
 		}
-		err := genericSeeder(db, qb, s.Table(), cols, values)
-		if err != nil {
-			return err
-		}
+		genericSeeder(db, qb, "roles", cols, values)
 	}
-
 	if _, err := db.Exec(
 		`SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles));`,
 	); err != nil {
-		return errors.Errorf("error executing sql sequence update roles: %s", err.Error())
+		log.Panicf(
+			"error executing sql sequence update roles: %s",
+			err.Error(),
+		)
 	}
-	RunningSeedTable.Append(len(s.Elements), s.Table())
-	return nil
+	RunningSeedTable.Append(len(roles), "roles")
 }
 
-func RolesLoadFixtures() (*Roles, error) {
-	var roles Roles
-
-	err := loadFixtures(&roles)
-	if err != nil {
-		return nil, err
-	}
-	return &roles, nil
+var roles = []role.Model{
+	{
+		ID:   1,
+		Name: "superadmin",
+	},
+	{
+		ID:   1,
+		Name: "admin",
+	},
+	{
+		ID:   1,
+		Name: "customer",
+	},
 }

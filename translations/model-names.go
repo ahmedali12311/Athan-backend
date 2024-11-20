@@ -47,4 +47,7 @@ func (t *Translations) TranslateModels() {
 			Other: "Image",
 		},
 	})
+	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{ID: "wallet_transaction", Other: "Wallet Transaction"},
+	})
 }

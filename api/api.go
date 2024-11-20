@@ -129,10 +129,10 @@ func NewAPI(
 	m := models.Setup(db, fb, fbm, tc)
 
 	// initial data seeders, only adds and avoids overwriting on conflict
-	err = seeders.SeedFixtures(m.DB, m.QB)
-	if err != nil {
-		logger.Fatal().Msgf(err.Error())
-	}
+	seeders.Settings(m.DB, m.QB)
+	seeders.Categories(m.DB, m.QB)
+	seeders.Roles(m.DB, m.QB)
+	seeders.Users(m.DB, m.QB)
 	seeders.PrintTable(seeders.RunningSeedTable)
 
 	if err != nil {

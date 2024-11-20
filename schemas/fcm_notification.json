@@ -1,0 +1,53 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/fcm_notification.json",
+    "description": "fcm_notification model schema",
+    "type": "object",
+    "additionalProperties": true,
+    "required": [
+        "title",
+        "body",
+        "topic"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "title": {
+            "type": "string",
+            "maxLength": 255
+        },
+        "body": {
+            "type": "string",
+            "maxLength": 255
+        },
+        "topic": {
+            "type": "string"
+        },
+        "is_sent": {
+            "type": "boolean"
+        },
+        "response": {
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "sender_id": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "format": "uuid"
+        },
+        "created_at": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "updated_at": {
+            "type": "string",
+            "format": "date-time"
+        }
+    }
+}

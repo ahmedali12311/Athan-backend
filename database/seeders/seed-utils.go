@@ -3,15 +3,24 @@ package seeders
 import (
 	"context"
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 	"github.com/m-row/finder"
-	"github.com/pkg/errors"
 )
 
 var RunningSeedTable = seededTable{
 	{"table", "rows"},
+}
+
+func parseUUID(id string) uuid.UUID {
+	parsed, err := uuid.Parse(id)
+	if err != nil {
+		log.Panic("uuid parse seeder")
+	}
+	return parsed
 }
 
 // func clearTable(db *sqlx.DB, name string) {
@@ -68,14 +77,16 @@ func genericSeeder(
 	tableName string,
 	columns []string,
 	values []any,
-) error {
+) {
 	lenCols := len(columns)
 	lenVals := len(values)
 	if lenCols != lenVals {
-		return errors.Errorf("error building sql seeding [%s]: %d columns but %d values provided",
+		log.Panicf(
+			"error building sql seeding %s: %d columns but %d values provided",
 			tableName,
 			lenCols,
-			lenVals)
+			lenVals,
+		)
 	}
 	query, values, err := qb.
 		Insert(tableName).
@@ -84,16 +95,15 @@ func genericSeeder(
 		Values(values...).
 		ToSql()
 	if err != nil {
-		return errors.Errorf("error executing sql seeding %s: %s", tableName, err.Error())
+		log.Panicf("error building sql seeding %s: %s", tableName, err.Error())
 	}
 	if _, err := conn.ExecContext(
 		context.Background(),
 		query,
 		values...,
 	); err != nil {
-		return errors.Errorf("error executing sql seeding %s: %s", tableName, err.Error())
+		log.Panicf("error executing sql seeding %s: %s", tableName, err.Error())
 	}
-	return nil
 }
 
 // func randomLibyaPoint() []float64 {

@@ -9,6 +9,7 @@ setting = "إعدادات"
 token = "توكن"
 user = "مستخدم"
 user_notification = "إشعار المستخدم"
+wallet_transaction = "معاملة محفظة"
 
 [BadRequest]
 description = "bad request"

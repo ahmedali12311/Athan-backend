@@ -1,0 +1,50 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/wallet_transaction.json",
+	"description": "wallet transaction model schema",
+	"type": "object",
+	"required": ["amount"],
+	"properties": {
+		"id": {
+			"type": "string",
+			"format": "uuid"
+		},
+		"type": {
+			"type": "string",
+			"enum": ["credit", "debit"]
+		},
+		"amount": {
+			"type": "number",
+			"minimum": 1
+		},
+		"payment_method": {
+			"type": ["string", "null"],
+			"minLength": 1,
+			"maxLength": 255
+		},
+		"payment_reference": {
+			"type": ["string", "null"],
+			"minLength": 1,
+			"maxLength": 255
+		},
+		"notes": {
+			"type": ["string", "null"],
+			"minLength": 1,
+			"maxLength": 5000
+		},
+		"user": {
+            "$ref": "%DOMAIN%/properties/uuid_obj.json"
+		},
+		"recharged_by": {
+            "$ref": "%DOMAIN%/properties/uuid_obj.json"
+		},
+		"created_at": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"updated_at": {
+			"type": "string",
+			"format": "date-time"
+		}
+	}
+}

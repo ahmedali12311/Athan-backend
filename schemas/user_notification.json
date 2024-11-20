@@ -1,0 +1,41 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "%DOMAIN%/user_notification.json",
+    "description": "user_notification model schema",
+	"type": "object",
+	"additionalProperties": true,
+	"required": ["user", "title", "body"],
+	"properties": {
+		"id": {
+			"type": "string",
+			"format": "uuid"
+		},
+		"created_at": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"updated_at": {
+			"type": "string",
+			"format": "date-time"
+		},
+		"user": {
+			"$ref": "%DOMAIN%/properties/uuid_obj.json"
+		},
+		"is_read": {
+			"type": "boolean"
+		},
+		"is_notified": {
+			"type": "boolean"
+		},
+		"title": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 255
+		},
+		"body": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 1000
+		}
+	}
+}

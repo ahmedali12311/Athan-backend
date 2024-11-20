@@ -9,6 +9,7 @@ setting = "Setting"
 token = "Token"
 user = "User"
 user_notification = "User Notification"
+wallet_transaction = "Wallet Transaction"
 
 [BadRequest]
 description = "bad request"

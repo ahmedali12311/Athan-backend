@@ -1,35 +1,15 @@
 package seeders
 
 import (
+	"log"
+
+	"app/models/setting"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
-	"github.com/pkg/errors"
 )
 
-// Settings ===================================================
-type Setting struct {
-	ID         int    `toml:"id"`
-	Key        string `toml:"key"`
-	Value      string `toml:"value"`
-	IsDisabled bool   `toml:"is_disabled"`
-	IsReadOnly bool   `toml:"is_readonly"`
-	FieldType  string `toml:"field_type"`
-	DataType   string `toml:"data_type"`
-}
-
-type Settings struct {
-	Elements []Setting `toml:"settings"`
-}
-
-func (Settings) File() string {
-	return "settings.toml"
-}
-
-func (Settings) Table() string {
-	return "settings"
-}
-
-func (s *Settings) Seed(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
+func Settings(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
 		"id",
 		"key",
@@ -39,38 +19,282 @@ func (s *Settings) Seed(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
 		"field_type",
 		"data_type",
 	}
-
-	for _, v := range s.Elements {
+	for i := range settings {
 		values := []any{
-			v.ID,
-			v.Key,
-			v.Value,
-			v.IsDisabled,
-			v.IsReadOnly,
-			v.FieldType,
-			v.DataType,
+			settings[i].ID,
+			settings[i].Key,
+			settings[i].Value,
+			settings[i].IsDisabled,
+			settings[i].IsReadOnly,
+			settings[i].FieldType,
+			settings[i].DataType,
 		}
-		err := genericSeeder(db, qb, s.Table(), cols, values)
-		if err != nil {
-			return err
-		}
+		genericSeeder(db, qb, "settings", cols, values)
 	}
-
 	if _, err := db.Exec(
 		`SELECT setval('settings_id_seq', (SELECT MAX(id) FROM settings));`,
 	); err != nil {
-		return errors.Errorf("error executing sql sequence update settings: %s", err.Error())
+		log.Panicf(
+			"error executing sql sequence update settings: %s",
+			err.Error(),
+		)
 	}
-	RunningSeedTable.Append(len(s.Elements), s.Table())
-	return nil
+	RunningSeedTable.Append(len(settings), "settings")
 }
 
-func SettingsLoadFixtures() (*Settings, error) {
-	var settings Settings
+var settings = []setting.Model{
+	{
+		ID:         1,
+		Key:        "app_name",
+		Value:      "اسم التطبيق",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         2,
+		Key:        "about",
+		Value:      "عن التطبيق",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "textarea",
+		DataType:   "string",
+	},
+	{
+		ID:         3,
+		Key:        "rules",
+		Value:      "قوانين التطبيق",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "textarea",
+		DataType:   "string",
+	},
+	{
+		ID:         4,
+		Key:        "app_phone",
+		Value:      "+218910001122",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         5,
+		Key:        "app_whatsapp_url",
+		Value:      "whatsapp/910001122",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         6,
+		Key:        "app_facebook_url",
+		Value:      "facebook.com/app",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         7,
+		Key:        "app_telegram_url",
+		Value:      "telegram.com/910001122",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         8,
+		Key:        "app_instagram_url",
+		Value:      "instagram.com/app",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         9,
+		Key:        "app_website_url",
+		Value:      "wwww.app.ly",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         10,
+		Key:        "app_email_url",
+		Value:      "info@app.ly",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         11,
+		Key:        "app_twitter_url",
+		Value:      "twitter.com/app",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         12,
+		Key:        "app_logo",
+		Value:      "path/image.jpg",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "file",
+		DataType:   "string",
+	},
+	{
+		ID:         13,
+		Key:        "app_color_primary",
+		Value:      "#6C04FC",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "color",
+		DataType:   "string",
+	},
+	{
+		ID:         14,
+		Key:        "app_color_secondary",
+		Value:      "#4E6E5D",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "color",
+		DataType:   "string",
+	},
+	{
+		ID:         15,
+		Key:        "app_color_on_primary",
+		Value:      "#C2E7DA",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "color",
+		DataType:   "string",
+	},
+	{
+		ID:         16,
+		Key:        "app_color_on_secondary",
+		Value:      "#F1FFE7",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "color",
+		DataType:   "string",
+	},
+	{
+		ID:         17,
+		Key:        "app_app_store_url",
+		Value:      "https://apps.apple.com/us/app",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         18,
+		Key:        "app_google_play_url",
+		Value:      "https://play.google.com/store/apps",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         19,
+		Key:        "main_hero",
+		Value:      "path/image.jpg",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "file",
+		DataType:   "string",
+	},
+	{
+		ID:         20,
+		Key:        "main_title",
+		Value:      "Main Title",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         21,
+		Key:        "main_subtitle",
+		Value:      "Main Subtitle",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         22,
+		Key:        "main_summary",
+		Value:      "Main Summary",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         23,
+		Key:        "main_call_to_action",
+		Value:      "Register Now!",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         24,
+		Key:        "app_privacy_policy",
+		Value:      "privacy policy",
+		IsDisabled: false,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
 
-	err := loadFixtures(&settings)
-	if err != nil {
-		return nil, err
-	}
-	return &settings, nil
+	// TLync settings
+	{
+		ID:         25,
+		Key:        "tlync_endpoint",
+		Value:      "https://c7drkx2ege.execute-api.eu-west-2.amazonaws.com",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         26,
+		Key:        "tlync_token",
+		Value:      "qS00000000000000000000000000000000000000",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         27,
+		Key:        "tlync_store_id",
+		Value:      "wL00000000000000000000000000000000000000000000000000000000000000",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         28,
+		Key:        "tlync_front_url",
+		Value:      "https://sadeem-tech.com",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
 }

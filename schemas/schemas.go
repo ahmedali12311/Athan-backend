@@ -41,6 +41,12 @@ var (
 	permissionSF []byte
 	//go:embed setting.json
 	settingSF []byte
+	//go:embed wallet_transaction.json
+	WalletTrxSF []byte
+	//go:embed fcm_notification.json
+	fcmNotificationSF []byte
+	//go:embed user_notification.json
+	userNotificationSF []byte
 )
 
 type schemaRegisterar struct {
@@ -96,11 +102,14 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"properties/line_string.json": lineStringSF,
 	}
 	modelFiles := map[string][]byte{
-		"category.json":   categorySF,
-		"permission.json": permissionSF,
-		"role.json":       roleSF,
-		"setting.json":    settingSF,
-		"user.json":       userSF,
+		"category.json":           categorySF,
+		"permission.json":         permissionSF,
+		"role.json":               roleSF,
+		"setting.json":            settingSF,
+		"user.json":               userSF,
+		"wallet_transaction.json": WalletTrxSF,
+		"fcm_notification.json":   fcmNotificationSF,
+		"user_notification.json":  userNotificationSF,
 	}
 	domain := config.DOMAIN + "/schemas"
 	SchemaMap := map[string]*js.Schema{}

@@ -1,40 +1,13 @@
 package seeders
 
 import (
+	"app/models/category"
+
 	"github.com/Masterminds/squirrel"
-	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
-type Fixtures interface {
-	File() string
-}
-
-// Categories ===================================================
-type Category struct {
-	ID            uuid.UUID  `toml:"id"`
-	Name          string     `toml:"name"`
-	Depth         int        `toml:"depth"`
-	Sort          int        `toml:"sort"`
-	IsDisabled    bool       `toml:"is_disabled"`
-	IsFeatured    bool       `toml:"is_featured"`
-	ParentID      *uuid.UUID `toml:"parent_id"`
-	SuperParentID *uuid.UUID `toml:"super_parent_id"`
-}
-
-type Categories struct {
-	Elements []Category `toml:"categories"`
-}
-
-func (Categories) File() string {
-	return "categories.toml"
-}
-
-func (Categories) Table() string {
-	return "categories"
-}
-
-func (s *Categories) Seed(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
+func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
 		"id",
 		"name",
@@ -45,29 +18,112 @@ func (s *Categories) Seed(db *sqlx.DB, qb *squirrel.StatementBuilderType) error 
 		"parent_id",
 		"super_parent_id",
 	}
-	for _, v := range s.Elements {
+	for i := range categories {
+		m := categories[i]
 		values := []any{
-			v.ID,
-			v.Name,
-			v.Depth,
-			v.Sort,
-			v.IsDisabled,
-			v.IsFeatured,
-			v.ParentID,
-			v.SuperParentID,
+			m.ID,
+			m.Name,
+			m.Depth,
+			m.Sort,
+			m.IsDisabled,
+			m.IsFeatured,
+			m.ParentID,
+			m.SuperParentID,
 		}
 		genericSeeder(db, qb, "categories", cols, values)
 	}
-	RunningSeedTable.Append(len(s.Elements), "categories")
-	return nil
+	RunningSeedTable.Append(len(categories), "categories")
 }
 
-func CategoriesLoadFixtures() (*Categories, error) {
-	var categories Categories
+var (
+	// documents = parseUUID(category.DocumentSuperParent)
+	// trainers  = parseUUID(category.TrainerSuperParent)
+	// programs  = parseUUID(category.ProgramSuperParent)
 
-	err := loadFixtures(&categories)
-	if err != nil {
-		return nil, err
+	categories = []category.Model{
+		// 	{
+		// 		ID:            documents,
+		// 		Name:          "مستندات",
+		// 		Depth:         0,
+		// 		Sort:          0,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      nil,
+		// 		SuperParentID: nil,
+		// 	},
+		// 	// Children
+		// 	{
+		// 		ID:            parseUUID("22fb185c-0af1-492e-baa5-7ced47fe66a9"),
+		// 		Name:          "جواز سفر",
+		// 		Depth:         1,
+		// 		Sort:          0,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      &documents,
+		// 		SuperParentID: &documents,
+		// 	},
+		// 	{
+		// 		ID:            parseUUID("100e38b9-50fe-4ffe-9c35-00646bba4d0c"),
+		// 		Name:          "اختبار",
+		// 		Depth:         1,
+		// 		Sort:          1,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      &documents,
+		// 		SuperParentID: &documents,
+		// 	},
+		// 	{
+		// 		ID:            parseUUID("895d5537-cdc5-43b9-9fda-77e01ef4c5f0"),
+		// 		Name:          "درس",
+		// 		Depth:         1,
+		// 		Sort:          2,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      &documents,
+		// 		SuperParentID: &documents,
+		// 	},
+
+		// 	{
+		// 		ID:            trainers,
+		// 		Name:          "مدربين",
+		// 		Depth:         0,
+		// 		Sort:          1,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      nil,
+		// 		SuperParentID: nil,
+		// 	},
+		// 	// Children
+		// 	{
+		// 		ID:            parseUUID("3896b02e-e098-413f-96fc-3d9835b77401"),
+		// 		Name:          "صيدلة",
+		// 		Depth:         1,
+		// 		Sort:          0,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      &trainers,
+		// 		SuperParentID: &trainers,
+		// 	},
+		// 	{
+		// 		ID:            programs,
+		// 		Name:          "برامج",
+		// 		Depth:         0,
+		// 		Sort:          2,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      nil,
+		// 		SuperParentID: nil,
+		// 	},
+		// 	// Children
+		// 	{
+		// 		ID:            parseUUID("ddbd3db0-a34e-4066-a2fb-68606e331b8e"),
+		// 		Name:          "طب",
+		// 		Depth:         1,
+		// 		Sort:          0,
+		// 		IsDisabled:    false,
+		// 		IsFeatured:    false,
+		// 		ParentID:      &programs,
+		// 		SuperParentID: &programs,
+		// 	},
 	}
-	return &categories, nil
-}
+)
