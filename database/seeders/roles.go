@@ -38,11 +38,11 @@ var roles = []role.Model{
 		Name: "superadmin",
 	},
 	{
-		ID:   1,
+		ID:   2,
 		Name: "admin",
 	},
 	{
-		ID:   1,
+		ID:   3,
 		Name: "customer",
 	},
 }

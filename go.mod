@@ -4,7 +4,6 @@ go 1.22.2
 
 require (
 	firebase.google.com/go/v4 v4.15.0
-	github.com/BurntSushi/toml v1.3.2
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/ahmedalkabir/filematcher v0.0.4
 	github.com/ahmedalkabir/garabic v0.0.0-20240527214656-11fe9ba772f4

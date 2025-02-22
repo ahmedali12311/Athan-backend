@@ -135,10 +135,6 @@ func NewAPI(
 	seeders.Users(m.DB, m.QB)
 	seeders.PrintTable(seeders.RunningSeedTable)
 
-	if err != nil {
-		logger.Fatal().Msg(err.Error())
-	}
-
 	// sms, err := sms.NewSMS(
 	// 	sms.SMSConfig{
 	// 		Url: config.OTP_URL,
@@ -147,9 +143,9 @@ func NewAPI(
 	// 	},
 	// 	sms.WithLogger(logger))
 
-	if err != nil {
-		logger.Fatal().Msg(err.Error())
-	}
+	// if err != nil {
+	// 	logger.Fatal().Msg(err.Error())
+	// }
 
 	deps := &controller.Dependencies{
 		Schemas: schemas,

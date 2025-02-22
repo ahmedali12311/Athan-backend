@@ -39,7 +39,7 @@ func Users(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
 	for _, v := range users {
 		values := []any{
 			v.ID,
-			"",
+			v.Ref,
 			v.Name,
 			v.Phone,
 			v.Email,
