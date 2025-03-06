@@ -74,13 +74,15 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 				"otp still active, try submitting again in %.2f seconds",
 				result.PinExpiry.Sub(time.Now().UTC()).Seconds(),
 			)
-			return ctx.JSON(http.StatusOK, map[string]any{
+			responseMap := map[string]any{
 				"status":  "succuess",
 				"exists":  exists,
 				"message": message,
-				// FIX: remove and replace by http response
-				"pin": result.Pin,
-			})
+			}
+			if settings.Env != "production" {
+				responseMap["pin"] = result.Pin
+			}
+			return ctx.JSON(http.StatusOK, responseMap)
 		}
 	}
 
@@ -127,18 +129,25 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 
+	settings, err := c.Models.Setting.GetForOTP()
+	if err != nil {
+		return c.APIErr.Database(ctx, err, &result)
+	}
+
 	if result.PinExpiry != nil {
 		if !time.Now().UTC().Before(*result.PinExpiry) {
 			message := fmt.Sprintf(
 				"otp expired %.2f seconds ago, please request another code",
 				result.PinExpiry.Sub(time.Now().UTC()).Abs().Seconds(),
 			)
-			return ctx.JSON(http.StatusOK, map[string]any{
+			responseMap := map[string]any{
 				"status":  "error",
 				"message": message,
-				"pin":     result.Pin,
-				// FIX: remove and replace by http response
-			})
+			}
+			if settings.Env != "production" {
+				responseMap["pin"] = result.Pin
+			}
+			return ctx.JSON(http.StatusOK, responseMap)
 		}
 	}
 	if err := c.Models.User.Verify(&result.ID, nil); err != nil {
