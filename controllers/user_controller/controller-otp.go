@@ -150,7 +150,7 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 			return ctx.JSON(http.StatusOK, responseMap)
 		}
 	}
-	if err := c.Models.User.Verify(&result.ID, nil); err != nil {
+	if err := c.Models.User.Verify(&result.ID, c.Models.DB); err != nil {
 		c.APIErr.LoggedOnly(ctx, err)
 	}
 	tokenResponse, err := result.GenTokenResponse()
