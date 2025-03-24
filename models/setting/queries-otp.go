@@ -10,6 +10,7 @@ func (m *Queries) GetForOTP() (*otp.Settings, error) {
 			otp.KeySadeemOTPKey,
 			otp.KeySadeemOTPURL,
 			otp.KeySadeemOTPJWT,
+			otp.KeySadeemOTPEnv,
 		},
 	)
 	if err != nil {
@@ -24,6 +25,8 @@ func (m *Queries) GetForOTP() (*otp.Settings, error) {
 			s.URL = v.Value
 		case otp.KeySadeemOTPJWT:
 			s.JWT = v.Value
+		case otp.KeySadeemOTPEnv:
+			s.Env = v.Value
 		}
 	}
 	return &s, nil
