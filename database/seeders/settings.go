@@ -334,4 +334,22 @@ var settings = []setting.Model{
 		FieldType:  "textarea",
 		DataType:   "string",
 	},
+	{
+		ID:         33,
+		Key:        "payment_gateway_endpoint",
+		Value:      "https://tyrian-ant.sadeem-lab.com/api/v1",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
+	{
+		ID:         34,
+		Key:        "payment_gateway_api_key",
+		Value:      "qS00000000000000000000000000000000000000",
+		IsDisabled: true,
+		IsReadOnly: false,
+		FieldType:  "text",
+		DataType:   "string",
+	},
 }

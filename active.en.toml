@@ -27,6 +27,10 @@ other = "user account has been deleted. please make a new account or contact app
 description = "user account has been disabled."
 other = "user account has been disabled. please contact app administrators"
 
+[ExternalRequestError]
+description = "An issue occurred while connecting to an external service. This might be temporary, so please try again later."
+other = "We're having trouble connecting to one of our services right now. This might be temporary, so please try again in a moment. If the issue persists, contact support."
+
 [InputValidation]
 description = "input validation error."
 other = "input validation error."
@@ -194,3 +198,7 @@ other = "must be a valid float."
 [ValidateUUID]
 description = "validate input as a uuid."
 other = "must be valid uuid."
+
+[WalletTransactionAlreadyConfirmed]
+description = "wallet transaction already confirmed"
+other = "wallet transaction already confirmed"

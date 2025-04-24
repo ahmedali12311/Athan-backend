@@ -39,6 +39,9 @@ const (
 	KeyMainSubtitle     = "main_subtitle"
 	KeyMainSummary      = "main_summary"
 	KeyMainCallToAction = "main_call_to_action"
+
+	KeyPaymentGatewayEndpoint = "payment_gateway_endpoint"
+	KeyPaymentGatewayAPIKey   = "payment_gateway_api_key"
 )
 
 var CoreKeys = []string{
@@ -78,4 +81,7 @@ var CoreKeys = []string{
 	KeyMainSubtitle,
 	KeyMainSummary,
 	KeyMainCallToAction,
+
+	KeyPaymentGatewayEndpoint,
+	KeyPaymentGatewayAPIKey,
 }

@@ -178,3 +178,13 @@ func (t *Translations) TransactionDeclined() string {
 		},
 	})
 }
+
+func (t *Translations) ExternalRequestError() string {
+	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "ExternalRequestError",
+			Description: "An issue occurred while connecting to an external service. This might be temporary, so please try again later.",
+			Other:       "We're having trouble connecting to one of our services right now. This might be temporary, so please try again in a moment. If the issue persists, contact support.",
+		},
+	})
+}

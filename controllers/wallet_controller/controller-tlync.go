@@ -1,75 +1,58 @@
 package wallet_controller
 
 import (
-	"fmt"
 	"net/http"
 
-	"app/config"
 	"app/models/setting"
 	"app/models/user"
 	"app/models/wallet_transaction"
-	"app/pkg/tlync"
+	"app/pkg/payment_gateway"
 
-	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
-func (c *ControllerBasic) Initiate(ctx echo.Context) error {
+func (c *ControllerBasic) TylncInitiate(ctx echo.Context) error {
 	ctxUser := c.Utils.CtxUser(ctx)
 	model := wallet_transaction.Model{
 		ID:       uuid.New(),
 		WalletID: ctxUser.ID,
 		Type:     wallet_transaction.TypeCredit,
-		User: wallet_transaction.WalletUser{
-			ID: &ctxUser.ID,
-		},
-		RechargedBy: wallet_transaction.WalletUser{
-			ID: &ctxUser.ID,
-		},
 	}
-	settings := tlync.Settings{}
-	if err := c.Models.Setting.GetForTlync(&settings); err != nil {
+
+	input := payment_gateway.TlyncRequest{
+		WalletTransactionID: model.ID,
+	}
+	settings := payment_gateway.Settings{}
+	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
 		return c.APIErr.Database(ctx, err, &setting.Model{})
 	}
-	tlyncInput := tlync.InitiateInput{
-		ID:          settings.StoreID,
-		Amount:      fmt.Sprintf("%.2f", model.Amount),
-		Phone:       "218910000000",
-		Email:       "info@sample.com",
-		BackendURL:  config.DOMAIN + "/api/v1/wallet-transactions/auto-confirm",
-		FrontendURL: settings.FrontURL,
-		CustomRef:   model.ID.String(),
-	}
+
 	v, err := c.GetValidator(ctx, model.ModelName())
 	if err != nil {
 		return err
 	}
 	var phone string
-	email := v.Data.Get("email")
 
 	dummyUser := user.Model{}
 	dummyUser.MergePhone(v)
 	if dummyUser.Phone != nil {
 		phone = *dummyUser.Phone
 	}
-	if email != "" {
-		tlyncInput.Email = email
-	}
-	if phone != "" {
-		tlyncInput.Phone = phone
-	}
+
 	if valid := model.MergeAndValidate(v); !valid {
 		return c.APIErr.InputValidation(ctx, v)
 	}
-	tlyncInput.Amount = fmt.Sprintf("%.2f", model.Amount)
-	res, err := tlync.InitiatePayment(&settings, &tlyncInput)
+	input.Phone = phone
+	input.Amount = model.Amount
+
+	res, err := payment_gateway.TlyncInitiatePayment(&settings, &input)
 	if err != nil {
-		return c.APIErr.BadRequest(ctx, err)
+		return c.APIErr.ExternalRequestError(ctx, err)
 	}
 
-	model.TLyncURL = &res.URL
-	res.Amount = model.Amount
+	model.TLyncURL = res.TLyncURL
+
 	// Start transacting
 	tx, err := c.Models.DB.Beginx()
 	if err != nil {
@@ -86,7 +69,7 @@ func (c *ControllerBasic) Initiate(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, model)
 }
 
-func (c *ControllerBasic) Confirm(ctx echo.Context) error {
+func (c *ControllerBasic) TylncConfirm(ctx echo.Context) error {
 	var result wallet_transaction.Model
 	if err := c.Utils.ReadUUIDParam(&result.ID, ctx); err != nil {
 		return c.APIErr.BadRequest(ctx, err)
@@ -95,22 +78,16 @@ func (c *ControllerBasic) Confirm(ctx echo.Context) error {
 	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
-	settings := tlync.Settings{}
-	if err := c.Models.Setting.GetForTlync(&settings); err != nil {
+	settings := payment_gateway.Settings{}
+	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
 		return c.APIErr.Database(ctx, err, &setting.Model{})
 	}
-	tlyncInput := tlync.ConfirmInput{
-		StoreID:   settings.StoreID,
-		CustomRef: result.ID.String(),
-	}
-	res, err := tlync.TransactionReceipt(&settings, &tlyncInput)
+
+	res, err := payment_gateway.TlyncTransactionReceipt(&settings, result.ID)
 	if err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
-	if res.Result != "success" {
-		err := fmt.Errorf("confirmation is not complete: %s", res.Message)
-		return c.APIErr.BadRequest(ctx, err)
-	}
+
 	// Start transacting
 	tx, err := c.Models.DB.Beginx()
 	if err != nil {
@@ -118,24 +95,10 @@ func (c *ControllerBasic) Confirm(ctx echo.Context) error {
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	// marshalling/unmarshalling res into wallet trx struct
-	b, err := json.Marshal(res.Data)
-	if err != nil {
-		return c.APIErr.BadRequest(
-			ctx,
-			fmt.Errorf("marshalling res.Data: %w", err),
-		)
-	}
-	if err := json.Unmarshal(b, &result.TLyncResponse); err != nil {
-		return c.APIErr.BadRequest(
-			ctx,
-			fmt.Errorf("unmarshalling res.Data: %w", err),
-		)
-	}
-
+	result.TLyncResponse = res.Response
 	result.IsConfirmed = true
-	result.PaymentMethod = &res.Data.Gateway
-	result.PaymentReference = &res.Data.OrderID
+	result.PaymentMethod = res.PaymentMethod
+	result.PaymentReference = res.PaymentReference
 
 	if err := c.Models.Wallet.UpdateTransaction(
 		&result,
@@ -150,8 +113,9 @@ func (c *ControllerBasic) Confirm(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, result)
 }
 
-func (c *ControllerBasic) AutoConfirm(ctx echo.Context) error {
+func (c *ControllerBasic) TylncAutoConfirm(ctx echo.Context) error {
 	var result wallet_transaction.Model
+
 	v, err := c.GetValidator(ctx, result.ModelName())
 	if err != nil {
 		return err
@@ -160,7 +124,7 @@ func (c *ControllerBasic) AutoConfirm(ctx echo.Context) error {
 		"received tlync backend-url callback values, encoded: %s",
 		v.Data.Values.Encode(),
 	)
-	id, err := uuid.Parse(v.Data.Get("custom_ref"))
+	id, err := uuid.Parse(v.Data.Get("id"))
 	if err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
@@ -168,22 +132,16 @@ func (c *ControllerBasic) AutoConfirm(ctx echo.Context) error {
 	if err := c.Models.Wallet.GetTransaction(&result, nil); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
-	settings := tlync.Settings{}
-	if err := c.Models.Setting.GetForTlync(&settings); err != nil {
-		return c.APIErr.Database(ctx, err, &result)
+	settings := payment_gateway.Settings{}
+	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
+		return c.APIErr.Database(ctx, err, &setting.Model{})
 	}
-	tlyncInput := tlync.ConfirmInput{
-		StoreID:   settings.StoreID,
-		CustomRef: result.ID.String(),
-	}
-	res, err := tlync.TransactionReceipt(&settings, &tlyncInput)
+
+	res, err := payment_gateway.TlyncTransactionReceipt(&settings, result.ID)
 	if err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
-	if res.Result != "success" {
-		err := fmt.Errorf("confirmation is not complete: %s", res.Message)
-		return c.APIErr.BadRequest(ctx, err)
-	}
+
 	// Start transacting
 	tx, err := c.Models.DB.Beginx()
 	if err != nil {
@@ -191,24 +149,11 @@ func (c *ControllerBasic) AutoConfirm(ctx echo.Context) error {
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	// marshalling/unmarshalling res into wallet trx struct
-	b, err := json.Marshal(res.Data)
-	if err != nil {
-		return c.APIErr.BadRequest(
-			ctx,
-			fmt.Errorf("marshalling res.Data: %w", err),
-		)
-	}
-	if err := json.Unmarshal(b, &result.TLyncResponse); err != nil {
-		return c.APIErr.BadRequest(
-			ctx,
-			fmt.Errorf("unmarshalling res.Data: %w", err),
-		)
-	}
-
+	result.TLyncResponse = res.Response
 	result.IsConfirmed = true
-	result.PaymentMethod = &res.Data.Gateway
-	result.PaymentReference = &res.Data.OrderID
+	result.PaymentMethod = res.PaymentMethod
+	result.PaymentReference = res.PaymentReference
+
 	if err := c.Models.Wallet.UpdateTransaction(&result, nil, tx); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}

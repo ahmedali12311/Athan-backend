@@ -1,6 +1,7 @@
 package apierrors
 
 import (
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -305,5 +306,31 @@ func (e *APIErrors) Firebase(ctx echo.Context, err error) error {
 		Unauthorized,
 		"firebase authentication error",
 		map[string]string{"message": err.Error()},
+	)
+}
+
+func (e *APIErrors) ExternalRequestError(
+	ctx echo.Context,
+	err error,
+) error {
+	t := e.Utils.CtxT(ctx)
+	var result map[string]any
+
+	errJson := json.Unmarshal([]byte(err.Error()), &result)
+	if errJson != nil {
+		return e.respond(
+			ctx,
+			http.StatusBadRequest,
+			BadRequest,
+			t.ExternalRequestError(),
+			err.Error(),
+		)
+	}
+	return e.respond(
+		ctx,
+		http.StatusBadRequest,
+		BadRequest,
+		t.ExternalRequestError(),
+		result,
 	)
 }

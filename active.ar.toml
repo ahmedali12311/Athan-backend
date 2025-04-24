@@ -27,6 +27,10 @@ other = "هذا الحساب تم حذفه. رجاء قم بتسجيل حساب 
 description = "user account has been disabled."
 other = "هذا الحساب تم تعطيله. رجاء تواصل مع إدارة التطبيق."
 
+[ExternalRequestError]
+description = "An issue occurred while connecting to an external service. This might be temporary, so please try again later."
+other = "نواجه مشكلة في الاتصال بأحد خدماتنا في الوقت الحالي. قد يكون هذا مؤقتًا، لذا يُرجى المحاولة مرة أخرى بعد قليل. إذا استمرت المشكلة، يُرجى التواصل مع الدعم."
+
 [InputValidation]
 description = "input validation error."
 other = "خطأ في التحقق من صحة الإدخال."
@@ -194,3 +198,7 @@ other = "يجب أن يكون عددًا حقيقيًا."
 [ValidateUUID]
 description = "validate input as a uuid."
 other = "يجب أن يكون معرّف عالمي فريد صحيح."
+
+[WalletTransactionAlreadyConfirmed]
+description = "wallet transaction already confirmed"
+other = "عملية الدفع مؤكدة مسبقا"

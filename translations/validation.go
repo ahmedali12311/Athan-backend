@@ -280,3 +280,13 @@ func (t *Translations) NotPermitted(ctxScopes, allowed []string) string {
 		},
 	})
 }
+
+func (t *Translations) WalletTransactionAlreadyConfirmed() string {
+	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "WalletTransactionAlreadyConfirmed",
+			Description: "wallet transaction already confirmed",
+			Other:       "wallet transaction already confirmed",
+		},
+	})
+}
