@@ -94,11 +94,10 @@ type PaymentServicesResponse struct {
 			Ar string `json:"ar"`
 			En string `json:"en"`
 		} `json:"name"`
-		IsDisabled      bool      `json:"is_disabled"`
-		IsGatewayActive bool      `json:"is_gateway_active"`
-		CreatedAt       time.Time `json:"created_at"`
-		UpdatedAt       time.Time `json:"updated_at"`
-		Gateway         struct {
+		IsDisabled bool      `json:"is_disabled"`
+		CreatedAt  time.Time `json:"created_at"`
+		UpdatedAt  time.Time `json:"updated_at"`
+		Gateway    struct {
 			ID   *string `json:"id"`   // Nullable field
 			Name *string `json:"name"` // Nullable field
 		} `json:"gateway"`
