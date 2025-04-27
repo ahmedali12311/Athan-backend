@@ -172,3 +172,16 @@ func (m *Model) MergeForgetPassword(v *validator.Validator) (bool, error) {
 
 	return true, nil
 }
+
+func (m *Model) InvalidCookie() http.Cookie {
+	return http.Cookie{
+		Name:     "accessToken",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   0,
+		Expires:  time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC),
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+	}
+}

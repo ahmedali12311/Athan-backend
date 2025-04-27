@@ -74,6 +74,23 @@ type EdfaliConfirmRequest struct {
 	Phone               string `json:"phone"`
 }
 
+// Sadad
+type SadadInitiateRequest struct {
+	WalletTransactionID uuid.UUID `json:"wallet_transaction_id"`
+	Amount              float64   `json:"amount"`
+	Phone               string    `json:"phone"`
+	Category            int       `json:"category"`
+	Birthyear           string    `json:"birthyear"`
+}
+type SadadConfirmRequest struct {
+	WalletTransactionID uuid.UUID
+	Pin                 string `json:"pin"`
+}
+type SadadResendRequest struct {
+	WalletTransactionID uuid.UUID
+	Pin                 string `json:"pin"`
+}
+
 type PaymentServicesResponse struct {
 	Meta struct {
 		Total         int      `json:"total"`

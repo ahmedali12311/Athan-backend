@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"app/models/user"
 	"app/pkg/validator"
 	"app/utilities"
 
@@ -286,6 +287,12 @@ func (e *APIErrors) Forbidden(ctx echo.Context, err error) error {
 	} else if errors.Is(err, jwt.ErrTokenNotValidYet) {
 		// Token is either expired or not active yet
 		message = "jwt token is not valid yet"
+	} else if errors.Is(err, jwt.ErrSignatureInvalid) {
+		// Token is either expired or not active yet
+		u := &user.Model{}
+		cookie := u.InvalidCookie()
+		ctx.SetCookie(&cookie)
+		message = err.Error()
 	} else if errors.Is(err, ErrDeletedAccount) {
 		message = t.DeletedAccount()
 	} else if errors.Is(err, ErrDisabledAccount) {

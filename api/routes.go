@@ -65,6 +65,7 @@ func (app *Application) Routes(e *echo.Echo, isTest bool) http.Handler {
 	app.Controllers.Token.SetBasicRoutes(deps)
 	app.Controllers.Setting.SetBasicRoutes(deps)
 	app.Controllers.Permission.SetBasicRoutes(deps)
+	app.Controllers.Wallet.SetBasicRoutes(deps)
 
 	// Generate Routes --------------------------------------------------------
 	app.routesGen(e.Routes())

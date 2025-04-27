@@ -44,4 +44,9 @@ func (m *Controllers) SetBasicRoutes(
 	edfali.POST("/initiate", m.Basic.EdfaliInitiate, r).Name = "wallets:edfali-initiate:admin,customer"
 	edfali.POST("/confirm", m.Basic.EdfaliConfirm, r).Name = "wallets:edfali-confirm:admin,customer"
 
+	sadad := f.Group("/sadad")
+
+	sadad.POST("/initiate", m.Basic.SadadInitiate, r).Name = "wallets:sadad-initiate:customer,admin"
+	sadad.POST("/confirm", m.Basic.SadadConfirm, r).Name = "wallets:sadad-confirm:customer,admin"
+	sadad.POST("/resend", m.Basic.SadadResendOTP, r).Name = "wallets:sadad-resend:customer,admin"
 }

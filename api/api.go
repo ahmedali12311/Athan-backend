@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"app/apierrors"
 	"app/config"
@@ -94,7 +93,6 @@ func NewAPI(
 		"file:///"+config.GetRootPath(cfg.MigrationsRoot),
 		cfg.DSN,
 	)
-	fmt.Println(cfg.DSN)
 	if err != nil {
 		logger.Fatal().
 			Msgf("couldn't create migration instance: %s", err.Error())
