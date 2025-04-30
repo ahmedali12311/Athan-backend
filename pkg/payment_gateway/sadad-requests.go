@@ -103,9 +103,9 @@ func SadadTransactionConfirm(
 func SadadTransactionResend(
 	settings *Settings,
 	input *SadadResendRequest,
-) (*Response, error) {
+) (*SadadResendResponse, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/sadad/" +
-		input.WalletTransactionID.String() + "/confirm"
+		input.WalletTransactionID.String() + "/resend"
 
 	req, err := http.NewRequestWithContext(
 		context.Background(),
@@ -132,7 +132,7 @@ func SadadTransactionResend(
 		return nil, errors.New(string(bd))
 	}
 
-	var result Response
+	var result SadadResendResponse
 	if err := json.Unmarshal(bd, &result); err != nil {
 		return nil, fmt.Errorf("can not unmarshal JSON: %w", err)
 	}

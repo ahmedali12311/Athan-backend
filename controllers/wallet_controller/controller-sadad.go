@@ -157,6 +157,12 @@ func (c *ControllerBasic) SadadResendOTP(ctx echo.Context) error {
 		return err
 	}
 
+	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+
+	if !v.Valid() {
+		return c.APIErr.InputValidation(ctx, v)
+	}
+
 	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
@@ -166,46 +172,19 @@ func (c *ControllerBasic) SadadResendOTP(ctx echo.Context) error {
 		return c.APIErr.BadRequest(ctx, err)
 	}
 
-	var input payment_gateway.SadadConfirmRequest
+	input := payment_gateway.SadadResendRequest{
+		WalletTransactionID: result.ID,
+	}
 
 	settings := payment_gateway.Settings{}
 	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
 		return c.APIErr.Database(ctx, err, &setting.Model{})
 	}
 
-	res, err := payment_gateway.SadadTransactionConfirm(&settings, &input)
+	res, err := payment_gateway.SadadTransactionResend(&settings, &input)
 	if err != nil {
 		return c.APIErr.ExternalRequestError(ctx, err)
 	}
 
-	// Start transacting
-	tx, err := c.Models.DB.Beginx()
-	if err != nil {
-		return c.APIErr.InternalServer(ctx, err)
-	}
-	defer func() { _ = tx.Rollback() }()
-
-	result.TLyncResponse = res.Response
-	result.IsConfirmed = true
-	result.Notes = res.Notes
-	result.PaymentMethod = res.PaymentMethod
-	if result.PaymentMethod != nil {
-		note := fmt.Sprintf(
-			"تعبئة المحفظة بخدمة %s",
-			*result.PaymentMethod,
-		)
-		result.Notes = &note
-	}
-
-	if err := c.Models.Wallet.UpdateTransaction(
-		&result,
-		&ctxUser.ID,
-		tx,
-	); err != nil {
-		return c.APIErr.Database(ctx, err, &result)
-	}
-	if err = tx.Commit(); err != nil {
-		return c.APIErr.InternalServer(ctx, err)
-	}
-	return ctx.JSON(http.StatusCreated, result)
+	return ctx.JSON(http.StatusCreated, res)
 }

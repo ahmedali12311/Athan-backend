@@ -88,7 +88,12 @@ type SadadConfirmRequest struct {
 }
 type SadadResendRequest struct {
 	WalletTransactionID uuid.UUID
-	Pin                 string `json:"pin"`
+}
+
+type SadadResendResponse struct {
+	Message string `json:"message"`
+	Status  int    `json:"status"`
+	Type    string `json:"type"`
 }
 
 type PaymentServicesResponse struct {
