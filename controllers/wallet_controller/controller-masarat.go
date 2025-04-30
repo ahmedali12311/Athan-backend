@@ -82,15 +82,6 @@ func (c *ControllerBasic) MasaratConfirm(ctx echo.Context) error {
 		return err
 	}
 
-	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
-		return c.APIErr.Database(ctx, err, &result)
-	}
-
-	if result.IsConfirmed {
-		err := errors.New(v.T.WalletTransactionAlreadyConfirmed())
-		return c.APIErr.BadRequest(ctx, err)
-	}
-
 	var input payment_gateway.MasaratConfirmRequest
 
 	v.AssignString("pin", &input.Pin)
@@ -99,6 +90,15 @@ func (c *ControllerBasic) MasaratConfirm(ctx echo.Context) error {
 
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)
+	}
+
+	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
+		return c.APIErr.Database(ctx, err, &result)
+	}
+
+	if result.IsConfirmed {
+		err := errors.New(v.T.WalletTransactionAlreadyConfirmed())
+		return c.APIErr.BadRequest(ctx, err)
 	}
 
 	settings := payment_gateway.Settings{}

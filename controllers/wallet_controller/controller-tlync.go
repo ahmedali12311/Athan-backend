@@ -71,9 +71,17 @@ func (c *ControllerBasic) TylncInitiate(ctx echo.Context) error {
 
 func (c *ControllerBasic) TylncConfirm(ctx echo.Context) error {
 	var result wallet_transaction.Model
-	if err := c.Utils.ReadUUIDParam(&result.ID, ctx); err != nil {
-		return c.APIErr.BadRequest(ctx, err)
+
+	v, err := c.GetValidator(ctx, result.ModelName())
+	if err != nil {
+		return err
 	}
+	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+
+	if !v.Valid() {
+		return c.APIErr.InputValidation(ctx, v)
+	}
+
 	ctxUser := c.Utils.CtxUser(ctx)
 	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
