@@ -1,6 +1,7 @@
 package wallet_controller
 
 import (
+	"errors"
 	"net/http"
 
 	"app/models/setting"
@@ -18,6 +19,7 @@ func (c *ControllerBasic) TylncInitiate(ctx echo.Context) error {
 		ID:       uuid.New(),
 		WalletID: ctxUser.ID,
 		Type:     wallet_transaction.TypeCredit,
+		User:     wallet_transaction.WalletUser{ID: &ctxUser.ID},
 	}
 
 	input := payment_gateway.TlyncRequest{
@@ -86,6 +88,11 @@ func (c *ControllerBasic) TylncConfirm(ctx echo.Context) error {
 	if err := c.Models.Wallet.GetTransaction(&result, &ctxUser.ID); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
+	if result.IsConfirmed {
+		err := errors.New(v.T.WalletTransactionAlreadyConfirmed())
+		return c.APIErr.BadRequest(ctx, err)
+	}
+
 	settings := payment_gateway.Settings{}
 	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
 		return c.APIErr.Database(ctx, err, &setting.Model{})
