@@ -67,6 +67,10 @@ other = "resource not found."
 description = "user does not have sufficient scopes to modify the resource"
 other = "user must have any of the following scopes: [ {{ .Allowed }} ] provided scopes: [ {{ .CtxScopes }} ]"
 
+[OTPSentSuccessfully]
+description = "OTP sent successfully"
+other = "otp sent successfully."
+
 [OutOfScopeError]
 description = "an error that is out of scope of api usage"
 other = "out of scope error."

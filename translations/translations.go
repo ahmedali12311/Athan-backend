@@ -188,3 +188,13 @@ func (t *Translations) ExternalRequestError() string {
 		},
 	})
 }
+
+func (t *Translations) OTPSentSuccessfully() string {
+	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "OTPSentSuccessfully",
+			Description: "OTP sent successfully",
+			Other:       "otp sent successfully.",
+		},
+	})
+}

@@ -67,6 +67,10 @@ other = "لم يتم العثور على هذا الرابط."
 description = "user does not have sufficient scopes to modify the resource"
 other = "يجب أن يمتلك المستخدم احد هذه الصلاحيات: [ {{ .Allowed }} ] الصلاحيات الحالية: [ {{ .CtxScopes }} ]"
 
+[OTPSentSuccessfully]
+description = "OTP sent successfully"
+other = "تم ارسال رسالة تحقق بنجاح"
+
 [OutOfScopeError]
 description = "an error that is out of scope of api usage"
 other = "خطأ خارج نطاق التطبيق."

@@ -53,11 +53,10 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 	input := &otp.Input{
 		Phone: *result.Phone,
 	}
+	var response otp.Response
 	if !exists && result.Phone != nil {
-		response, err := otp.Request(settings, input)
-		if err != nil {
-			// return c.APIErr.BadRequest(ctx, err)
-			return ctx.JSON(response.Status, response)
+		if err := otp.Request(&response, settings, input); err != nil {
+			return c.APIErr.BadRequest(ctx, err)
 		}
 		result.MergeOTPCreate(v, &response.Pin, &expires)
 		if err := c.Models.User.CreateOne(&result, tx); err != nil {
@@ -74,21 +73,25 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 				"otp still active, try submitting again in %.2f seconds",
 				result.PinExpiry.Sub(time.Now().UTC()).Seconds(),
 			)
-			responseMap := map[string]any{
+
+			res := map[string]any{
 				"status":  "succuess",
 				"exists":  exists,
 				"message": message,
 			}
 			if settings.Env != "production" {
-				responseMap["pin"] = result.Pin
+				res["pin"] = result.Pin
 			}
-			return ctx.JSON(http.StatusOK, responseMap)
+			return ctx.JSON(http.StatusOK, res)
 		}
 	}
 
-	response, err := otp.Request(settings, input)
-	if err != nil {
-		return ctx.JSON(response.Status, response)
+	// var response otp.Response
+
+	if exists {
+		if err := otp.Request(&response, settings, input); err != nil {
+			return c.APIErr.BadRequest(ctx, err)
+		}
 	}
 	result.Pin = &response.Pin
 	result.PinExpiry = &expires
@@ -99,10 +102,16 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 		return c.APIErr.InternalServer(ctx, err)
 	}
 
-	return ctx.JSON(
-		response.Status,
-		response,
-	)
+	if settings.Env != "production" {
+		return ctx.JSON(response.Status, response)
+	}
+
+	res := map[string]any{
+		"status":  "succuess",
+		"exists":  exists,
+		"message": v.T.OTPSentSuccessfully(),
+	}
+	return ctx.JSON(response.Status, res)
 }
 
 func (c *ControllerOTP) Login(ctx echo.Context) error {
@@ -111,7 +120,6 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
-
 	var pin string
 	result.MergePhone(v)
 
@@ -128,10 +136,8 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 		}
 		return c.APIErr.Database(ctx, err, &result)
 	}
-
-	settings, err := c.Models.Setting.GetForOTP()
-	if err != nil {
-		return c.APIErr.Database(ctx, err, &result)
+	if result.IsDisabled {
+		return c.APIErr.DisabledModel(ctx, result.ModelName())
 	}
 
 	if result.PinExpiry != nil {
@@ -140,17 +146,14 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 				"otp expired %.2f seconds ago, please request another code",
 				result.PinExpiry.Sub(time.Now().UTC()).Abs().Seconds(),
 			)
-			responseMap := map[string]any{
+
+			return ctx.JSON(http.StatusOK, map[string]any{
 				"status":  "error",
 				"message": message,
-			}
-			if settings.Env != "production" {
-				responseMap["pin"] = result.Pin
-			}
-			return ctx.JSON(http.StatusOK, responseMap)
+			})
 		}
 	}
-	if err := c.Models.User.Verify(&result.ID, c.Models.DB); err != nil {
+	if err := c.Models.User.Verify(&result.ID); err != nil {
 		c.APIErr.LoggedOnly(ctx, err)
 	}
 	tokenResponse, err := result.GenTokenResponse()

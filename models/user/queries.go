@@ -297,8 +297,8 @@ func (m *Queries) ClearOne(userID *uuid.UUID, conn finder.Connection) error {
 	return nil
 }
 
-func (m *Queries) Verify(userID *uuid.UUID, conn finder.Connection) error {
-	if _, err := conn.ExecContext(
+func (m *Queries) Verify(userID *uuid.UUID) error {
+	if _, err := m.DB.ExecContext(
 		context.Background(),
 		`
            UPDATE users

@@ -3,6 +3,8 @@ package otp
 import "github.com/google/uuid"
 
 const (
+	Bearer = "Bearer "
+
 	KeySadeemOTPURL = "sadeem_otp_url"
 	KeySadeemOTPKey = "sadeem_otp_key"
 	KeySadeemOTPJWT = "sadeem_otp_jwt"
