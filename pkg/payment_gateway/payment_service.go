@@ -6,14 +6,31 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	"github.com/goccy/go-json"
+	"github.com/labstack/echo/v4"
 )
 
 func PaymentService(
 	settings *Settings,
+	ctx echo.Context,
 ) (*PaymentServicesResponse, error) {
-	endpoint := settings.Endpoint + "/payment-services"
+	query := url.Values{}
+
+	if q := ctx.QueryParam("q"); q != "" {
+		query.Set("q", q)
+	}
+	if filters := ctx.QueryParam("filters"); filters != "" {
+		query.Set("filters", filters)
+	}
+	if sorts := ctx.QueryParam("sorts"); sorts != "" {
+		query.Set("sorts", sorts)
+	}
+
+	query.Add("all", "")
+
+	endpoint := settings.Endpoint + "/payment-services?" + query.Encode()
 	req, err := http.NewRequestWithContext(
 		context.Background(),
 		http.MethodGet,
