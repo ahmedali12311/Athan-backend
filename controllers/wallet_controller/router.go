@@ -10,11 +10,14 @@ func (m *Controllers) SetBasicRoutes(
 ) {
 	// TLync auto-confirm route triggered by tlync backend-url callback
 	d.E.POST(
-		"/wallet-transactions/auto-confirm",
+		"/wallets/auto-confirm",
 		m.Basic.TylncAutoConfirm,
-	).Name = "wallet-transactions:auto-confirm:public"
+	).Name = "wallets:auto-confirm:public"
 
 	f := d.E.Group("/wallets")
+
+	f.GET("/payment-services", m.Basic.PaymentService).Name = "wallets:payment-services:public"
+
 	r := d.Requires(
 		wallet.ScopeCustomer,
 		wallet.ScopeAdmin,
