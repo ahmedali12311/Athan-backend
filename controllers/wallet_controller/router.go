@@ -33,17 +33,17 @@ func (m *Controllers) SetBasicRoutes(
 	f.DELETE("/:id", m.Basic.Destroy, r1).Name = "wallets:destroy:admin"
 	f.POST("", m.Basic.Store, r1).Name = "wallets:store:customer,admin"
 
-	tylnc := d.E.Group("/tlync")
+	tylnc := f.Group("/tlync")
 
 	tylnc.POST("/initiate", m.Basic.TylncInitiate, r).Name = "wallets:tylnc-initiate:customer,admin"
 	tylnc.POST("/:id/confirm", m.Basic.TylncConfirm, r).Name = "wallets:tylnc-confirm:customer,admin"
 
-	masarat := d.E.Group("/masarat")
+	masarat := f.Group("/masarat")
 
 	masarat.POST("/initiate", m.Basic.MasaratInitiate, r).Name = "wallets:masarat-initiate:admin,customer"
 	masarat.POST("/confirm", m.Basic.MasaratConfirm, r).Name = "wallets:masarat-confirm:admin,customer"
 
-	edfali := d.E.Group("/edfali")
+	edfali := f.Group("/edfali")
 	edfali.POST("/initiate", m.Basic.EdfaliInitiate, r).Name = "wallets:edfali-initiate:admin,customer"
 	edfali.POST("/confirm", m.Basic.EdfaliConfirm, r).Name = "wallets:edfali-confirm:admin,customer"
 
