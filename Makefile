@@ -134,3 +134,14 @@ build:
 # build with tags
 build/local:
 	go build -tags local -o main . 
+
+air:
+	docker run -it --rm \
+		--network ${NETWORK} \
+		-w "/${APP_CODE}" \
+		-e "air_wd=/${APP_CODE}" \
+		-v ${ROOT_DIR}:/${APP_CODE} \
+		-v ~/go/pkg/mod:/go/pkg/mod \
+		-p ${PORT}:${PORT} \
+		cosmtrek/air
+		-c ./.air.toml
