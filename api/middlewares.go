@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 	"net/http"
-	"regexp"
 	"strings"
 	"time"
 
@@ -19,22 +18,24 @@ import (
 )
 
 // Function to sanitize request body (exclude sensitive information)
-func sanitizeRequestBody(body []byte) string {
-	// Convert byte slice to string for easier manipulation
-	bodyStr := string(body)
-
-	// Define patterns for sanitization
-	passwordPatterns := `(?m)"password":\s*".*?"`
-	tokenPattern := `"value":".*?"`
-
-	// Sanitize password
-	bodyStr = regexp.MustCompile(passwordPatterns).ReplaceAllString(bodyStr, `name="password"$1\r\n\r\n****\r\n`)
-
-	// Sanitize token value
-	sanitizedBody := regexp.MustCompile(tokenPattern).ReplaceAllString(bodyStr, `"value": "***"`)
-
-	return sanitizedBody
-}
+// func sanitizeRequestBody(body []byte) string {
+// 	// Convert byte slice to string for easier manipulation
+// 	bodyStr := string(body)
+//
+// 	// Define patterns for sanitization
+// 	passwordPatterns := `(?m)"password":\s*".*?"`
+// 	tokenPattern := `"value":".*?"`
+//
+// 	// Sanitize password
+// 	bodyStr = regexp.MustCompile(passwordPatterns).
+// 		ReplaceAllString(bodyStr, `name="password"$1\r\n\r\n****\r\n`)
+//
+// 	// Sanitize token value
+// 	sanitizedBody := regexp.MustCompile(tokenPattern).
+// 		ReplaceAllString(bodyStr, `"value": "***"`)
+//
+// 	return sanitizedBody
+// }
 
 func (app *Application) SetupMiddlewares(e *echo.Echo, isTest bool) {
 	// e.Mount("/debug", middleware.Profiler())
@@ -106,8 +107,11 @@ func (app *Application) SetupMiddlewares(e *echo.Echo, isTest bool) {
 			Str("URI", ctx.Path()).
 			Str("authorized_id", authorizedID).
 			Int("status", ctx.Response().Status).
-			Str("request", sanitizeRequestBody(reqBody)).
-			RawJSON("response", []byte(sanitizeRequestBody(resBody))).
+
+			// FIX: better logging and chagne detection
+			// Str("request", sanitizeRequestBody(reqBody)).
+			// RawJSON("response", []byte(sanitizeRequestBody(resBody))).
+
 			Msg("request")
 	}))
 
