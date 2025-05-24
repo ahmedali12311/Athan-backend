@@ -3,7 +3,6 @@ package apierrors
 import (
 	"encoding/json"
 	"errors"
-	"io"
 	"net/http"
 
 	"app/models/user"
@@ -119,7 +118,8 @@ func (e *APIErrors) logError(ctx echo.Context, err error) {
 	if authUser != nil {
 		authorizedID = authUser.ID.String()
 	}
-	body, _ := io.ReadAll(ctx.Request().Body)
+	// FIX: body logger
+	// body, _ := io.ReadAll(ctx.Request().Body)
 	e.Logger.Error().
 		Stack().
 		Err(err).
@@ -128,7 +128,7 @@ func (e *APIErrors) logError(ctx echo.Context, err error) {
 		Str("Host", ctx.Request().Host).
 		Str("URI", ctx.Request().RequestURI).
 		Str("authorized_id", authorizedID).
-		Str("request", string(body)).
+		// Str("request", string(body)).
 		// Str("trace", string(debug.Stack())).
 		Msg("internal server error")
 }

@@ -31,7 +31,7 @@ air:
 		-v ${ROOT_DIR}:/${APP_CODE} \
 		-v ~/go/pkg/mod:/go/pkg/mod \
 		-p ${PORT}:${PORT} \
-		cosmtrek/air
+		cosmtrek/air \
 		-c ./.air.toml
 
 
