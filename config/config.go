@@ -7,7 +7,6 @@ import (
 	"path"
 	"runtime/debug"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -58,7 +57,6 @@ var (
 	AppName              = os.Getenv("APP_NAME")
 	JwtExpiry            = getJWTExpiryHours()
 	GoogleServiceAccount = getServiceAccountPath()
-	AllowedOrigins       = getAllowedOrigins()
 	OTP_URL              = os.Getenv("OTP_URL")
 	OTP_JWT              = os.Getenv("OTP_JWT")
 	OTP_KEY              = os.Getenv("OTP_KEY")
@@ -94,15 +92,20 @@ func GetSettings() *Settings {
 		RootPath:       GetRootPath(""),
 		UploadsPath:    GetUploadsPath(""),
 		JwtExpiry:      getJWTExpiryHours(),
-		AllowedOrigins: getAllowedOrigins(),
+		AllowedOrigins: getAllowedOrigins(ENV),
 	}
 }
 
-func getAllowedOrigins() []string {
-	return strings.Split(
-		os.Getenv("ALLOWED_ORIGINS"),
-		";",
-	)
+func getAllowedOrigins(env string) []string {
+	origins := []string{
+		"http://localhost",
+	}
+	if env == "production" {
+		origins = []string{
+			"https://production-url.com",
+		}
+	}
+	return origins
 }
 
 func GetPrivatePath(dir string) string {

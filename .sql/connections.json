@@ -1,0 +1,1 @@
+[{"url": "postgres://postgres:1@localhost:5432/template_v1?sslmode=disable", "name": "template_v1"}]

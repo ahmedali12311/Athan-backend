@@ -25,14 +25,14 @@ type Models struct {
 	QB *squirrel.StatementBuilderType
 
 	Category         *category.Queries
+	FcmNotification  *fcm_notification.Queries
 	Permission       *permission.Queries
 	Role             *role.Queries
 	Setting          *setting.Queries
 	Token            *token.Queries
 	User             *user.Queries
-	Wallet           *wallet.Queries
-	FcmNotification  *fcm_notification.Queries
 	UserNotification *user_notification.Queries
+	Wallet           *wallet.Queries
 }
 
 func Setup(
@@ -60,44 +60,34 @@ func Setup(
 		DB: db,
 		QB: &qb,
 
-		Category: category.New(d),
-
-		Permission: permission.New(d),
-
-		Role:    role.New(d),
-		Setting: setting.New(d),
-		Token:   token.New(d),
-
-		User:             user.New(d),
-		Wallet:           wallet.New(d),
+		Category:         category.New(d),
 		FcmNotification:  fcm_notification.New(d),
+		Permission:       permission.New(d),
+		Role:             role.New(d),
+		Setting:          setting.New(d),
+		Token:            token.New(d),
+		User:             user.New(d),
 		UserNotification: user_notification.New(d),
+		Wallet:           wallet.New(d),
 	}
 }
 
-// Transaction
-func (m *Models) Transaction(fn func(tx *sqlx.Tx) (finder.Model, error)) (finder.Model, error) {
+func (m *Models) Transaction(
+	fn func(tx *sqlx.Tx) (finder.Model, error),
+) (finder.Model, error) {
 	// TODO: log the operation of database transactions
 	tx, err := m.DB.Beginx()
 	if err != nil {
 		return nil, err
 	}
-	defer func() {
-		// inner function panic
-		if ex := recover(); ex != nil {
-			_ = tx.Rollback()
-			panic(ex)
-		}
-	}()
+	defer tx.Rollback()
 
-	model, err := fn(tx)
-
+	md, err := fn(tx)
 	if err != nil {
-		// TODO: should we panic here? or just return error!
-		// of database transaction
-		_ = tx.Rollback()
-	} else {
-		_ = tx.Commit()
+		return nil, err
 	}
-	return model, err
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+	return md, err
 }
