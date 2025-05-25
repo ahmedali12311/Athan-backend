@@ -8,7 +8,6 @@ import (
 
 	"app/controller"
 	"app/models/user"
-	"app/pkg/gis"
 
 	"github.com/labstack/echo/v4"
 )
@@ -16,16 +15,6 @@ import (
 type ControllerBasic struct {
 	*controller.Dependencies
 }
-
-// Scopes ---------------------------------------------------------------------
-
-// func (c *ControllerBasic) userScope(ctx echo.Context) *uuid.UUID {
-// 	scopes := c.Utils.CtxScopes(ctx)
-// 	if slices.Contains(scopes, "admin") {
-// 		return nil
-// 	}
-// 	return &c.Utils.CtxUser(ctx).ID
-// }
 
 // Actions --------------------------------------------------------------------
 
@@ -50,7 +39,7 @@ func (c *ControllerBasic) Show(ctx echo.Context) error {
 
 func (c *ControllerBasic) Store(ctx echo.Context) error {
 	result := user.Model{
-		Location:  gis.EmptyPoint,
+		Location:  nil,
 		CreatedAt: time.Time{},
 	}
 	v, err := c.GetValidator(ctx, result.ModelName())

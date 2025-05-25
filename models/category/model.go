@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/pgtypes"
 	"app/pkg/validator"
+	"github.com/m-row/pgtypes"
 
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
@@ -116,10 +116,10 @@ func (m *Model) SetThumb(name *string) {
 
 func (m *Model) InterfaceSortFields() (*int, map[string]any) {
 	fields := map[string]any{
-		"parent_id": m.Parent.ID,
-		"depth":     m.Depth,
+		"depth": m.Depth,
 	}
-	if m.Parent.ID != nil { // TODO: check if this is required
+	// TODO: check if this is required
+	if m.Parent.ID != nil {
 		fields["parent_id"] = m.Parent.ID
 	}
 	return &m.Sort, fields

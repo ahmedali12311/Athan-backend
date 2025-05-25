@@ -6,11 +6,10 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/pgtypes"
-
-	"github.com/m-row/finder"
 
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
+	"github.com/m-row/pgtypes"
 )
 
 const (

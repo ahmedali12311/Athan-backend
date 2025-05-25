@@ -8,13 +8,11 @@ import (
 
 	"app/config"
 	"app/model"
-
-	"app/pkg/gis"
 	"app/pkg/validator"
 
-	"github.com/m-row/finder"
-
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
+	"github.com/m-row/pgtypes"
 )
 
 const (
@@ -25,26 +23,26 @@ const (
 )
 
 type Model struct {
-	ID           uuid.UUID    `db:"id"            json:"id"`
-	Ref          string       `db:"ref"           json:"ref"`
-	Name         *string      `db:"name"          json:"name"`
-	Phone        *string      `db:"phone"         json:"phone"`
-	Email        *string      `db:"email"         json:"email"`
-	Password     password     `db:"-"             json:"-"`
-	PasswordHash *[]byte      `db:"password_hash" json:"-"`
-	Img          *string      `db:"img"           json:"img"`
-	Thumb        *string      `db:"thumb"         json:"thumb"`
-	Gender       *GenderValue `db:"gender"        json:"gender"`
-	Details      *string      `db:"details"       json:"details"`
-	Birthdate    *string      `db:"birthdate"     json:"birthdate"`
-	Location     gis.Point    `db:"location"      json:"location"`
-	IsAnon       bool         `db:"is_anon"       json:"is_anon"`
-	IsNotifiable bool         `db:"is_notifiable" json:"is_notifiable"`
-	IsDisabled   bool         `db:"is_disabled"   json:"is_disabled"`
-	IsConfirmed  bool         `db:"is_confirmed"  json:"is_confirmed"`
-	IsDeleted    bool         `db:"is_deleted"    json:"is_deleted"`
-	IsVerified   bool         `db:"is_verified"   json:"is_verified"`
-	LastRef      int          `db:"last_ref"      json:"last_ref"`
+	ID           uuid.UUID      `db:"id"            json:"id"`
+	Ref          string         `db:"ref"           json:"ref"`
+	Name         *string        `db:"name"          json:"name"`
+	Phone        *string        `db:"phone"         json:"phone"`
+	Email        *string        `db:"email"         json:"email"`
+	Password     password       `db:"-"             json:"-"`
+	PasswordHash *[]byte        `db:"password_hash" json:"-"`
+	Img          *string        `db:"img"           json:"img"`
+	Thumb        *string        `db:"thumb"         json:"thumb"`
+	Gender       *GenderValue   `db:"gender"        json:"gender"`
+	Details      *string        `db:"details"       json:"details"`
+	Birthdate    *string        `db:"birthdate"     json:"birthdate"`
+	Location     *pgtypes.Point `db:"location"      json:"location"`
+	IsAnon       bool           `db:"is_anon"       json:"is_anon"`
+	IsNotifiable bool           `db:"is_notifiable" json:"is_notifiable"`
+	IsDisabled   bool           `db:"is_disabled"   json:"is_disabled"`
+	IsConfirmed  bool           `db:"is_confirmed"  json:"is_confirmed"`
+	IsDeleted    bool           `db:"is_deleted"    json:"is_deleted"`
+	IsVerified   bool           `db:"is_verified"   json:"is_verified"`
+	LastRef      int            `db:"last_ref"      json:"last_ref"`
 
 	Pin       *string    `db:"pin"        json:"-"`
 	PinExpiry *time.Time `db:"pin_expiry" json:"-"`
@@ -70,12 +68,12 @@ type UserRole struct {
 }
 
 type MinimalModelLessonComment struct {
-	ID    *uuid.UUID `db:"id"          json:"id"`
-	Name  *string    `db:"name"        json:"name"`
-	Phone *string    `db:"phone"       json:"phone"`
-	Email *string    `db:"email"       json:"email"`
-	Img   *string    `db:"img"         json:"img"`
-	Thumb *string    `db:"thumb"       json:"thumb"`
+	ID    *uuid.UUID `db:"id"    json:"id"`
+	Name  *string    `db:"name"  json:"name"`
+	Phone *string    `db:"phone" json:"phone"`
+	Email *string    `db:"email" json:"email"`
+	Img   *string    `db:"img"   json:"img"`
+	Thumb *string    `db:"thumb" json:"thumb"`
 }
 
 // Model ----------------------------------------------------------------------
@@ -228,6 +226,6 @@ func (m *Model) MergeOTPCreate(
 	m.Gender = &g
 	m.Birthdate = &bd
 	m.IsVerified = false
-	m.Location = gis.EmptyPoint
+	m.Location = nil // TODO: test this
 	// TODO: add lowest common public,own scopes
 }

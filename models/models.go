@@ -17,7 +17,6 @@ import (
 	"github.com/Masterminds/squirrel"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/m-row/finder"
 )
 
 type Models struct {
@@ -70,24 +69,4 @@ func Setup(
 		UserNotification: user_notification.New(d),
 		Wallet:           wallet.New(d),
 	}
-}
-
-func (m *Models) Transaction(
-	fn func(tx *sqlx.Tx) (finder.Model, error),
-) (finder.Model, error) {
-	// TODO: log the operation of database transactions
-	tx, err := m.DB.Beginx()
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	md, err := fn(tx)
-	if err != nil {
-		return nil, err
-	}
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-	return md, err
 }

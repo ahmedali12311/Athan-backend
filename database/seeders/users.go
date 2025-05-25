@@ -2,6 +2,7 @@ package seeders
 
 import (
 	"context"
+	"log"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
@@ -9,7 +10,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Users ===================================================
 type User struct {
 	ID           uuid.UUID
 	Ref          string
@@ -22,11 +22,17 @@ type User struct {
 }
 
 func (c *User) GeneratePasswordHash() []byte {
-	hash, _ := bcrypt.GenerateFromPassword([]byte(c.Password), 12)
+	hash, err := bcrypt.GenerateFromPassword([]byte(c.Password), 12)
+	if err != nil {
+		log.Panicf(
+			"error executing GeneratePasswordHash: %s",
+			err.Error(),
+		)
+	}
 	return hash
 }
 
-func Users(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
+func Users(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
 		"id",
 		"ref",
@@ -36,40 +42,42 @@ func Users(db *sqlx.DB, qb *squirrel.StatementBuilderType) error {
 		"password_hash",
 	}
 
-	for _, v := range users {
+	for i := range users {
 		values := []any{
-			v.ID,
-			v.Ref,
-			v.Name,
-			v.Phone,
-			v.Email,
-			v.GeneratePasswordHash(),
+			users[i].ID,
+			users[i].Ref,
+			users[i].Name,
+			users[i].Phone,
+			users[i].Email,
+			users[i].GeneratePasswordHash(),
 		}
 		genericSeeder(db, qb, "users", cols, values)
 
 		query := `
-        INSERT INTO user_roles (
-            user_id,
-            role_id
-        ) 
-        VALUES (
-            $1,
-            $2
-        ) 
-        ON CONFLICT (user_id, role_id) 
-        DO NOTHING;
-    `
+            INSERT INTO user_roles (
+                user_id,
+                role_id
+            ) 
+            VALUES (
+                $1,
+                $2
+            ) 
+            ON CONFLICT (user_id, role_id) 
+            DO NOTHING;
+        `
 		if _, err := db.ExecContext(context.Background(),
 			query,
-			v.ID,
-			v.Role,
+			users[i].ID,
+			users[i].Role,
 		); err != nil {
-			return err
+			log.Panicf(
+				"error executing sql for user_roles insert: %s",
+				err.Error(),
+			)
 		}
 	}
 
 	RunningSeedTable.Append(len(users), "users")
-	return nil
 }
 
 var users = []User{

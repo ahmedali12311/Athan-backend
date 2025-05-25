@@ -52,7 +52,7 @@ func (app *Application) SetupMiddlewares(e *echo.Echo, isTest bool) {
 		LogLevel:          log.ERROR,
 		LogErrorFunc: func(c echo.Context, err error, stack []byte) error {
 			c.Logger().Errorf("[PANIC RECOVER] %v", err)
-			fmt.Println(string(stack)) //nolint: forbidigo //dw
+			fmt.Println(string(stack))
 			return app.APIErrors.InternalServer(c, err)
 		},
 	}))

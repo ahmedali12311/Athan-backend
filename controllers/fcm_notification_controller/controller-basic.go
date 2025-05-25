@@ -68,7 +68,7 @@ func (c *ControllerBasic) Store(ctx echo.Context) error {
 	if err := c.Models.FcmNotification.CreateOne(&result); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
-	var userNotification = user_notification.Model{
+	userNotification := user_notification.Model{
 		UserID:     nil,
 		IsRead:     true,
 		IsNotified: true,
@@ -100,7 +100,11 @@ func (c *ControllerBasic) Update(ctx echo.Context) error {
 		return c.APIErr.InputValidation(ctx, v)
 	}
 
-	if err := c.Models.FcmNotification.UpdateOne(&result, nil, nil); err != nil {
+	if err := c.Models.FcmNotification.UpdateOne(
+		&result,
+		nil,
+		nil,
+	); err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
 			return c.APIErr.Database(
@@ -123,7 +127,11 @@ func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 	if err := c.Models.FcmNotification.GetOne(&result, nil); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
-	if err := c.Models.FcmNotification.DeleteOne(&result, nil, nil); err != nil {
+	if err := c.Models.FcmNotification.DeleteOne(
+		&result,
+		nil,
+		nil,
+	); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 	return ctx.JSON(http.StatusOK, result)
@@ -183,7 +191,7 @@ func (c *ControllerBasic) NotifyUser(ctx echo.Context) error {
 		)
 	}
 
-	var userNotification = user_notification.Model{
+	userNotification := user_notification.Model{
 		User: user.MinimalModel{
 			ID: userID,
 		},

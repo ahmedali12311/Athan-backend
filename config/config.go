@@ -26,7 +26,6 @@ type Settings struct {
 	RootPath             string
 	UploadsPath          string
 	MigrationsRoot       string
-	SeedersRoot          string
 	AppCode              string
 	AppDesc              string
 	AppName              string
@@ -85,7 +84,6 @@ func GetSettings() *Settings {
 		Timezone:  Timezone,
 
 		MigrationsRoot:       MigrationsRoot,
-		SeedersRoot:          SeedersRoot,
 		GoogleServiceAccount: GoogleServiceAccount,
 
 		CommitInfo:     getCommitInfo(),

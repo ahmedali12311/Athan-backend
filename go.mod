@@ -1,6 +1,6 @@
 module app
 
-go 1.22.2
+go 1.23.4
 
 require (
 	firebase.google.com/go/v4 v4.15.0
@@ -71,6 +71,7 @@ require (
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
+	github.com/m-row/pgtypes v0.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect

@@ -6,12 +6,10 @@ import (
 
 	"app/model"
 	"app/models/user"
-	"app/pkg/pgtypes"
 	"app/pkg/validator"
-
-	"github.com/m-row/finder"
-
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
+	"github.com/m-row/pgtypes"
 )
 
 const (
@@ -35,7 +33,7 @@ type Model struct {
 	IsSent    bool             `db:"is_sent"    json:"is_sent"`
 	SendAt    *time.Time       `db:"send_at"    json:"send_at"`
 	Response  *string          `db:"response"   json:"response"`
-	Data      pgtypes.JSONBSTR `db:"data"       json:"data"`
+	Data      pgtypes.JSONBStr `db:"data"       json:"data"`
 	SenderID  *uuid.UUID       `db:"sender_id"  json:"-"`
 	CreatedAt time.Time        `db:"created_at" json:"created_at"`
 	UpdatedAt time.Time        `db:"updated_at" json:"updated_at"`

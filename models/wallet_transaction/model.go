@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/pgtypes"
 	"app/pkg/validator"
+	"github.com/m-row/pgtypes"
 
 	"github.com/m-row/finder"
 
@@ -124,7 +124,6 @@ func (m *Model) MergeTransfer(v *validator.Validator) bool {
 		}
 	} else {
 		m.MergePhone(v)
-
 	}
 
 	return v.Valid()

@@ -1,15 +1,15 @@
 package user_notification
 
 import (
-	"app/model"
-	"app/models/user"
-	"app/pkg/pgtypes"
 	"net/url"
 	"time"
 
-	"github.com/m-row/finder"
+	"app/model"
+	"app/models/user"
 
 	"github.com/google/uuid"
+	"github.com/m-row/finder"
+	"github.com/m-row/pgtypes"
 )
 
 const (
@@ -25,7 +25,7 @@ type Model struct {
 	Title      string            `db:"title"       json:"title"`
 	Body       string            `db:"body"        json:"body"`
 	Response   *string           `db:"response"    json:"response"`
-	Data       pgtypes.JSONBSTR  `db:"data"        json:"data"`
+	Data       pgtypes.JSONBStr  `db:"data"        json:"data"`
 	CreatedAt  time.Time         `db:"created_at"  json:"created_at"`
 	UpdatedAt  time.Time         `db:"updated_at"  json:"updated_at"`
 	User       user.MinimalModel `db:"user"        json:"user"`

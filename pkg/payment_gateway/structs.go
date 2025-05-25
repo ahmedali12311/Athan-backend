@@ -3,9 +3,8 @@ package payment_gateway
 import (
 	"time"
 
-	"app/pkg/pgtypes"
-
 	"github.com/google/uuid"
+	"github.com/m-row/pgtypes"
 )
 
 const (
