@@ -5,10 +5,9 @@ import (
 	"net/url"
 	"time"
 
-	"app/model"
-
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
+	"github.com/m-row/model"
 	"github.com/m-row/pgtypes"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"app/model"
+	"github.com/m-row/model"
 	"github.com/m-row/validator"
 
 	"github.com/google/uuid"

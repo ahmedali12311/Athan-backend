@@ -2,33 +2,19 @@ package category
 
 import (
 	"context"
+	_ "embed"
 	"net/url"
 	"time"
 
-	"app/model"
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
+	"github.com/m-row/model"
 	"github.com/m-row/pgtypes"
 	"github.com/m-row/validator"
 )
 
-const (
-	ScopeAdmin  = "admin"
-	ScopePublic = "public"
-
-	CitySuperParent        = "3fa90f8c-6da5-470f-bcfc-548ce145f250"
-	SubcriptionSuperParent = "69d94f3f-b88b-452e-888f-c15d9f704d86"
-)
-
-var SuperParentsMap = map[string]string{
-	"city":        CitySuperParent,
-	"subcription": SubcriptionSuperParent,
-}
-
-var CoreCategories = []string{
-	CitySuperParent,
-	SubcriptionSuperParent,
-}
+//go:embed schema.json
+var Schema []byte
 
 type Model struct {
 	ID            uuid.UUID  `db:"id"              json:"id"`

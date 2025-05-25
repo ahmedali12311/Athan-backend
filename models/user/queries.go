@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"app/config"
-	"app/model"
+	"github.com/m-row/model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"

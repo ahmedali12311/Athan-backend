@@ -7,6 +7,7 @@ import (
 	"path"
 	"runtime/debug"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -46,7 +47,6 @@ var (
 	Timezone             = os.Getenv("TIMEZONE")
 	RootDIR              = os.Getenv("ROOT_DIR")
 	MigrationsRoot       = os.Getenv("MIGRATIONS_ROOT")
-	SeedersRoot          = os.Getenv("SEEDERS_ROOT")
 	ENV                  = os.Getenv("ENV")
 	DSN                  = os.Getenv("CONNECTION_STRING")
 	CryptoKey            = []byte(os.Getenv("CRYPTO_KEY"))
@@ -56,13 +56,9 @@ var (
 	AppName              = os.Getenv("APP_NAME")
 	JwtExpiry            = getJWTExpiryHours()
 	GoogleServiceAccount = getServiceAccountPath()
-	OTP_URL              = os.Getenv("OTP_URL")
-	OTP_JWT              = os.Getenv("OTP_JWT")
-	OTP_KEY              = os.Getenv("OTP_KEY")
-	OTP_ENV              = os.Getenv("OTP_ENV")
 
 	// CRC32Poly this polynomial ensures the checksum reproduces the same
-	// hashes as orion v1 and v2
+	// hashes as legacy projects
 	CRC32Poly = uint32(0xEDB88320)
 )
 
@@ -90,20 +86,15 @@ func GetSettings() *Settings {
 		RootPath:       GetRootPath(""),
 		UploadsPath:    GetUploadsPath(""),
 		JwtExpiry:      getJWTExpiryHours(),
-		AllowedOrigins: getAllowedOrigins(ENV),
+		AllowedOrigins: getAllowedOrigins(),
 	}
 }
 
-func getAllowedOrigins(env string) []string {
-	origins := []string{
-		"http://localhost",
-	}
-	if env == "production" {
-		origins = []string{
-			"https://production-url.com",
-		}
-	}
-	return origins
+func getAllowedOrigins() []string {
+	return strings.Split(
+		os.Getenv("ALLOWED_ORIGINS"),
+		";",
+	)
 }
 
 func GetPrivatePath(dir string) string {

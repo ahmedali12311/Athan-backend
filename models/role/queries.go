@@ -1,11 +1,9 @@
 package role
 
 import (
-	"app/model"
-
-	"github.com/m-row/finder"
-
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/finder"
+	"github.com/m-row/model"
 )
 
 var (

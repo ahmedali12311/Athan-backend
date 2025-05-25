@@ -1,10 +1,11 @@
+//nolint:lll
 package wallet
 
 import (
 	"context"
 
-	"app/model"
 	"app/models/wallet_transaction"
+	"github.com/m-row/model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"

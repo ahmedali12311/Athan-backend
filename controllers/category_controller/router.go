@@ -2,7 +2,6 @@ package category_controller
 
 import (
 	"app/controller"
-	"app/models/category"
 )
 
 func (m *Controllers) SetRoutes(
@@ -13,7 +12,7 @@ func (m *Controllers) SetRoutes(
 	f.GET("", m.Index).Name = "categories:index:public,admin"
 	f.GET("/:id", m.Show).Name = "categories:show:public,admin"
 
-	r := d.Requires(category.ScopeAdmin)
+	r := d.Requires("admin")
 
 	f.POST("", m.Store, r).Name = "categories:store:admin"
 	f.PUT("/:id", m.Update, r).Name = "categories:update:admin"

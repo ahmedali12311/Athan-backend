@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"time"
 
-	"app/model"
 	"github.com/m-row/finder"
+	"github.com/m-row/model"
 	"github.com/m-row/validator"
 )
 

@@ -1,13 +1,10 @@
 package fcm_notification
 
 import (
-	"app/model"
-
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/m-row/finder"
-
-	"github.com/jmoiron/sqlx"
+	"github.com/m-row/model"
 )
 
 var (
@@ -65,7 +62,7 @@ type WhereScope struct {
 
 func (m *Queries) GetAll(
 	ctx echo.Context,
-	ws *WhereScope,
+	_ *WhereScope,
 ) (*finder.IndexResponse[*Model], error) {
 	c := &finder.ConfigIndex{
 		DB:      m.DB,
@@ -81,7 +78,7 @@ func (m *Queries) GetAll(
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)
 }
 
-func (m *Queries) GetOne(shown *Model, ws *WhereScope) error {
+func (m *Queries) GetOne(shown *Model, _ *WhereScope) error {
 	c := &finder.ConfigShow{
 		DB:      m.DB,
 		QB:      m.QB,
@@ -107,13 +104,17 @@ func (m *Queries) CreateOne(created *Model) error {
 	return finder.CreateOne(created, c)
 }
 
-func (m *Queries) UpdateOne(updated *Model, ws *WhereScope, tx *sqlx.Tx) error {
+func (m *Queries) UpdateOne(
+	updated *Model,
+	_ *WhereScope,
+	conn finder.Connection,
+) error {
 	input, err := buildInput(updated)
 	if err != nil {
 		return err
 	}
 	c := &finder.ConfigUpdate{
-		DB:      m.DB,
+		DB:      conn,
 		QB:      m.QB,
 		Input:   input,
 		Joins:   joins,
@@ -127,9 +128,13 @@ func (m *Queries) UpdateOne(updated *Model, ws *WhereScope, tx *sqlx.Tx) error {
 	return finder.UpdateOne(updated, c)
 }
 
-func (m *Queries) DeleteOne(deleted *Model, ws *WhereScope, tx *sqlx.Tx) error {
+func (m *Queries) DeleteOne(
+	deleted *Model,
+	_ *WhereScope,
+	conn finder.Connection,
+) error {
 	c := &finder.ConfigDelete{
-		DB:      m.DB,
+		DB:      conn,
 		QB:      m.QB,
 		Joins:   joins,
 		Selects: selects,

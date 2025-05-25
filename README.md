@@ -62,13 +62,6 @@ this project utilises docker to run `builds` and `migration`
     - translate the content of `translate.ar.toml` values
     - `translate.merge.done` merges translations to the `active.ar.toml` file
 
-### Seeding
-
-- `make seed` locally
-- `make live-seed` for server
-- `docker exec -it project-seeder go run ./seeders/...`
-- `make live-seed.down` to remove server seeding container
-
 ### Notes
 
 installing psql on mac without starting the service:
@@ -76,5 +69,3 @@ installing psql on mac without starting the service:
 1. `brew search postgres`
 2. `brew install postgresql`
 3. `echo 'export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"' >> ~/.zshrc`
-
-

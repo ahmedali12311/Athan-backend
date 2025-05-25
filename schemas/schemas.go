@@ -1,12 +1,14 @@
 package schemas
 
 import (
-	"app/config"
 	_ "embed"
 	"fmt"
 	"html/template"
 	"os"
 	"strings"
+
+	"app/config"
+	"app/models/category"
 
 	"github.com/rs/zerolog"
 	js "github.com/santhosh-tekuri/jsonschema/v5"
@@ -31,8 +33,6 @@ var (
 	pointNullSF []byte
 
 	// models
-	//go:embed category.json
-	categorySF []byte
 	//go:embed user.json
 	userSF []byte
 	//go:embed role.json
@@ -102,7 +102,7 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"properties/line_string.json": lineStringSF,
 	}
 	modelFiles := map[string][]byte{
-		"category.json":           categorySF,
+		"category.json":           category.Schema,
 		"permission.json":         permissionSF,
 		"role.json":               roleSF,
 		"setting.json":            settingSF,

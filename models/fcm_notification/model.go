@@ -4,10 +4,11 @@ import (
 	"net/url"
 	"time"
 
-	"app/model"
 	"app/models/user"
+
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
+	"github.com/m-row/model"
 	"github.com/m-row/pgtypes"
 	"github.com/m-row/validator"
 )

@@ -7,7 +7,6 @@ import (
 
 	"app/config"
 	"app/controller"
-	"app/models/category"
 	"app/models/setting"
 	"app/models/user"
 
@@ -70,8 +69,8 @@ func (c *Controllers) Index(ctx echo.Context) error {
 			},
 			"genders": user.AllGenders,
 		},
-		"settings":      settingsMap,
-		"super_parents": category.SuperParentsMap,
+		"settings": settingsMap,
+		// "super_parents": category.SuperParentsMap, // FIX: get value
 		"server_time": map[string]any{
 			"pg_now": nowDB,
 			"go_now": config.TimeNow(),

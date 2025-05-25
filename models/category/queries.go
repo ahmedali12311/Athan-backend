@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"app/config"
-	"app/model"
 	"app/pkg/sorter"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/labstack/echo/v4"
 	"github.com/m-row/finder"
+	"github.com/m-row/model"
 )
 
 var inserts = &[]string{
@@ -70,7 +70,6 @@ func selects(alias string) *[]string {
 type WhereScope struct {
 	IsPublic,
 	ShowArchived bool
-	SortBeforeUpdate int
 }
 
 func wheres(_ string, _ *WhereScope) *[]squirrel.Sqlizer {
@@ -226,20 +225,16 @@ func (m *Queries) DeleteOne(
 
 func (m *Queries) HasChildren(category *Model) (bool, error) {
 	count := 0
-	query, args, err := m.QB.
-		Select("COUNT(*)").
-		From("categories").
-		Where("parent_id = ?", category.ID).
-		ToSql()
-	if err != nil {
-		return false, err
-	}
 
 	if err := m.DB.GetContext(
 		context.Background(),
 		&count,
-		query,
-		args...,
+		`
+            SELECT COUNT(*) 
+              FROM categories
+             WHERE parent_id = $1
+        `,
+		category.ID,
 	); err != nil {
 		return count > 0, err
 	}

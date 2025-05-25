@@ -1,7 +1,7 @@
 package token
 
 import (
-	"app/model"
+	"github.com/m-row/model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"

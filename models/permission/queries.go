@@ -7,7 +7,7 @@ import (
 	"github.com/Masterminds/squirrel"
 	"github.com/labstack/echo/v4"
 
-	"app/model"
+	"github.com/m-row/model"
 
 	"github.com/m-row/finder"
 )

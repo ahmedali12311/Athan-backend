@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"time"
 
-	"app/model"
+	"github.com/m-row/model"
 	"github.com/m-row/pgtypes"
 	"github.com/m-row/validator"
 

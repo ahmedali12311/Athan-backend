@@ -1,16 +1,16 @@
 package user_notification
 
 import (
-	"app/model"
 	"context"
 	"errors"
-
-	"github.com/m-row/finder"
+	"net/http"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/finder"
+	"github.com/m-row/model"
 )
 
 var (
@@ -25,7 +25,6 @@ var (
 
 	joins = &[]string{
 		"users ON user_notifications.user_id = users.id",
-		"reservations r ON (user_notifications.data->>'reservation')::uuid = r.id",
 	}
 
 	inserts = &[]string{
@@ -53,7 +52,7 @@ func wheres(ws *WhereScope) *[]squirrel.Sqlizer {
 		squirrel.Eq{"user_notifications.data->>'business'": nil},
 	})
 
-	if ws.IsPublic && ws.Method == "GET" {
+	if ws.IsPublic && ws.Method == http.MethodGet {
 		if ws.UserID != nil {
 			*w = append(*w, squirrel.Or{
 				squirrel.Eq{"user_notifications.user_id": ws.UserID},
@@ -66,7 +65,7 @@ func wheres(ws *WhereScope) *[]squirrel.Sqlizer {
 		}
 	}
 
-	if ws.Method != "GET" {
+	if ws.Method != http.MethodGet {
 		*w = append(*w,
 			squirrel.Eq{"user_notifications.user_id": ws.UserID},
 		)
@@ -126,7 +125,6 @@ func (m *Queries) GetOne(
 	shown *Model,
 	ws *WhereScope,
 ) error {
-
 	c := &finder.ConfigShow{
 		DB:      m.DB,
 		QB:      m.QB,
@@ -182,7 +180,6 @@ func (m *Queries) Delete(
 	deleted *Model,
 	ws *WhereScope,
 ) error {
-
 	c := &finder.ConfigDelete{
 		DB:      m.DB,
 		QB:      m.QB,
@@ -205,18 +202,18 @@ func (m *Queries) BulkCreate(notifications []Model) error {
 			"response",
 			"data",
 		)
-	for _, notification := range notifications {
-		data, err := notification.Data.Value()
+	for i := range notifications {
+		data, err := notifications[i].Data.Value()
 		if err != nil {
 			return err
 		}
 		inserts = inserts.Values(
-			notification.User.ID,
-			notification.IsRead,
-			notification.IsNotified,
-			notification.Title,
-			notification.Body,
-			notification.Response,
+			notifications[i].User.ID,
+			notifications[i].IsRead,
+			notifications[i].IsNotified,
+			notifications[i].Title,
+			notifications[i].Body,
+			notifications[i].Response,
 			data,
 		)
 	}
@@ -224,7 +221,11 @@ func (m *Queries) BulkCreate(notifications []Model) error {
 	if err != nil {
 		return err
 	}
-	if _, err := m.DB.ExecContext(context.Background(), query, args...); err != nil {
+	if _, err := m.DB.ExecContext(
+		context.Background(),
+		query,
+		args...,
+	); err != nil {
 		return err
 	}
 	return nil
@@ -251,7 +252,12 @@ func (m *Queries) ToggleRead(toggled *Model, ws *WhereScope) error {
 	if err != nil {
 		return err
 	}
-	if err := m.DB.GetContext(context.Background(), toggled, query, args...); err != nil {
+	if err := m.DB.GetContext(
+		context.Background(),
+		toggled,
+		query,
+		args...,
+	); err != nil {
 		return err
 	}
 	return nil

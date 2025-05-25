@@ -3,7 +3,7 @@ package setting
 import (
 	"slices"
 
-	"app/model"
+	"github.com/m-row/model"
 
 	"github.com/labstack/echo/v4"
 	"github.com/m-row/finder"

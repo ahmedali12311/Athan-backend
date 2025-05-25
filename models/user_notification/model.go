@@ -4,8 +4,8 @@ import (
 	"net/url"
 	"time"
 
-	"app/model"
 	"app/models/user"
+	"github.com/m-row/model"
 
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
