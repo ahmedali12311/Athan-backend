@@ -323,7 +323,7 @@ prefer_quoted_identifiers = false
 prefer_quoted_keywords = false
 ignore_words = None
 ignore_words_regex = None
-force_enable = false
+# force_enable = false
 
 [sqlfluff:rules:layout.long_lines]
 # Line length
