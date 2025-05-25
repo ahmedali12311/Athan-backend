@@ -6,6 +6,7 @@ import (
 
 	"app/config"
 	"app/model"
+	"app/pkg/sorter"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
@@ -147,10 +148,18 @@ func (m *Queries) CreateOne(created *Model, conn finder.Connection) error {
 		Joins:      joins("c1"),
 		Selects:    selects("c1"),
 	}
+	if err := sorter.AdjustSort(
+		sorter.Create,
+		created,
+		conn,
+		m.QB,
+	); err != nil {
+		return err
+	}
 	if err := finder.CreateOne(created, c); err != nil {
 		return err
 	}
-	return m.fixAndSortOnInsert(created, conn)
+	return nil
 }
 
 func (m *Queries) UpdateOne(
@@ -176,30 +185,16 @@ func (m *Queries) UpdateOne(
 			Value: updated.UpdatedAt,
 		},
 	}
-	if err := finder.UpdateOne(updated, c); err != nil {
+	if err := sorter.AdjustSort(
+		sorter.Update,
+		updated,
+		conn,
+		m.QB,
+	); err != nil {
 		return err
 	}
-	if ws.SortBeforeUpdate < updated.Sort {
-		if err := m.changeSortInUpdate(
-			ws.SortBeforeUpdate+1,
-			updated.Sort+1,
-			updated.Parent.ID,
-			updated.Depth,
-			false,
-		); err != nil {
-			return err
-		}
-	}
-	if ws.SortBeforeUpdate > updated.Sort {
-		if err := m.changeSortInUpdate(
-			updated.Sort,
-			ws.SortBeforeUpdate,
-			updated.Parent.ID,
-			updated.Depth,
-			true,
-		); err != nil {
-			return err
-		}
+	if err := finder.UpdateOne(updated, c); err != nil {
+		return err
 	}
 	return nil
 }
@@ -217,22 +212,10 @@ func (m *Queries) DeleteOne(
 		Wheres:     wheres("c1", ws),
 		Selects:    selects("c1"),
 	}
-	if err := finder.DeleteOne(deleted, c); err != nil {
+	if err := sorter.AdjustSort(sorter.Delete, deleted, conn, m.QB); err != nil {
 		return err
 	}
-	if _, err := conn.ExecContext(
-		context.Background(),
-		`
-           UPDATE categories 
-              SET sort = sort - 1 
-            WHERE parent_id = $1 
-              AND depth = $2 
-              AND sort > $3
-        `,
-		deleted.Parent.ID,
-		deleted.Depth,
-		deleted.Sort,
-	); err != nil {
+	if err := finder.DeleteOne(deleted, c); err != nil {
 		return err
 	}
 	return nil

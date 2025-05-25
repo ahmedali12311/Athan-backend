@@ -39,10 +39,9 @@ air:
 # Translations
 # ============================================================================= 
 .PHONY: translate/extract translate translate/done
-translate/extract:
-	@goi18n extract --outdir .
 ## translate: extracts new messages and prepare for translations
 translate: translate/extract
+	@goi18n extract --outdir .
 	@goi18n merge --outdir . ./active.ar.toml ./active.en.toml
 ## translate/done: merges new translations into active.*.toml files
 translate/done:

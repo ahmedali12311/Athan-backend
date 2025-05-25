@@ -7,6 +7,8 @@ import (
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
+// TODO: better translation code with maps and const IDs
+
 func (t *Translations) InputValidation() string {
 	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
 		DefaultMessage: &i18n.Message{
@@ -127,7 +129,7 @@ func (t *Translations) ValidateMustBeInList(arg *[]string) string {
 			Description: "the element must belong to list items",
 			Other:       "must be one of values: {{ .List }}.",
 		},
-		TemplateData: map[string]interface{}{
+		TemplateData: map[string]any{
 			"List": listAsString,
 		},
 	})
@@ -150,7 +152,7 @@ func (t *Translations) ValidateMustHaveRole(roleName string) string {
 			Description: "user must have the selected role",
 			Other:       "user must have role: {{ .Role }}.",
 		},
-		TemplateData: map[string]interface{}{
+		TemplateData: map[string]any{
 			"Role": roleName,
 		},
 	})
@@ -261,7 +263,7 @@ func (t *Translations) UnsupportedLocation(name string) string {
 			Description: "unsupported location.",
 			Other:       "location point of {{.Model}} not supported.",
 		},
-		TemplateData: map[string]interface{}{
+		TemplateData: map[string]any{
 			"Model": t.ModelName(name),
 		},
 	})

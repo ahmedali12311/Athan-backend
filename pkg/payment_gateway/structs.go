@@ -1,8 +1,9 @@
 package payment_gateway
 
 import (
-	"app/pkg/pgtypes"
 	"time"
+
+	"app/pkg/pgtypes"
 
 	"github.com/google/uuid"
 )
@@ -20,21 +21,21 @@ type Response struct {
 	ID uuid.UUID `db:"id" json:"id"`
 
 	// PaymentWalletID references users.id foreign field
-	PaymentWalletID uuid.UUID `db:"payment_wallet_id"       json:"payment_wallet_id"`
-	Type            TypeValue `db:"type"                    json:"type"`
-	Amount          float64   `db:"amount"                  json:"amount"`
-	PaymentMethod   *string   `db:"payment_method"          json:"payment_method"`
+	PaymentWalletID uuid.UUID `db:"payment_wallet_id" json:"payment_wallet_id"`
+	Type            TypeValue `db:"type"              json:"type"`
+	Amount          float64   `db:"amount"            json:"amount"`
+	PaymentMethod   *string   `db:"payment_method"    json:"payment_method"`
 
 	PaymentReference *string `db:"payment_reference" json:"payment_reference"`
 
-	Notes       *string       `db:"notes"          json:"notes"`
-	IsConfirmed bool          `db:"is_confirmed"   json:"is_confirmed"`
-	TLyncURL    *string       `db:"tlync_url"      json:"tlync_url"`
-	Response    pgtypes.JSONB `db:"response"       json:"response"`
-	CreatedAt   time.Time     `db:"created_at"     json:"created_at"`
-	UpdatedAt   time.Time     `db:"updated_at"     json:"updated_at"`
+	Notes       *string       `db:"notes"        json:"notes"`
+	IsConfirmed bool          `db:"is_confirmed" json:"is_confirmed"`
+	TLyncURL    *string       `db:"tlync_url"    json:"tlync_url"`
+	Response    pgtypes.JSONB `db:"response"     json:"response"`
+	CreatedAt   time.Time     `db:"created_at"   json:"created_at"`
+	UpdatedAt   time.Time     `db:"updated_at"   json:"updated_at"`
 
-	User PaymentWalletUser `db:"user"         json:"user"`
+	User PaymentWalletUser `db:"user" json:"user"`
 }
 
 type PaymentWalletUser struct {
@@ -43,6 +44,7 @@ type PaymentWalletUser struct {
 }
 
 // Tlync
+
 type TlyncRequest struct {
 	WalletTransactionID uuid.UUID `json:"wallet_transaction_id"`
 	Amount              float64   `json:"amount"`
@@ -50,6 +52,7 @@ type TlyncRequest struct {
 }
 
 // Masarat
+
 type MasaratInitiateRequest struct {
 	WalletTransactionID uuid.UUID `json:"wallet_transaction_id"`
 	Amount              float64   `json:"amount"`
@@ -63,6 +66,7 @@ type MasaratConfirmRequest struct {
 }
 
 // Edfali
+
 type EdfaliInitiateRequest struct {
 	WalletTransactionID uuid.UUID `json:"wallet_transaction_id"`
 	Amount              float64   `json:"amount"`
@@ -75,6 +79,7 @@ type EdfaliConfirmRequest struct {
 }
 
 // Sadad
+
 type SadadInitiateRequest struct {
 	WalletTransactionID uuid.UUID `json:"wallet_transaction_id"`
 	Amount              float64   `json:"amount"`

@@ -5,49 +5,25 @@ import (
 )
 
 func (t *Translations) TranslateModels() {
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "banner", Other: "Banner"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "category", Other: "Category"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "document", Other: "Document"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "permission", Other: "Permission"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "role", Other: "Role"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "setting", Other: "Setting"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "token", Other: "Token"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "user", Other: "User"},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{
-			ID:    "user_notification",
-			Other: "User Notification",
-		},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{
-			ID:    "fcm_notification",
-			Other: "FCM Notification",
-		},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{
-			ID:    "image",
-			Other: "Image",
-		},
-	})
-	t.Localizer.MustLocalize(&i18n.LocalizeConfig{
-		DefaultMessage: &i18n.Message{ID: "wallet_transaction", Other: "Wallet Transaction"},
-	})
+	messages := []i18n.Message{
+		{ID: "banner", Other: "Banner"},
+		{ID: "category", Other: "Category"},
+		{ID: "profile", Other: "Profile"},
+		{ID: "document", Other: "Document"},
+		{ID: "permission", Other: "Permission"},
+		{ID: "role", Other: "Role"},
+		{ID: "setting", Other: "Setting"},
+		{ID: "token", Other: "Token"},
+		{ID: "user", Other: "User"},
+		{ID: "user_notification", Other: "User Notification"},
+		{ID: "fcm_notification", Other: "FCM Notification"},
+		{ID: "image", Other: "Image"},
+		{ID: "wallet_transaction", Other: "Wallet Transaction"},
+	}
+
+	for i := range messages {
+		t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &(messages[i]),
+		})
+	}
 }

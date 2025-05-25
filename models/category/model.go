@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"app/model"
+	"app/pkg/pgtypes"
 	"app/pkg/validator"
 
 	"github.com/google/uuid"
@@ -46,6 +47,8 @@ type Model struct {
 
 	Parent      MinimalModel `db:"parent"       json:"parent"`
 	SuperParent MinimalModel `db:"super_parent" json:"super_parent"`
+
+	Path pgtypes.UUIDS `db:"path" json:"path"`
 }
 
 type MinimalModel struct {
@@ -110,6 +113,17 @@ func (m *Model) GetThumb() *string {
 func (m *Model) SetThumb(name *string) {
 	m.Thumb = name
 } // HasImage interface end
+
+func (m *Model) InterfaceSortFields() (*int, map[string]any) {
+	fields := map[string]any{
+		"parent_id": m.Parent.ID,
+		"depth":     m.Depth,
+	}
+	if m.Parent.ID != nil { // TODO: check if this is required
+		fields["parent_id"] = m.Parent.ID
+	}
+	return &m.Sort, fields
+}
 
 // Utilities ------------------------------------------------------------------
 

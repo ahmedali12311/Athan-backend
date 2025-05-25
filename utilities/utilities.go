@@ -59,7 +59,11 @@ func (u *Utils) ReadUUIDParam(id *uuid.UUID, ctx echo.Context) error {
 	return nil
 }
 
-func (u *Utils) ReadUUIDParamArg(id *uuid.UUID, param string, ctx echo.Context) error {
+func (u *Utils) ReadUUIDParamArg(
+	id *uuid.UUID,
+	param string,
+	ctx echo.Context,
+) error {
 	paramID := ctx.Param(param)
 	parsed, err := uuid.Parse(paramID)
 	if err != nil || parsed == uuid.Nil {

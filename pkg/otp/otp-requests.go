@@ -1,9 +1,10 @@
 package otp
 
 import (
-	"app/pkg/requester"
 	"fmt"
 	"net/http"
+
+	"app/pkg/requester"
 
 	"github.com/goccy/go-json"
 )

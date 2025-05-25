@@ -165,7 +165,7 @@ func (v *Validator) generateThumb(
 
 // deleteFile removes a single file provided dist string from system.
 func (v *Validator) deleteFile(dist string) {
-	if len(dist) > 0 && strings.Contains(dist, ".") {
+	if dist != "" && strings.Contains(dist, ".") {
 		if err := os.Remove(dist); err != nil {
 			// file is deleted
 			err = fmt.Errorf("failed to delete file: %s, error: %w", dist, err)

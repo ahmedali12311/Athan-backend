@@ -49,17 +49,17 @@ func Send(e Email) error {
 		return err
 	}
 	// Auth
-	if err = client.Auth(authenticate); err != nil {
+	if err := client.Auth(authenticate); err != nil {
 		return err
 	}
 	// To && From
-	if err = client.Mail(from); err != nil {
+	if err := client.Mail(from); err != nil {
 		return err
 	}
-	if err = client.Rcpt(e.To); err != nil {
+	if err := client.Rcpt(e.To); err != nil {
 		return err
 	}
-	if err = client.Rcpt(from); err != nil { // CC email message
+	if err := client.Rcpt(from); err != nil { // CC email message
 		return err
 	}
 	// Data

@@ -45,7 +45,7 @@ func (m *Model) ParseToken(
 	token, err := jwt.ParseWithClaims(
 		*bearer,
 		&jwt.RegisteredClaims{},
-		func(token *jwt.Token) (interface{}, error) {
+		func(token *jwt.Token) (any, error) {
 			return config.JwtSecret, nil
 		},
 	)

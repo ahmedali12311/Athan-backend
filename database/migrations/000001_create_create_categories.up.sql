@@ -20,6 +20,7 @@ CREATE TABLE categories (
     super_parent_id UUID,
     img             TEXT,
     thumb           TEXT,
+    path            UUID [] DEFAULT '{}',
     created_at      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     updated_at      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
 
@@ -49,7 +50,29 @@ CREATE UNIQUE INDEX unique_name_null_parent_idx
 ON categories (name)
 WHERE parent_id IS NULL;
 
+CREATE INDEX idx_categories_path ON categories USING gin (path);
+
 --trigger: update_update_at
 CREATE TRIGGER app_trigger_update_categories_updated_at
 BEFORE UPDATE ON categories FOR EACH ROW
 EXECUTE PROCEDURE app_func_update_updated_at();
+
+-- create auto update function
+CREATE OR REPLACE FUNCTION update_category_path() RETURNS TRIGGER AS $$
+BEGIN
+    NEW.path = ARRAY[NEW.id];
+
+    IF NEW.parent_id IS NOT NULL THEN
+        SELECT path || NEW.id INTO NEW.path 
+        FROM categories 
+        WHERE id = NEW.parent_id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- trigger auto update for path
+CREATE TRIGGER trigger_update_category_path
+BEFORE INSERT OR UPDATE ON categories
+FOR EACH ROW EXECUTE FUNCTION update_category_path();

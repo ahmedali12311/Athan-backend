@@ -58,7 +58,7 @@ func (t *Translations) ModelNotFound(name string) string {
 			Description: "a requested model record is not found",
 			Other:       "{{.Model}} not found.",
 		},
-		TemplateData: map[string]interface{}{
+		TemplateData: map[string]any{
 			"Model": name,
 		},
 	})
@@ -71,7 +71,7 @@ func (m *Translations) ModelDisabled(name string) string {
 			Description: "a requested model record is disabled",
 			Other:       "{{.Model}} has been disabled.",
 		},
-		TemplateData: map[string]interface{}{
+		TemplateData: map[string]any{
 			"Model": name,
 		},
 	})

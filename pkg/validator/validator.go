@@ -164,8 +164,8 @@ func (v *Validator) Permit(key string, allowed []string) {
 	v.Check(false, key, v.T.NotPermitted(v.Scopes, allowed))
 }
 
-// ValidateModelSchema schema.Validate accepts only interface{} type
-// so marshaling Model into []byte and then to interface{} is required.
+// ValidateModelSchema schema.Validate accepts only any type
+// so marshaling Model into []byte and then to any is required.
 func (v *Validator) ValidateModelSchema(model finder.Model, schema *js.Schema) {
 	data, err := json.Marshal(model)
 	if err != nil {
@@ -193,13 +193,15 @@ func (v *Validator) ValidateModelSchema(model finder.Model, schema *js.Schema) {
 	}
 }
 
-// ValidateInputModelSchema schema.Validate accepts only interface{} type
-// so marshaling Model into []byte and then to interface{} is required.
+// IInputModel for ValidateInputModelSchema
 type IInputModel interface {
 	TableName() string
 }
 
-func (v *Validator) ValidateInputModelSchema(model IInputModel, schema *js.Schema) {
+func (v *Validator) ValidateInputModelSchema(
+	model IInputModel,
+	schema *js.Schema,
+) {
 	data, err := json.Marshal(model)
 	if err != nil {
 		v.AddInputModelSchemaError(model, errors.New("couldn't marshal input"))
@@ -207,7 +209,10 @@ func (v *Validator) ValidateInputModelSchema(model IInputModel, schema *js.Schem
 	}
 	var body any
 	if err := json.Unmarshal(data, &body); err != nil {
-		v.AddInputModelSchemaError(model, errors.New("couldn't unmarshal input"))
+		v.AddInputModelSchemaError(
+			model,
+			errors.New("couldn't unmarshal input"),
+		)
 		return
 	}
 	if schema == nil {

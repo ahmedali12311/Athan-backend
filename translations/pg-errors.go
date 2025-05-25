@@ -35,7 +35,7 @@ func (t *Translations) PGError(
 					Description: "database: foreign key violation",
 					Other:       "unable to delete record, violates foreign key: {{ .ForeignKey }}",
 				},
-				TemplateData: map[string]interface{}{
+				TemplateData: map[string]any{
 					"ForeignKey": constraint,
 				},
 			})
@@ -46,7 +46,7 @@ func (t *Translations) PGError(
 					Description: "database: foreign key violation",
 					Other:       "unable to modify record, violates foreign key: {{ .ForeignKey }}",
 				},
-				TemplateData: map[string]interface{}{
+				TemplateData: map[string]any{
 					"ForeignKey": constraint,
 				},
 			})

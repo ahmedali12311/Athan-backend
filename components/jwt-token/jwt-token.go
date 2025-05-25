@@ -1,9 +1,10 @@
 package jwt_token
 
 import (
-	"app/config"
 	"errors"
 	"time"
+
+	"app/config"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
@@ -55,7 +56,7 @@ func GenFileToken(fn FuncMapClaims) (string, error) {
 func ParseFileToken(bearer *string) (jwt.MapClaims, error) {
 	token, err := jwt.ParseWithClaims(*bearer,
 		jwt.MapClaims{},
-		func(token *jwt.Token) (interface{}, error) {
+		func(token *jwt.Token) (any, error) {
 			return config.JwtSecret, nil
 		},
 	)
