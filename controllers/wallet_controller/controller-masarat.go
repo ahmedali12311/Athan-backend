@@ -38,7 +38,7 @@ func (c *ControllerBasic) MasaratInitiate(ctx echo.Context) error {
 	v.AssignFloat("amount", &model.Amount)
 	v.Check(model.Amount > 0, "amount", v.T.ValidateMustBeGtZero())
 
-	v.AssignString("identity_card", &input.IdentityCard)
+	v.AssignString("identity_card", &input.IdentityCard, 0, 50)
 	v.Check(input.IdentityCard != "", "identity_card", v.T.ValidateRequired())
 
 	if input.PaymentServiceID, err = uuid.Parse(v.Data.Get("payment_service_id")); err != nil {
@@ -84,8 +84,14 @@ func (c *ControllerBasic) MasaratConfirm(ctx echo.Context) error {
 
 	var input payment_gateway.MasaratConfirmRequest
 
-	v.AssignString("pin", &input.Pin)
-	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+	v.AssignString("pin", &input.Pin, 4, 8)
+	v.AssignUUID(
+		"transaction_id",
+		"id",
+		"wallet_transactions",
+		&result.ID,
+		true,
+	)
 	input.WalletTransactionID = result.ID
 
 	if !v.Valid() {

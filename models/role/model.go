@@ -5,7 +5,7 @@ import (
 	"net/url"
 
 	"app/model"
-	"app/pkg/validator"
+	"github.com/m-row/validator"
 
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
@@ -69,12 +69,12 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 // utilties -------------------------------------------------------------------
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
-	m.Initialize(v.Data.Values, v.DB)
+	m.Initialize(v.Data.Values, v.Conn)
 
-	v.AssignString("name", &m.Name)
+	v.AssignString("name", &m.Name, 1, 50)
 	v.UnmarshalInto("permissions", &m.Permissions)
 
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }
 
@@ -86,7 +86,7 @@ func (m *Model) ValidateUserRole(
 	v.AssignInt("role_id", roleID)
 	v.IDExistsInDB(roleID, "role_id", "id", "roles", true)
 
-	v.AssignUUID("user_id", "users", userID, true)
+	v.AssignUUID("user_id", "id", "users", userID, true)
 	v.UUIDExistsInDB(userID, "user_id", "id", "users", true)
 
 	return !v.Valid()

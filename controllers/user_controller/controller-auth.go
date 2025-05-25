@@ -260,6 +260,8 @@ func (c *ControllerAuth) ForgetMyPassword(ctx echo.Context) error {
 		}
 	}
 
+	// TODO: check this overflow warning
+
 	rng := rand.New(rand.NewSource(uint64(time.Now().UnixNano())))
 	result.Pin = generics.Ptr(fmt.Sprintf("%d", rng.Intn(900000)+100000))
 	result.PinExpiry = &expires
@@ -273,11 +275,14 @@ func (c *ControllerAuth) ForgetMyPassword(ctx echo.Context) error {
 	// 	return c.APIErr.BadRequest(ctx, err)
 	// }
 
+	msg := "A password reset PIN has been sent to your email." +
+		" Please check your inbox."
+
 	return ctx.JSON(
 		http.StatusOK,
 		map[string]string{
 			"status":  "success",
-			"message": "A password reset PIN has been sent to your email. Please check your inbox.",
+			"message": msg,
 		},
 	)
 }
@@ -299,7 +304,7 @@ func (c *ControllerAuth) ResetPassword(ctx echo.Context) error {
 
 	var pin string
 
-	v.AssignString("pin", &pin)
+	v.AssignString("pin", &pin, 6, 6)
 	v.Check(pin != "", "pin", v.T.ValidateRequired())
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"app/config"
-	"app/pkg/validator"
+	"github.com/m-row/validator"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/golang-jwt/jwt/v4"

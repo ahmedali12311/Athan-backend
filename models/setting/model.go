@@ -8,9 +8,8 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/validator"
-
 	"github.com/m-row/finder"
+	"github.com/m-row/validator"
 )
 
 const (
@@ -91,14 +90,14 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	data := v.Data
 	var key string
+	v.AssignString("key", &key, 1, 100)
 
-	v.AssignString("key", &key)
 	// this ensures that core keys are not modified other than value
-	if !slices.Contains(CoreKeys, m.Key) {
-		m.Initialize(v.Data.Values, v.DB)
-		v.AssignString("key", &m.Key)
-		v.AssignString("data_type", &m.DataType)
-		v.AssignString("field_type", &m.FieldType)
+	if !slices.Contains(CoreKeys, key) {
+		m.Initialize(v.Data.Values, v.Conn)
+		m.Key = key
+		v.AssignString("data_type", &m.DataType, 1, 50)
+		v.AssignString("field_type", &m.FieldType, 1, 50)
 		v.AssignBool("is_disabled", &m.IsDisabled)
 		v.AssignBool("is_readonly", &m.IsReadOnly)
 	}
@@ -124,6 +123,6 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 			v.Check(m.Value != "", "value", v.T.ValidateRequired())
 		}
 	}
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }

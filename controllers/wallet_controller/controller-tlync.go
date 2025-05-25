@@ -78,7 +78,13 @@ func (c *ControllerBasic) TylncConfirm(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
-	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+	v.AssignUUID(
+		"transaction_id",
+		"id",
+		"wallet_transactions",
+		&result.ID,
+		true,
+	)
 
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)

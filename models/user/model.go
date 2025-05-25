@@ -8,7 +8,7 @@ import (
 
 	"app/config"
 	"app/model"
-	"app/pkg/validator"
+	"github.com/m-row/validator"
 
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
@@ -164,23 +164,23 @@ func (m *Model) SetThumb(name *string) {
 // Utilities ------------------------------------------------------------------
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
-	isInsert := m.Initialize(v.Data.Values, v.DB)
+	isInsert := m.Initialize(v.Data.Values, v.Conn)
 
 	if err := v.AssignImage("img", m, false); err != nil {
 		v.Check(false, "img", err.Error())
 	}
 
-	m.Name = v.AssignString("name", m.Name)
-	m.Email = v.AssignString("email", m.Email)
-	m.Details = v.AssignString("details", m.Details)
-	m.Birthdate = v.AssignNullableDate("birthdate", m.Birthdate)
+	m.Name = v.AssignString("name", m.Name, 0, 100)
+	m.Email = v.AssignString("email", m.Email, 0, 100)
+	m.Details = v.AssignString("details", m.Details, 0, 3000)
+	m.Birthdate = v.AssignDate("birthdate", m.Birthdate)
 
 	v.AssignBool("is_disabled", &m.IsDisabled)
 	v.AssignBool("is_notifiable", &m.IsNotifiable)
 	v.UnmarshalInto("location", &m.Location)
 
 	// Enums ------------------------------------------------------------------
-	m.Gender = validator.AssignNullableENUM(v, "gender", m.Gender)
+	m.Gender = validator.AssignENUM(v, "gender", m.Gender)
 
 	// Special merge logic ----------------------------------------------------
 	m.MergePhone(v)
@@ -204,7 +204,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 		}
 	}
 
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }
 
@@ -216,7 +216,7 @@ func (m *Model) MergeOTPCreate(
 	bd := "2001-01-01"
 	g := Male
 
-	m.Initialize(v.Data.Values, v.DB)
+	m.Initialize(v.Data.Values, v.Conn)
 	m.MergePhone(v)
 	m.Pin = pin
 	m.PinExpiry = exp

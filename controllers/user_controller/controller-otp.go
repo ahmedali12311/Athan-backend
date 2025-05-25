@@ -25,7 +25,7 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 	if err != nil {
 		return err
 	}
-	result.MergePhone(v)
+	result.MergePhone(v) // FIX:
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)
 	}
@@ -123,7 +123,7 @@ func (c *ControllerOTP) Login(ctx echo.Context) error {
 	var pin string
 	result.MergePhone(v)
 
-	v.AssignString("pin", &pin)
+	v.AssignString("pin", &pin, 6, 6)
 	v.Check(pin != "", "pin", v.T.ValidateRequired())
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)

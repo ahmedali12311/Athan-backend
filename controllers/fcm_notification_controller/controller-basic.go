@@ -148,9 +148,9 @@ func (c *ControllerBasic) NotifyUser(ctx echo.Context) error {
 	}
 
 	userID := v.Data.GetUUID("user_id")
-	v.Exists(userID, "user_id", "users", true)
-	v.AssignString("title", &result.Title)
-	v.AssignString("body", &result.Body)
+	v.Exists(userID, "user_id", "id", "users", true)
+	v.AssignString("title", &result.Title, 0, 500)
+	v.AssignString("body", &result.Body, 0, 500)
 	result.Topic = nil
 
 	if !v.Valid() {

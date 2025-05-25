@@ -45,7 +45,7 @@ func (c *ControllerBasic) SadadInitiate(ctx echo.Context) error {
 		input.Phone = *dummyUser.Phone
 	}
 	v.AssignInt("category", &input.Category)
-	v.AssignString("birthyear", &input.Birthyear)
+	v.AssignString("birthyear", &input.Birthyear, 4, 4)
 
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)
@@ -88,8 +88,14 @@ func (c *ControllerBasic) SadadConfirm(ctx echo.Context) error {
 
 	var input payment_gateway.SadadConfirmRequest
 
-	v.AssignString("pin", &input.Pin)
-	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+	v.AssignString("pin", &input.Pin, 6, 6)
+	v.AssignUUID(
+		"transaction_id",
+		"id",
+		"wallet_transactions",
+		&result.ID,
+		true,
+	)
 	input.WalletTransactionID = result.ID
 
 	if !v.Valid() {
@@ -157,7 +163,13 @@ func (c *ControllerBasic) SadadResendOTP(ctx echo.Context) error {
 		return err
 	}
 
-	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+	v.AssignUUID(
+		"transaction_id",
+		"id",
+		"wallet_transactions",
+		&result.ID,
+		true,
+	)
 
 	if !v.Valid() {
 		return c.APIErr.InputValidation(ctx, v)

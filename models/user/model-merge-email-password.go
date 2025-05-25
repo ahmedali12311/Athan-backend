@@ -1,10 +1,13 @@
 package user
 
 import (
-	"app/pkg/validator"
+	"github.com/m-row/validator"
 )
 
-func (m *Model) MergeEmailPassword(v *validator.Validator, isInsert, isResetPassword bool) {
+func (m *Model) MergeEmailPassword(
+	v *validator.Validator,
+	isInsert, isResetPassword bool,
+) {
 	var oldpw string
 	data := v.Data
 

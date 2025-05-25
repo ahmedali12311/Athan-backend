@@ -3,16 +3,18 @@ package user
 import (
 	"fmt"
 
-	"app/pkg/validator"
+	"github.com/m-row/validator"
 
 	"github.com/ttacon/libphonenumber"
 )
+
+// FIX: use validator in place of this func
 
 // MergePhone handles phone input validation, only accounts for input
 // key: "region" if it was provided, otherwise it defaults to "LY"
 // manually updating phone by user will set is_verified=false
 func (m *Model) MergePhone(v *validator.Validator) {
-	m.Phone = v.AssignString("phone", m.Phone)
+	m.Phone = v.AssignString("phone", m.Phone, 0, 50)
 	if m.Phone != nil {
 		region := "LY"
 		if v.Data.KeyExists("region") {

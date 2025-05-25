@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"app/models/user"
-	"app/pkg/validator"
 	"app/utilities"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/validator"
 	"github.com/rs/zerolog"
 )
 
@@ -264,7 +264,7 @@ func (e *APIErrors) InputValidation(
 
 func (e *APIErrors) InputValidationRequest(
 	ctx echo.Context,
-	errors any,
+	errs any,
 ) error {
 	t := e.Utils.CtxT(ctx)
 	return e.respond(
@@ -272,14 +272,14 @@ func (e *APIErrors) InputValidationRequest(
 		http.StatusUnprocessableEntity,
 		InputValidation,
 		t.InputValidation(),
-		errors,
+		errs,
 	)
 }
 
 func (e *APIErrors) Forbidden(ctx echo.Context, err error) error {
 	t := e.Utils.CtxT(ctx)
 	var message string
-	if errors.Is(err, jwt.ErrTokenMalformed) {
+	if errors.Is(err, jwt.ErrTokenMalformed) { //nolint: gocritic //dw
 		message = "malformed jwt token"
 	} else if errors.Is(err, jwt.ErrTokenExpired) {
 		// Token is either expired or not active yet

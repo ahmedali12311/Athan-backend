@@ -6,10 +6,10 @@ import (
 
 	"app/model"
 	"app/models/user"
-	"app/pkg/validator"
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
 	"github.com/m-row/pgtypes"
+	"github.com/m-row/validator"
 )
 
 const (
@@ -82,11 +82,11 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 }
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
-	isInsert := m.Initialize(v.Data.Values, v.DB)
+	isInsert := m.Initialize(v.Data.Values, v.Conn)
 
-	v.AssignString("title", &m.Title)
-	v.AssignString("body", &m.Body)
-	m.Topic = v.AssignString("topic", m.Topic)
+	v.AssignString("title", &m.Title, 0, 500)
+	v.AssignString("body", &m.Body, 0, 500)
+	m.Topic = v.AssignString("topic", m.Topic, 0, 500)
 	v.AssignBool("is_sent", &m.IsSent)
 
 	v.AssignTimestamp("send_at", m.SendAt)
@@ -101,6 +101,6 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	}
 	v.UnmarshalInto("data", &m.Data)
 
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }

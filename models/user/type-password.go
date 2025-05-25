@@ -1,8 +1,9 @@
 package user
 
 import (
-	"app/pkg/validator"
 	"context"
+
+	"github.com/m-row/validator"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -37,11 +38,19 @@ func (p *password) Match(hash *[]byte) (bool, error) {
 	return true, nil
 }
 
-func (p *password) CheckPreviousPassword(v *validator.Validator, userID string) error {
+func (p *password) CheckPreviousPassword(
+	v *validator.Validator,
+	userID string,
+) error {
 	var hashedPassword []byte
 
 	query := "SELECT password_hash FROM users WHERE id = $1"
-	err := v.DB.GetContext(context.Background(), &hashedPassword, query, userID)
+	err := v.Conn.GetContext(
+		context.Background(),
+		&hashedPassword,
+		query,
+		userID,
+	)
 	if err != nil {
 		return err
 	}

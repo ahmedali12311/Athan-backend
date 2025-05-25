@@ -178,14 +178,14 @@ func (t *Translations) ValidateMustBeGtZero() string {
 	})
 }
 
-func (t *Translations) ValidateMustBeLteValue(value int64) string {
+func (t *Translations) ValidateMustBeLteValue(value int) string {
 	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
 		DefaultMessage: &i18n.Message{
 			ID:          "ValidateMustBeLteValue",
 			Description: "value must be less than or equal value",
 			Other:       "value must be less than or equal {{ .Value }}",
 		},
-		TemplateData: map[string]int64{
+		TemplateData: map[string]int{
 			"Value": value,
 		},
 	})

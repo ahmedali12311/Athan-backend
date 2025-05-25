@@ -90,8 +90,14 @@ func (c *ControllerBasic) EdfaliConfirm(ctx echo.Context) error {
 	if dummyUser.Phone != nil {
 		input.Phone = *dummyUser.Phone
 	}
-	v.AssignString("pin", &input.Pin)
-	v.AssignUUID("transaction_id", "wallet_transactions", &result.ID, true)
+	v.AssignString("pin", &input.Pin, 4, 8)
+	v.AssignUUID(
+		"transaction_id",
+		"id",
+		"wallet_transactions",
+		&result.ID,
+		true,
+	)
 	input.WalletTransactionID = result.ID
 
 	if !v.Valid() {

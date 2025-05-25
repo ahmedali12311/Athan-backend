@@ -6,11 +6,10 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/validator"
-	"github.com/m-row/pgtypes"
-
 	"github.com/google/uuid"
 	"github.com/m-row/finder"
+	"github.com/m-row/pgtypes"
+	"github.com/m-row/validator"
 )
 
 const (
@@ -128,8 +127,8 @@ func (m *Model) InterfaceSortFields() (*int, map[string]any) {
 // Utilities ------------------------------------------------------------------
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
-	m.Initialize(v.Data.Values, v.DB)
-	v.AssignString("name", &m.Name)
+	m.Initialize(v.Data.Values, v.Conn)
+	v.AssignString("name", &m.Name, 1, 50)
 	v.AssignBool("is_disabled", &m.IsDisabled)
 	v.AssignBool("is_featured", &m.IsFeatured)
 	v.AssignInt("sort", &m.Sort)
@@ -144,13 +143,13 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 		if *m.Parent.ID == m.ID {
 			v.Check(false, "parent.id", v.T.ValidateCategoryParent())
 		} else {
-			if err := m.AssignSuperParent(v.DB); err != nil {
+			if err := m.AssignSuperParent(v.Conn); err != nil {
 				v.Check(false, "parent.id", err.Error())
 			}
 		}
 	}
 
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }
 

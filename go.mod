@@ -5,15 +5,12 @@ go 1.23.4
 require (
 	firebase.google.com/go/v4 v4.15.0
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/ahmedalkabir/filematcher v0.0.4
 	github.com/ahmedalkabir/garabic v0.0.0-20240527214656-11fe9ba772f4
-	github.com/disintegration/imaging v1.6.2
 	github.com/fatih/color v1.16.0
-	github.com/goccy/go-json v0.10.2
+	github.com/goccy/go-json v0.10.3
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/google/uuid v1.6.0
-	github.com/gookit/validate v1.5.2
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/johnfercher/maroto/v2 v2.0.7
@@ -21,6 +18,8 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/labstack/gommon v0.4.2
 	github.com/m-row/finder v0.0.8
+	github.com/m-row/pgtypes v0.0.2
+	github.com/m-row/validator v0.0.3
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/nwidger/jsoncolor v0.3.2
 	github.com/pelletier/go-toml/v2 v2.2.1
@@ -46,6 +45,7 @@ require (
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/f-amaral/go-async v0.3.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
@@ -56,8 +56,7 @@ require (
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
-	github.com/gookit/filter v1.2.1 // indirect
-	github.com/gookit/goutil v0.6.15 // indirect
+	github.com/h2non/filetype v1.1.3 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hhrutter/lzw v1.0.0 // indirect
@@ -71,7 +70,6 @@ require (
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/m-row/pgtypes v0.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect

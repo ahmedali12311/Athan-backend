@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"app/model"
-	"app/pkg/validator"
 	"github.com/m-row/pgtypes"
+	"github.com/m-row/validator"
 
 	"github.com/m-row/finder"
 
@@ -95,12 +95,12 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 // Utilities ------------------------------------------------------------------
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
-	m.Initialize(v.Data.Values, v.DB)
+	m.Initialize(v.Data.Values, v.Conn)
 	m.PaymentMethod = v.
-		AssignString("payment_method", m.PaymentMethod)
+		AssignString("payment_method", m.PaymentMethod, 0, 500)
 	m.PaymentReference = v.
-		AssignString("payment_reference", m.PaymentReference)
-	m.Notes = v.AssignString("notes", m.Notes)
+		AssignString("payment_reference", m.PaymentReference, 0, 500)
+	m.Notes = v.AssignString("notes", m.Notes, 0, 500)
 
 	validator.AssignENUM(v, "type", &m.Type)
 
@@ -108,12 +108,12 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	v.UnmarshalInto("user", &m.User, ScopeAdmin)
 	v.AssignBool("is_confirmed", &m.IsConfirmed, ScopeAdmin)
 
-	v.ValidateModelSchema(m, v.Schema)
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
 	return v.Valid()
 }
 
 func (m *Model) MergeTransfer(v *validator.Validator) bool {
-	m.Initialize(v.Data.Values, v.DB)
+	m.Initialize(v.Data.Values, v.Conn)
 	v.AssignFloat("amount", &m.Amount)
 	v.Check(m.Amount > 0, "amount", v.T.ValidateMustBeGtZero())
 

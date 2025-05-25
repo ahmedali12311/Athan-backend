@@ -5,11 +5,12 @@ import (
 
 	"app/apierrors"
 	"app/components/sms"
+	"app/config"
 	"app/models"
-	"app/pkg/validator"
 	"app/utilities"
 
 	"github.com/labstack/echo/v4"
+	"github.com/m-row/validator"
 	js "github.com/santhosh-tekuri/jsonschema/v5"
 )
 
@@ -51,13 +52,27 @@ func (d *Dependencies) GetValidator(
 	ctx echo.Context,
 	schemaName string,
 ) (*validator.Validator, error) {
-	v, err := validator.NewValidator(
-		ctx,
-		d.Models.DB,
-		d.Utils.Logger,
-		d.Schemas,
-		schemaName,
-	)
+	t := d.Utils.CtxT(ctx)
+	var sch *js.Schema
+	if d.Schemas != nil {
+		loc := config.GetSchemaURL(schemaName)
+		foundSchema, found := d.Schemas[loc]
+		if !found {
+			return nil, errors.New("selected schema name not found in map")
+		}
+		sch = foundSchema
+	}
+	cfg := &validator.Config{
+		T:       t,
+		Conn:    d.Models.DB,
+		QB:      d.Models.QB,
+		Request: ctx.Request(),
+		Scopes:  d.Utils.CtxScopes(ctx),
+		Schema:  sch,
+		RootDIR: config.RootDIR,
+		DOMAIN:  config.DOMAIN,
+	}
+	v, err := validator.NewValidator(cfg)
 	if err != nil {
 		return nil, d.APIErr.BadRequest(ctx, err)
 	}
