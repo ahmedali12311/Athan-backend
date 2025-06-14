@@ -8,9 +8,9 @@ import (
 	"app/models/user"
 	"app/utilities"
 
+	"bitbucket.org/sadeemTechnology/backend-validator"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/validator"
 	"github.com/rs/zerolog"
 )
 

@@ -5,12 +5,13 @@ import (
 	"errors"
 	"net/http"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/finder"
-	"github.com/m-row/model"
 )
 
 var (

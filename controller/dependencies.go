@@ -9,8 +9,8 @@ import (
 	"app/models"
 	"app/utilities"
 
+	"bitbucket.org/sadeemTechnology/backend-validator"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/validator"
 	js "github.com/santhosh-tekuri/jsonschema/v5"
 )
 

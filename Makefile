@@ -86,7 +86,7 @@ renew:
 reload:
 	docker exec -it nginx nginx -s reload
 ## request: creates a certificate for subdomain provided in (n)
-##        : eg > make request n=template-v1.sadeem-lab.com
+##        : eg > make request n=blueprint.sadeem-lab.com
 request:
 	docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d $(n)
 

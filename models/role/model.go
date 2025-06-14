@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/m-row/model"
-	"github.com/m-row/validator"
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 
 	"github.com/google/uuid"
-	"github.com/m-row/finder"
 )
 
 const (

@@ -4,13 +4,14 @@ package wallet
 import (
 	"context"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"app/models/wallet_transaction"
-	"github.com/m-row/model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/finder"
 )
 
 type Queries struct {

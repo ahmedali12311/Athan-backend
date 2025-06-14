@@ -1,12 +1,12 @@
 package token
 
 import (
-	"github.com/m-row/model"
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/finder"
 )
 
 var selects = &[]string{

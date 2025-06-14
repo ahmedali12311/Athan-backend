@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/m-row/finder"
+	"bitbucket.org/sadeemTechnology/backend-finder"
 
 	"github.com/google/uuid"
 )

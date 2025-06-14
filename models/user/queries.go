@@ -5,14 +5,15 @@ import (
 	"database/sql"
 	"errors"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"app/config"
-	"github.com/m-row/model"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/finder"
 )
 
 var (

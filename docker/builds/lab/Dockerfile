@@ -1,5 +1,5 @@
 # BUILDER ---------------------------------------------------------------------
-FROM --platform=linux/amd64 golang:1.22.2-alpine3.19 AS builder
+FROM --platform=linux/amd64 golang:1.24.4-alpine3.22 AS builder
 
 WORKDIR /build
 
@@ -33,7 +33,6 @@ COPY --from=builder ["/build/docker/builds/lab/.env", "/.env"]
 COPY --from=builder ["/build/active.ar.toml", "/active.ar.toml"]
 COPY --from=builder ["/build/active.en.toml", "/active.en.toml"]
 COPY --from=builder ["/etc/ssl/certs/ca-certificates.crt", "/etc/ssl/certs/ca-certificates.crt"]
-
 
 EXPOSE 8000
 

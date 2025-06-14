@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/m-row/finder"
-	"github.com/m-row/model"
-	"github.com/m-row/validator"
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 )
 
 const (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/m-row/finder"
+	"bitbucket.org/sadeemTechnology/backend-finder"
 )
 
 type Model struct {

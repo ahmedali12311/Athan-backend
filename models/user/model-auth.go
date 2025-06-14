@@ -8,8 +8,9 @@ import (
 	"strings"
 	"time"
 
+	"bitbucket.org/sadeemTechnology/backend-validator"
+
 	"app/config"
-	"github.com/m-row/validator"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/golang-jwt/jwt/v4"

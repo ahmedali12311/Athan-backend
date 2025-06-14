@@ -3,13 +3,14 @@ package category
 import (
 	"context"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"app/config"
 	"app/pkg/sorter"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/labstack/echo/v4"
-	"github.com/m-row/finder"
-	"github.com/m-row/model"
 )
 
 var inserts = &[]string{

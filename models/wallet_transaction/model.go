@@ -4,11 +4,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/m-row/model"
-	"github.com/m-row/pgtypes"
-	"github.com/m-row/validator"
-
-	"github.com/m-row/finder"
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-pgtypes"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 
 	"github.com/google/uuid"
 )

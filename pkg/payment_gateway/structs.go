@@ -3,8 +3,8 @@ package payment_gateway
 import (
 	"time"
 
+	"bitbucket.org/sadeemTechnology/backend-pgtypes"
 	"github.com/google/uuid"
-	"github.com/m-row/pgtypes"
 )
 
 const (

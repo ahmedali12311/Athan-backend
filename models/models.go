@@ -1,6 +1,8 @@
 package models
 
 import (
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"app/models/category"
 	"app/models/fcm_notification"
 	"app/models/permission"
@@ -16,7 +18,6 @@ import (
 	"github.com/Masterminds/squirrel"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/m-row/model"
 )
 
 type Models struct {

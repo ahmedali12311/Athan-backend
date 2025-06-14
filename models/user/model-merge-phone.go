@@ -3,7 +3,7 @@ package user
 import (
 	"fmt"
 
-	"github.com/m-row/validator"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 
 	"github.com/ttacon/libphonenumber"
 )

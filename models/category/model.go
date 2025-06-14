@@ -6,11 +6,12 @@ import (
 	"net/url"
 	"time"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-pgtypes"
+	"bitbucket.org/sadeemTechnology/backend-validator"
+
 	"github.com/google/uuid"
-	"github.com/m-row/finder"
-	"github.com/m-row/model"
-	"github.com/m-row/pgtypes"
-	"github.com/m-row/validator"
 )
 
 //go:embed schema.json

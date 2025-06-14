@@ -3,8 +3,9 @@ package role
 import (
 	"context"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+
 	"github.com/Masterminds/squirrel"
-	"github.com/m-row/finder"
 )
 
 func (m *Queries) GrantAllPermissions(roleID int) (int64, error) {

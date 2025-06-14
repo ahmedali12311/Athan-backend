@@ -4,12 +4,11 @@ import (
 	"context"
 	"errors"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/labstack/echo/v4"
-
-	"github.com/m-row/model"
-
-	"github.com/m-row/finder"
 )
 
 var (

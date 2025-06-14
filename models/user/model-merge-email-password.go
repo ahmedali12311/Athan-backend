@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/m-row/validator"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 )
 
 func (m *Model) MergeEmailPassword(

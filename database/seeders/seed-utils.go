@@ -6,9 +6,10 @@ import (
 	"log"
 	"strings"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
-	"github.com/m-row/finder"
 )
 
 var RunningSeedTable = seededTable{

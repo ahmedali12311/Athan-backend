@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
 	"github.com/Masterminds/squirrel"
-	"github.com/m-row/finder"
 )
 
 type OperationType string

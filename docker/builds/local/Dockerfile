@@ -1,5 +1,5 @@
 # BUILDER ---------------------------------------------------------------------
-FROM --platform=linux/amd64 golang:1.22.2-alpine3.19 AS builder
+FROM --platform=linux/amd64 golang:1.24.4-alpine3.22 AS builder
 
 WORKDIR /build
 

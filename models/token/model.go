@@ -5,10 +5,11 @@ import (
 	"net/url"
 	"time"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-pgtypes"
+
 	"github.com/google/uuid"
-	"github.com/m-row/finder"
-	"github.com/m-row/model"
-	"github.com/m-row/pgtypes"
 )
 
 const (

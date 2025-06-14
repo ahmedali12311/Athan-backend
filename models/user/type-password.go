@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"github.com/m-row/validator"
+	"bitbucket.org/sadeemTechnology/backend-validator"
 
 	"golang.org/x/crypto/bcrypt"
 )

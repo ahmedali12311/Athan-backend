@@ -6,8 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/m-row/finder"
-
+	finder "bitbucket.org/sadeemTechnology/backend-finder"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/labstack/echo/v4"
 )

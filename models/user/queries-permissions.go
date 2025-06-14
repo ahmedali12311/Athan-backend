@@ -3,10 +3,11 @@ package user
 import (
 	"context"
 
+	"bitbucket.org/sadeemTechnology/backend-finder"
+
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-	"github.com/m-row/finder"
 )
 
 func (m *Queries) GetPermissions(user *Model, conn finder.Connection) error {
