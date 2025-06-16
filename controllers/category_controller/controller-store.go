@@ -3,8 +3,7 @@ package category_controller
 import (
 	"net/http"
 
-	"app/models/category"
-
+	"bitbucket.org/sadeemTechnology/backend-model-category"
 	"github.com/labstack/echo/v4"
 )
 

@@ -2,8 +2,8 @@ package models
 
 import (
 	"bitbucket.org/sadeemTechnology/backend-model"
+	"bitbucket.org/sadeemTechnology/backend-model-category"
 
-	"app/models/category"
 	"app/models/fcm_notification"
 	"app/models/permission"
 	"app/models/role"

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"app/config"
-	"app/models/category"
+	"bitbucket.org/sadeemTechnology/backend-model-category"
 
 	"github.com/rs/zerolog"
 	js "github.com/santhosh-tekuri/jsonschema/v5"

@@ -2,7 +2,7 @@ package category_controller
 
 import (
 	"app/controller"
-	"app/models/category"
+	"bitbucket.org/sadeemTechnology/backend-model-category"
 
 	"github.com/labstack/echo/v4"
 )

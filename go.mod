@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	bitbucket.org/sadeemTechnology/backend-finder v0.0.14
 	bitbucket.org/sadeemTechnology/backend-model v0.0.2
+	bitbucket.org/sadeemTechnology/backend-model-category v0.0.2
 	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.3
 	bitbucket.org/sadeemTechnology/backend-validator v0.0.4
 	firebase.google.com/go/v4 v4.15.2
@@ -19,7 +20,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/johnfercher/maroto/v2 v2.0.7
 	github.com/joho/godotenv v1.5.1
-	github.com/labstack/echo/v4 v4.12.0
+	github.com/labstack/echo/v4 v4.13.4
 	github.com/labstack/gommon v0.4.2
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/nwidger/jsoncolor v0.3.2
@@ -27,13 +28,15 @@ require (
 	github.com/rs/zerolog v1.32.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/ttacon/libphonenumber v1.2.1
-	golang.org/x/crypto v0.31.0
+	golang.org/x/crypto v0.38.0
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
-	golang.org/x/text v0.21.0
+	golang.org/x/text v0.25.0
 	google.golang.org/api v0.215.0
 )
 
 require (
+	bitbucket.org/sadeemTechnology/backend-config v0.0.2 // indirect
+	bitbucket.org/sadeemTechnology/backend-sorter v0.0.2 // indirect
 	cel.dev/expr v0.16.1 // indirect
 	cloud.google.com/go v0.117.0 // indirect
 	cloud.google.com/go/auth v0.13.0 // indirect
@@ -59,7 +62,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
@@ -77,7 +79,7 @@ require (
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/pdfcpu/pdfcpu v0.6.0 // indirect
@@ -98,11 +100,11 @@ require (
 	go.opentelemetry.io/otel/trace v1.29.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/image v0.15.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/oauth2 v0.25.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/time v0.8.0 // indirect
+	golang.org/x/sync v0.14.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/time v0.11.0 // indirect
 	google.golang.org/appengine/v2 v2.0.6 // indirect
 	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241209162323-e6fa225c2576 // indirect

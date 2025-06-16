@@ -4,8 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"app/models/category"
-
+	"bitbucket.org/sadeemTechnology/backend-model-category"
 	"github.com/labstack/echo/v4"
 )
 
