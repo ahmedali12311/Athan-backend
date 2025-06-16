@@ -11,7 +11,7 @@ import (
 	"bitbucket.org/sadeemTechnology/backend-pgtypes"
 	"bitbucket.org/sadeemTechnology/backend-validator"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/google/uuid"
 )

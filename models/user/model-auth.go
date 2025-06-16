@@ -10,7 +10,7 @@ import (
 
 	"bitbucket.org/sadeemTechnology/backend-validator"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/golang-jwt/jwt/v4"

@@ -2,9 +2,9 @@ package main
 
 import (
 	"app/api"
-	"app/config"
 	"app/schemas"
 	"app/translations"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )

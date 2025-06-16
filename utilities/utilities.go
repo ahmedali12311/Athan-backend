@@ -4,9 +4,9 @@ import (
 	"errors"
 	"strconv"
 
-	"app/config"
 	"app/models/user"
 	"app/translations"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"

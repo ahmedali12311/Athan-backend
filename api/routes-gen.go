@@ -7,9 +7,9 @@ import (
 	"slices"
 	"strings"
 
-	"app/config"
 	"app/models/permission"
 	"app/models/role"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"

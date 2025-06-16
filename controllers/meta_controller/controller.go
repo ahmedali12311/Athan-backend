@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"app/config"
 	"app/controller"
 	"app/models/setting"
 	"app/models/user"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )

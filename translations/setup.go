@@ -1,7 +1,7 @@
 package translations
 
 import (
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	toml "github.com/pelletier/go-toml/v2"

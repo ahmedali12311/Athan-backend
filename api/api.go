@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"app/apierrors"
-	"app/config"
 	"app/controller"
 	"app/controllers"
 	"app/database"
@@ -14,6 +13,7 @@ import (
 	"app/models/permission"
 	"app/models/user"
 	"app/utilities"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"

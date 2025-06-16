@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 	"bitbucket.org/sadeemTechnology/backend-model-category"
 
 	"github.com/rs/zerolog"

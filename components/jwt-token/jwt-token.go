@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"

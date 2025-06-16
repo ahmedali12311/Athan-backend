@@ -5,9 +5,9 @@ import (
 
 	"app/apierrors"
 	"app/components/sms"
-	"app/config"
 	"app/models"
 	"app/utilities"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"bitbucket.org/sadeemTechnology/backend-validator"
 	"github.com/labstack/echo/v4"

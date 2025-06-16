@@ -3,7 +3,7 @@ package auth
 import (
 	"time"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/golang-jwt/jwt/v4"
 )

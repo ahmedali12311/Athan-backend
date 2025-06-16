@@ -8,7 +8,7 @@ import (
 	"errors"
 	"io"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 )
 
 func Encrypt(value string) (*string, error) {

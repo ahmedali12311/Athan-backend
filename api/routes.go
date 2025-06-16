@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"strconv"
 
-	"app/config"
 	"app/controller"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )

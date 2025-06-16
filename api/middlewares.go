@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"app/config"
 	"app/models/user"
 	"app/translations"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"app/config"
 	"app/controller"
 	"app/models/role"
 	"app/models/user"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"

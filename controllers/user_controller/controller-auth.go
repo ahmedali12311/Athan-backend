@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"app/apierrors"
-	"app/config"
 	"app/controller"
 	"app/models/user"
 	"app/pkg/generics"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/exp/rand"

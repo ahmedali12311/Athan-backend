@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
-	"app/config"
 	"app/controller"
 	"app/models/user"
 	"app/pkg/otp"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )

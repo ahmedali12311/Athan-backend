@@ -8,7 +8,7 @@ import (
 	"bitbucket.org/sadeemTechnology/backend-finder"
 	"bitbucket.org/sadeemTechnology/backend-model"
 
-	"app/config"
+	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
