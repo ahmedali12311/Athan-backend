@@ -1,0 +1,1 @@
+DROP FUNCTION app_func_update_updated_at;

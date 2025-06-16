@@ -1,13 +1,14 @@
 module app
 
-go 1.24.4
+go 1.24.0
 
 require (
-	bitbucket.org/sadeemTechnology/backend-finder v0.0.14
-	bitbucket.org/sadeemTechnology/backend-model v0.0.2
-	bitbucket.org/sadeemTechnology/backend-model-category v0.0.2
-	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.3
-	bitbucket.org/sadeemTechnology/backend-validator v0.0.4
+	bitbucket.org/sadeemTechnology/backend-config v0.0.3
+	bitbucket.org/sadeemTechnology/backend-finder v0.0.15
+	bitbucket.org/sadeemTechnology/backend-model v0.0.3
+	bitbucket.org/sadeemTechnology/backend-model-category v0.0.4
+	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.4
+	bitbucket.org/sadeemTechnology/backend-validator v0.0.5
 	firebase.google.com/go/v4 v4.15.2
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/ahmedalkabir/garabic v0.0.0-20240527214656-11fe9ba772f4
@@ -35,8 +36,7 @@ require (
 )
 
 require (
-	bitbucket.org/sadeemTechnology/backend-config v0.0.2 // indirect
-	bitbucket.org/sadeemTechnology/backend-sorter v0.0.2 // indirect
+	bitbucket.org/sadeemTechnology/backend-sorter v0.0.4 // indirect
 	cel.dev/expr v0.16.1 // indirect
 	cloud.google.com/go v0.117.0 // indirect
 	cloud.google.com/go/auth v0.13.0 // indirect

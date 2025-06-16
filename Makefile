@@ -20,20 +20,24 @@ update:
 # ============================================================================= 
 # Local Dev
 # ============================================================================= 
+air-local:
+	@set -a && source docker/builds/local/.env
+	@air
+
 ## air: runs the project locally using air docker image
 air:
 	@set -a && source docker/builds/local/.env
+	@go build -o ./main ./
 	@docker run -it --rm \
-		--network ${NETWORK} \
+		-v $(ROOT_DIR):/$(APP_CODE) \
+		--network $(NETWORK) \
 		--env-file docker/builds/local/.env \
-		-w "/${APP_CODE}" \
-		-e "air_wd=/${APP_CODE}" \
-		-v ${ROOT_DIR}:/${APP_CODE} \
+		-w "/$(APP_CODE)" \
+		-e "air_wd=/$(APP_CODE)" \
 		-v ~/go/pkg/mod:/go/pkg/mod \
-		-p ${PORT}:${PORT} \
+		-p $(PORT):$(PORT) \
 		cosmtrek/air \
 		-c ./.air.toml
-
 
 # ============================================================================= 
 # Translations

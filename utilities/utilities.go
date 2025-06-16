@@ -122,29 +122,3 @@ func (u *Utils) CtxScopes(ctx echo.Context) []string {
 	}
 	return ctxScopes
 }
-
-// User Notification + Firebase -----------------------------------------------
-
-// func (u *Utils) SendUserFCM(
-// 	n *user_notification.Model,
-// 	token *string,
-// ) error {
-// 	if n.User.ID == nil {
-// 		return errors.New("user id not provided for notification")
-// 	}
-// 	if token != nil {
-// 		message := firebaseutils.BuildTokenMessage(
-// 			n.Title,
-// 			n.Body,
-// 			*token,
-// 			n.Data,
-// 		)
-// 		response, err := u.FBM.Send(context.Background(), message)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		n.Response = &response
-// 	}
-//
-// 	return nil
-// }

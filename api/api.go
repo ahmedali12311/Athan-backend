@@ -89,6 +89,7 @@ func NewAPI(
 	}
 	logger.Info().Msg("database connection pool established")
 	logger.Info().Msg("file:///" + config.GetRootPath(config.MigrationsRoot))
+	ModelMigrator(logger, cfg)
 	mig, err := migrate.New(
 		"file:///"+config.GetRootPath(cfg.MigrationsRoot),
 		cfg.DSN,
