@@ -7,7 +7,16 @@ args_bin = []
 bin = "./main"
 cmd = "go build -o ./main ./"
 delay = 0
-exclude_dir = ["assets", "tmp", "vendor", "testdata", "public", ".idea", ".git"]
+exclude_dir = [
+    "database/migrations",
+    "assets",
+    "tmp",
+    "vendor",
+    "testdata",
+    "public",
+    ".idea",
+    ".git"
+]
 exclude_file = []
 exclude_regex = ["_test.go"]
 exclude_unchanged = false

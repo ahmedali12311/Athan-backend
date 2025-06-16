@@ -2,7 +2,9 @@ package seeders
 
 import (
 	"bitbucket.org/sadeemTechnology/backend-model-category"
+	pgtypes "bitbucket.org/sadeemTechnology/backend-pgtypes"
 	"github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -34,21 +36,20 @@ func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	RunningSeedTable.Append(len(categories), "categories")
 }
 
-// documents = parseUUID(category.DocumentSuperParent)
-// trainers  = parseUUID(category.TrainerSuperParent)
-// programs  = parseUUID(category.ProgramSuperParent)
-
 var categories = []category.Model{
-	// 	{
-	// 		ID:            documents,
-	// 		Name:          "مستندات",
-	// 		Depth:         0,
-	// 		Sort:          0,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      nil,
-	// 		SuperParentID: nil,
-	// 	},
+	{
+		ID: uuid.MustParse("fe343212-b79d-43e8-8203-8854b46e2a4b"),
+		Name: pgtypes.JSONB{
+			"ar": "مستندات",
+			"en": "documents",
+		},
+		Depth:         0,
+		Sort:          0,
+		IsDisabled:    false,
+		IsFeatured:    false,
+		ParentID:      nil,
+		SuperParentID: nil,
+	},
 	// 	// Children
 	// 	{
 	// 		ID:            parseUUID("22fb185c-0af1-492e-baa5-7ced47fe66a9"),

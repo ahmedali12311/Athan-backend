@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -11,26 +12,25 @@ import (
 	"github.com/rs/zerolog"
 )
 
+type migration struct {
+	name string
+	up   []byte
+	down []byte
+
+	alreadyApplied bool
+	upFileName     string
+	downFileName   string
+}
+
 func ModelMigrator(
 	logger *zerolog.Logger,
 	cfg *config.Settings,
-) {
-	migrationsDir := config.GetRootPath(cfg.MigrationsRoot)
+) error {
+	dir := config.GetRootPath(cfg.MigrationsRoot)
 
-	files, err := os.ReadDir(migrationsDir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
-		panic(err)
-	}
-	var current, next string
-
-	type migration struct {
-		name string
-		up   []byte
-		down []byte
-
-		alreadyApplied bool
-		upFileName     string
-		downFileName   string
+		return err
 	}
 
 	appModels := []migration{
@@ -41,61 +41,65 @@ func ModelMigrator(
 		},
 	}
 
-	var currentInt int
+	var maxMigrationInt int
 
 	for _, f := range files {
-		fname := strings.SplitN(f.Name(), "_", 2)
-		if len(fname) > 0 {
-			current = fname[0]
-			var appliedFileName string
-			migrationFileName := strings.Split(fname[1], ".")
-			if len(migrationFileName) > 0 {
-				appliedFileName = migrationFileName[0]
-			}
-			for i := range appModels {
-				if appModels[i].name == appliedFileName {
-					appModels[i].alreadyApplied = true
-				}
-			}
-			val, err := strconv.Atoi(current)
-			if err != nil {
-				logger.Error().Err(err).Msg("error getting migration number")
-			}
-			currentInt = val
+		if f.IsDir() {
+			continue
 		}
+		parts := strings.SplitN(f.Name(), "_", 2)
+		if len(parts) != 2 {
+			continue
+		}
+		indexStr := parts[0]
+		val, err := strconv.Atoi(indexStr)
+		if err != nil {
+			logger.Warn().
+				Str("file", f.Name()).
+				Msg("skipping file with invalid migration index")
+			continue
+		}
+		if val > maxMigrationInt {
+			maxMigrationInt = val
+		}
+		migrationName := strings.Split(parts[1], ".")[0]
+		for i := range appModels {
+			if appModels[i].name == migrationName {
+				appModels[i].alreadyApplied = true
+			}
+		}
+
 	}
 	for _, m := range appModels {
 		if !m.alreadyApplied {
-			logger.Info().Msgf("applying migration for model: %s", m)
-			currentInt += 1
-			next = fmt.Sprintf("%06d", currentInt)
-			m.upFileName = fmt.Sprintf(
-				"%s/%s_%s.up.sql",
-				migrationsDir,
-				next,
-				m.name,
+			logger.Info().Msgf("applying migration for: %s", m.name)
+			maxMigrationInt += 1
+			next := fmt.Sprintf("%06d", maxMigrationInt)
+
+			m.upFileName = filepath.Join(
+				dir,
+				fmt.Sprintf("%s_%s.up.sql", next, m.name),
 			)
-			m.downFileName = fmt.Sprintf(
-				"%s/%s_%s.down.sql",
-				migrationsDir,
-				next,
-				m.name,
+			m.downFileName = filepath.Join(
+				dir,
+				fmt.Sprintf("%s_%s.down.sql", next, m.name),
 			)
 
 			if err := os.WriteFile(
 				m.upFileName,
 				m.up,
-				0o644,
+				os.ModePerm,
 			); err != nil {
-				panic(err)
+				return err
 			}
 			if err := os.WriteFile(
 				m.downFileName,
 				m.down,
-				0o644,
+				os.ModePerm,
 			); err != nil {
-				panic(err)
+				return err
 			}
 		}
 	}
+	return nil
 }
