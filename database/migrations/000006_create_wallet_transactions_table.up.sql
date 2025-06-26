@@ -19,10 +19,9 @@ CREATE TABLE wallet_transactions
         'debit'::TEXT
     ]))),
 
-    CONSTRAINT fk_wallet_id FOREIGN KEY (wallet_id) REFERENCES users (id) ON DELETE RESTRICT,
-    CONSTRAINT fk_recharged_by_id FOREIGN KEY (recharged_by_id) REFERENCES users (id) ON DELETE RESTRICT
-);
+    CONSTRAINT fk_wallet_id FOREIGN KEY (wallet_id)
+    REFERENCES users (id) ON DELETE RESTRICT,
 
-CREATE TRIGGER app_trigger_update_wallet_transactions_updated_at
-BEFORE UPDATE ON wallet_transactions FOR EACH ROW
-EXECUTE PROCEDURE app_func_update_updated_at();
+    CONSTRAINT fk_recharged_by_id FOREIGN KEY (recharged_by_id)
+    REFERENCES users (id) ON DELETE RESTRICT
+);

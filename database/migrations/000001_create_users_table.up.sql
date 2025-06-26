@@ -38,19 +38,14 @@ ALTER TABLE users ADD CONSTRAINT phone_or_email_or_anon CHECK ((
     (is_anon IS NOT FALSE)::INTEGER
 ) >= 1);
 
-CREATE UNIQUE INDEX "users_email_unique_nullable"
+CREATE UNIQUE INDEX users_email_unique_nullable
 ON users (email)
 WHERE email IS NOT NULL;
 
-CREATE UNIQUE INDEX "users_phone_unique_nullable"
+CREATE UNIQUE INDEX users_phone_unique_nullable
 ON users (phone)
 WHERE phone IS NOT NULL;
 
 -- spatial indices
-CREATE INDEX "users_location_idx"
+CREATE INDEX users_location_idx
 ON users USING gist (location);
-
--- trigger: update_update_at
-CREATE TRIGGER app_trigger_update_users_updated_at
-BEFORE UPDATE ON users FOR EACH ROW
-EXECUTE PROCEDURE app_func_update_updated_at();

@@ -43,6 +43,6 @@ var roles = []role.Model{
 	},
 	{
 		ID:   3,
-		Name: "customer",
+		Name: "basic",
 	},
 }

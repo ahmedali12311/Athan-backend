@@ -93,6 +93,27 @@ var categories = []categorySeed{
 					"en": "Pricing",
 				},
 			},
+			{
+				ID: uuid.MustParse(models.CategorySettingTlyncID),
+				Name: pgtypes.JSONB{
+					"ar": "تي لنك",
+					"en": "TLync",
+				},
+			},
+			{
+				ID: uuid.MustParse(models.CategorySettingResalaID),
+				Name: pgtypes.JSONB{
+					"ar": "خدمة رسالة",
+					"en": "Resala",
+				},
+			},
+			{
+				ID: uuid.MustParse(models.CategorySettingTyrianAntID),
+				Name: pgtypes.JSONB{
+					"ar": "خدمة بوابة الدفع",
+					"en": "Payment Gateway",
+				},
+			},
 		},
 	},
 }

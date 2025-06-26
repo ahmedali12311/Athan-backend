@@ -12,12 +12,6 @@ CREATE TABLE fcm_notifications
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
 
-    CONSTRAINT fk_sender_id
-    FOREIGN KEY (sender_id)
+    CONSTRAINT fk_sender_id FOREIGN KEY (sender_id)
     REFERENCES users (id) ON DELETE SET NULL
 );
-
---trigger: update_update_at
-CREATE TRIGGER app_trigger_update_fcm_notifications_updated_at
-BEFORE UPDATE ON fcm_notifications FOR EACH ROW
-EXECUTE PROCEDURE app_func_update_updated_at();

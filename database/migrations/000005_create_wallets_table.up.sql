@@ -1,5 +1,3 @@
-BEGIN;
-
 CREATE TABLE wallets
 (
     id               UUID PRIMARY KEY NOT NULL UNIQUE,
@@ -21,11 +19,3 @@ CREATE TABLE wallets
     CONSTRAINT trx_count_debit_gte_0 CHECK (trx_count_debit >= 0),
     CONSTRAINT trx_count_credit_gte_0 CHECK (trx_count_credit >= 0)
 );
-
-
---trigger: update_update_at
-CREATE TRIGGER app_trigger_update_wallets_updated_at
-BEFORE UPDATE ON wallets FOR EACH ROW
-EXECUTE PROCEDURE app_func_update_updated_at();
-
-COMMIT;

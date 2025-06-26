@@ -128,8 +128,8 @@ func NewAPI(
 	m := models.Setup(db, fb, fbm, tc)
 
 	// initial data seeders, only adds and avoids overwriting on conflict
-	seeders.Settings(m.DB, m.QB)
 	seeders.Categories(m.DB, m.QB)
+	seeders.Settings(m.DB, m.QB)
 	seeders.Roles(m.DB, m.QB)
 	seeders.Users(m.DB, m.QB)
 	seeders.PrintTable(seeders.RunningSeedTable)

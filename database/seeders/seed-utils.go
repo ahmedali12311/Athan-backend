@@ -24,6 +24,14 @@ func parseUUID(id string) uuid.UUID {
 	return parsed
 }
 
+func parsePointerUUID(id string) *uuid.UUID {
+	parsed, err := uuid.Parse(id)
+	if err != nil {
+		log.Panic("uuid parse seeder")
+	}
+	return &parsed
+}
+
 // func clearTable(db *sqlx.DB, name string) {
 // 	query := fmt.Sprintf("delete from %s where true;", name)
 // 	if _, err := db.ExecContext(context.Background(), query); err != nil {

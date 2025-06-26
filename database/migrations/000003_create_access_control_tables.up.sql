@@ -25,15 +25,11 @@ CREATE TABLE role_permissions
 
     PRIMARY KEY (role_id, permission_id),
 
-    CONSTRAINT fk_role_id
-    FOREIGN KEY (role_id)
-    REFERENCES roles (id)
-    ON DELETE CASCADE,
+    CONSTRAINT fk_role_id FOREIGN KEY (role_id)
+    REFERENCES roles (id) ON DELETE CASCADE,
 
-    CONSTRAINT fk_permission_id
-    FOREIGN KEY (permission_id)
-    REFERENCES permissions (id)
-    ON DELETE CASCADE
+    CONSTRAINT fk_permission_id FOREIGN KEY (permission_id)
+    REFERENCES permissions (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_roles
@@ -43,15 +39,11 @@ CREATE TABLE user_roles
 
     PRIMARY KEY (user_id, role_id),
 
-    CONSTRAINT fk_user_id
-    FOREIGN KEY (user_id)
-    REFERENCES users (id)
-    ON DELETE CASCADE,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+    REFERENCES users (id) ON DELETE CASCADE,
 
-    CONSTRAINT fk_role_id
-    FOREIGN KEY (role_id)
-    REFERENCES roles (id)
-    ON DELETE CASCADE
+    CONSTRAINT fk_role_id FOREIGN KEY (role_id)
+    REFERENCES roles (id) ON DELETE CASCADE
 );
 
 CREATE TABLE user_permissions
@@ -61,13 +53,9 @@ CREATE TABLE user_permissions
 
     PRIMARY KEY (user_id, permission_id),
 
-    CONSTRAINT fk_user_id
-    FOREIGN KEY (user_id)
-    REFERENCES users (id)
-    ON DELETE CASCADE,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id)
+    REFERENCES users (id) ON DELETE CASCADE,
 
-    CONSTRAINT fk_permission_id
-    FOREIGN KEY (permission_id)
-    REFERENCES permissions (id)
-    ON DELETE CASCADE
+    CONSTRAINT fk_permission_id FOREIGN KEY (permission_id)
+    REFERENCES permissions (id) ON DELETE CASCADE
 );
