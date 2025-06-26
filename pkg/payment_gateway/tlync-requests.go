@@ -8,12 +8,13 @@ import (
 	"io"
 	"net/http"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 )
 
 func TlyncInitiatePayment(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *TlyncRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/tlync/initiate"
@@ -57,7 +58,7 @@ func TlyncInitiatePayment(
 }
 
 func TlyncTransactionReceipt(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	transactionID uuid.UUID,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/tlync/" +

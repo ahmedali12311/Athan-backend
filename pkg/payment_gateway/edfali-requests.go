@@ -8,11 +8,12 @@ import (
 	"io"
 	"net/http"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 )
 
 func EdfaliInitiatePayment(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *EdfaliInitiateRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/edfali/initiate"
@@ -56,7 +57,7 @@ func EdfaliInitiatePayment(
 }
 
 func EdfaliTransactionConfirm(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *EdfaliConfirmRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/edfali/" +

@@ -11,6 +11,7 @@ import (
 	"app/models/wallet_transaction"
 	"app/pkg/tlync"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -39,10 +40,10 @@ func (c *ControllerBasic) Index(ctx echo.Context) error {
 	if err != nil {
 		return c.APIErr.Database(ctx, err, nil)
 	}
-	settings := tlync.Settings{} // FIX: add back
-	// if err := c.Models.Setting.GetForTlync(&settings); err != nil {
-	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
-	// }
+	settings, err := c.Models.Setting.GetForTlync()
+	if err != nil {
+		return c.APIErr.Database(ctx, err, &setting.Model{})
+	}
 
 	for i := 0; i < len(*indexResponse.Data) && i < 2; i++ {
 		if !(*indexResponse.Data)[i].IsConfirmed {
@@ -51,7 +52,7 @@ func (c *ControllerBasic) Index(ctx echo.Context) error {
 				StoreID:   settings.StoreID,
 				CustomRef: (*indexResponse.Data)[i].ID.String(),
 			}
-			res, err := tlync.TransactionReceipt(&settings, &tlyncInput)
+			res, err := tlync.TransactionReceipt(settings, &tlyncInput)
 			if err != nil {
 				c.APIErr.LoggedOnly(ctx, err)
 				continue
@@ -151,48 +152,6 @@ func (c *ControllerBasic) Store(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusCreated, result)
 }
-
-//	func (c *ControllerAdmin) Update(ctx echo.Context) error {
-//		var result wallet_transaction.Model
-//		if err := c.Utils.ReadUUIDParam(&result.ID, ctx); err != nil {
-//			return c.APIErr.BadRequest(ctx, err)
-//		}
-//		if err := c.Models.Wallet.GetTransaction(&result, nil); err != nil {
-//			return c.APIErr.Database(ctx, err, "Wallet.GetTransaction", result.ModelName())
-//		}
-//
-//		v := validator.NewValidator(
-//			c.Utils.Logger,
-//			c.Utils.CtxT(ctx),
-//			c.Models.Wallet.DB,
-//			c.Schemas.WalletTransaction,
-//		)
-//		if err := v.Parse(ctx.Request()); err != nil {
-//			return c.APIErr.BadRequest(ctx, err)
-//		}
-//
-//		// only admin allowed to insert different user wallet.
-//		v.UnmarshalInto("user", &result.User)
-//
-//		if valid := result.MergeAndValidate(v); !valid {
-//			return c.APIErr.InputValidation(ctx, v)
-//		}
-//		// Start transacting
-//		tx, err := c.Models.Wallet.DB.Beginx()
-//		if err != nil {
-//			return c.APIErr.InternalServer(ctx, err)
-//		}
-//		defer func() { _ = tx.Rollback() }()
-//
-//		if err := c.Models.Wallet.UpdateTransaction(&result, nil, tx); err != nil {
-//			return c.APIErr.Database(ctx, err, "Wallet.UpdateTransactions", result.ModelName())
-//		}
-//		if err = tx.Commit(); err != nil {
-//			return c.APIErr.InternalServer(ctx, err)
-//		}
-//
-//		return ctx.JSON(http.StatusOK, result)
-//	}
 
 func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 	var result wallet_transaction.Model

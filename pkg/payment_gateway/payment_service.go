@@ -8,12 +8,13 @@ import (
 	"net/http"
 	"net/url"
 
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"
 )
 
 func PaymentService(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	ctx echo.Context,
 ) (*PaymentServicesResponse, error) {
 	query := url.Values{}

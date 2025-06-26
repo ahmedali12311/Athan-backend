@@ -7,7 +7,7 @@ require (
 	bitbucket.org/sadeemTechnology/backend-finder v0.0.15
 	bitbucket.org/sadeemTechnology/backend-model v0.0.4
 	bitbucket.org/sadeemTechnology/backend-model-category v0.0.6
-	bitbucket.org/sadeemTechnology/backend-model-setting v0.0.1
+	bitbucket.org/sadeemTechnology/backend-model-setting v0.0.2
 	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.4
 	bitbucket.org/sadeemTechnology/backend-validator v0.0.5
 	firebase.google.com/go/v4 v4.15.2

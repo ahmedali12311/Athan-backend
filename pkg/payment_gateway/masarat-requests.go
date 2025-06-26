@@ -8,11 +8,12 @@ import (
 	"io"
 	"net/http"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 )
 
 func MasaratInitiatePayment(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *MasaratInitiateRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/masarat/initiate"
@@ -56,7 +57,7 @@ func MasaratInitiatePayment(
 }
 
 func MasaratTransactionConfirm(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *MasaratConfirmRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/masarat/" +

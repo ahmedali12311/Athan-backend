@@ -8,11 +8,12 @@ import (
 	"io"
 	"net/http"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 )
 
 func InitiatePayment(
-	settings *Settings,
+	settings *setting.TLync,
 	input *InitiateInput,
 ) (*InitiateResponse, error) {
 	endpoint := settings.Endpoint + "/payment/initiate"
@@ -53,7 +54,7 @@ func InitiatePayment(
 }
 
 func TransactionReceipt(
-	settings *Settings,
+	settings *setting.TLync,
 	input *ConfirmInput,
 ) (*ConfirmResponse, error) {
 	endpoint := settings.Endpoint + "/receipt/transaction"

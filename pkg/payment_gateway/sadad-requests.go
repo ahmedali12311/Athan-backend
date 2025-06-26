@@ -8,11 +8,12 @@ import (
 	"io"
 	"net/http"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/goccy/go-json"
 )
 
 func SadadInitiatePayment(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *SadadInitiateRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/sadad/initiate"
@@ -56,7 +57,7 @@ func SadadInitiatePayment(
 }
 
 func SadadTransactionConfirm(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *SadadConfirmRequest,
 ) (*Response, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/sadad/" +
@@ -101,7 +102,7 @@ func SadadTransactionConfirm(
 }
 
 func SadadTransactionResend(
-	settings *Settings,
+	settings *setting.TyrianAnt,
 	input *SadadResendRequest,
 ) (*SadadResendResponse, error) {
 	endpoint := settings.Endpoint + "/payment-gateways/sadad/" +

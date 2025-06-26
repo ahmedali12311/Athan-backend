@@ -8,6 +8,7 @@ import (
 	"app/models/wallet_transaction"
 	"app/pkg/payment_gateway"
 
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
@@ -24,10 +25,10 @@ func (c *ControllerBasic) MasaratInitiate(ctx echo.Context) error {
 	input := payment_gateway.MasaratInitiateRequest{
 		WalletTransactionID: model.ID,
 	}
-	settings := payment_gateway.Settings{} // FIX: add back
-	// if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
-	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
-	// }
+	settings, err := c.Models.Setting.GetForTyrianAnt()
+	if err != nil {
+		return c.APIErr.Database(ctx, err, &setting.Model{})
+	}
 
 	v, err := c.GetValidator(ctx, model.ModelName())
 	if err != nil {
@@ -49,7 +50,7 @@ func (c *ControllerBasic) MasaratInitiate(ctx echo.Context) error {
 
 	input.Amount = model.Amount
 
-	res, err := payment_gateway.MasaratInitiatePayment(&settings, &input)
+	res, err := payment_gateway.MasaratInitiatePayment(settings, &input)
 	if err != nil {
 		return c.APIErr.ExternalRequestError(ctx, err)
 	}
@@ -106,12 +107,12 @@ func (c *ControllerBasic) MasaratConfirm(ctx echo.Context) error {
 		return c.APIErr.BadRequest(ctx, err)
 	}
 
-	settings := payment_gateway.Settings{} // FIX: add back
-	// if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
-	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
-	// }
+	settings, err := c.Models.Setting.GetForTyrianAnt()
+	if err != nil {
+		return c.APIErr.Database(ctx, err, &setting.Model{})
+	}
 
-	res, err := payment_gateway.MasaratTransactionConfirm(&settings, &input)
+	res, err := payment_gateway.MasaratTransactionConfirm(settings, &input)
 	if err != nil {
 		return c.APIErr.ExternalRequestError(ctx, err)
 	}
