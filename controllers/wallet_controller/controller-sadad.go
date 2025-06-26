@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"app/models/setting"
 	"app/models/user"
 	"app/models/wallet_transaction"
 	"app/pkg/payment_gateway"
@@ -26,10 +25,10 @@ func (c *ControllerBasic) SadadInitiate(ctx echo.Context) error {
 	input := payment_gateway.SadadInitiateRequest{
 		WalletTransactionID: model.ID,
 	}
-	settings := payment_gateway.Settings{}
-	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
-		return c.APIErr.Database(ctx, err, &setting.Model{})
-	}
+	settings := payment_gateway.Settings{} // FIX: add back
+	// if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
+	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
+	// }
 
 	v, err := c.GetValidator(ctx, model.ModelName())
 	if err != nil {
@@ -111,10 +110,10 @@ func (c *ControllerBasic) SadadConfirm(ctx echo.Context) error {
 		return c.APIErr.BadRequest(ctx, err)
 	}
 
-	settings := payment_gateway.Settings{}
-	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
-		return c.APIErr.Database(ctx, err, &setting.Model{})
-	}
+	settings := payment_gateway.Settings{} // FIX: add back
+	// if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
+	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
+	// }
 
 	res, err := payment_gateway.SadadTransactionConfirm(&settings, &input)
 	if err != nil {
@@ -188,10 +187,10 @@ func (c *ControllerBasic) SadadResendOTP(ctx echo.Context) error {
 		WalletTransactionID: result.ID,
 	}
 
-	settings := payment_gateway.Settings{}
-	if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
-		return c.APIErr.Database(ctx, err, &setting.Model{})
-	}
+	settings := payment_gateway.Settings{} // FIX: add back
+	// if err := c.Models.Setting.GetForPaymentGateway(&settings); err != nil {
+	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
+	// }
 
 	res, err := payment_gateway.SadadTransactionResend(&settings, &input)
 	if err != nil {

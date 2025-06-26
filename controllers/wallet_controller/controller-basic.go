@@ -7,7 +7,6 @@ import (
 	"slices"
 
 	"app/controller"
-	"app/models/setting"
 	"app/models/wallet"
 	"app/models/wallet_transaction"
 	"app/pkg/tlync"
@@ -40,10 +39,10 @@ func (c *ControllerBasic) Index(ctx echo.Context) error {
 	if err != nil {
 		return c.APIErr.Database(ctx, err, nil)
 	}
-	settings := tlync.Settings{}
-	if err := c.Models.Setting.GetForTlync(&settings); err != nil {
-		return c.APIErr.Database(ctx, err, &setting.Model{})
-	}
+	settings := tlync.Settings{} // FIX: add back
+	// if err := c.Models.Setting.GetForTlync(&settings); err != nil {
+	// 	return c.APIErr.Database(ctx, err, &setting.Model{})
+	// }
 
 	for i := 0; i < len(*indexResponse.Data) && i < 2; i++ {
 		if !(*indexResponse.Data)[i].IsConfirmed {
@@ -58,7 +57,10 @@ func (c *ControllerBasic) Index(ctx echo.Context) error {
 				continue
 			}
 			if res.Result != "success" {
-				err := fmt.Errorf("confirmation is not complete: %s", res.Message)
+				err := fmt.Errorf(
+					"confirmation is not complete: %s",
+					res.Message,
+				)
 				c.APIErr.LoggedOnly(ctx, err)
 				continue
 			}
@@ -73,11 +75,17 @@ func (c *ControllerBasic) Index(ctx echo.Context) error {
 			// marshalling/unmarshalling res into wallet trx struct
 			b, err := json.Marshal(res.Data)
 			if err != nil {
-				c.APIErr.LoggedOnly(ctx, fmt.Errorf("marshalling res.Data: %w", err))
+				c.APIErr.LoggedOnly(
+					ctx,
+					fmt.Errorf("marshalling res.Data: %w", err),
+				)
 				continue
 			}
 			if err := json.Unmarshal(b, &(*indexResponse.Data)[i].TLyncResponse); err != nil {
-				c.APIErr.LoggedOnly(ctx, fmt.Errorf("unmarshalling res.Data: %w", err))
+				c.APIErr.LoggedOnly(
+					ctx,
+					fmt.Errorf("unmarshalling res.Data: %w", err),
+				)
 				continue
 			}
 

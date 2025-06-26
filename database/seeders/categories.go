@@ -1,12 +1,20 @@
 package seeders
 
 import (
+	"app/models"
+
 	"bitbucket.org/sadeemTechnology/backend-model-category"
-	pgtypes "bitbucket.org/sadeemTechnology/backend-pgtypes"
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
+	"bitbucket.org/sadeemTechnology/backend-pgtypes"
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
+
+type categorySeed struct {
+	category.Model
+	Children []category.Model
+}
 
 func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
@@ -19,8 +27,24 @@ func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 		"parent_id",
 		"super_parent_id",
 	}
+	data := []category.Model{}
+
 	for i := range categories {
-		m := categories[i]
+		data = append(data, categories[i].Model)
+
+		if len(categories[i].Children) > 0 {
+			for c := range categories[i].Children {
+				categories[i].Children[c].Sort = c
+				categories[i].Children[c].Depth = categories[i].Depth + 1
+				categories[i].Children[c].ParentID = &categories[i].ID
+				categories[i].Children[c].SuperParentID = &categories[i].ID
+
+				data = append(data, categories[i].Children[c])
+			}
+		}
+	}
+	for i := range data {
+		m := data[i]
 		values := []any{
 			m.ID,
 			m.Name,
@@ -33,95 +57,42 @@ func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 		}
 		genericSeeder(db, qb, "categories", cols, values)
 	}
-	RunningSeedTable.Append(len(categories), "categories")
+	RunningSeedTable.Append(len(data), "categories")
 }
 
-var categories = []category.Model{
+var categories = []categorySeed{
 	{
-		ID: uuid.MustParse("fe343212-b79d-43e8-8203-8854b46e2a4b"),
-		Name: pgtypes.JSONB{
-			"ar": "مستندات",
-			"en": "documents",
+		Model: category.Model{
+			ID: uuid.MustParse(setting.SuperParentCategoryID),
+			Name: pgtypes.JSONB{
+				"ar": "الإعدادات",
+				"en": "Settings",
+			},
+			Depth: 0,
+			Sort:  0,
 		},
-		Depth:         0,
-		Sort:          0,
-		IsDisabled:    false,
-		IsFeatured:    false,
-		ParentID:      nil,
-		SuperParentID: nil,
+		Children: []category.Model{
+			{
+				ID: uuid.MustParse(models.CategorySettingSocialID),
+				Name: pgtypes.JSONB{
+					"ar": "وسائل تواصل",
+					"en": "Social Links",
+				},
+			},
+			{
+				ID: uuid.MustParse(models.CategorySettingGeneralID),
+				Name: pgtypes.JSONB{
+					"ar": "عامة",
+					"en": "General",
+				},
+			},
+			{
+				ID: uuid.MustParse(models.CategorySettingPricingID),
+				Name: pgtypes.JSONB{
+					"ar": "تسعير",
+					"en": "Pricing",
+				},
+			},
+		},
 	},
-	// 	// Children
-	// 	{
-	// 		ID:            parseUUID("22fb185c-0af1-492e-baa5-7ced47fe66a9"),
-	// 		Name:          "جواز سفر",
-	// 		Depth:         1,
-	// 		Sort:          0,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      &documents,
-	// 		SuperParentID: &documents,
-	// 	},
-	// 	{
-	// 		ID:            parseUUID("100e38b9-50fe-4ffe-9c35-00646bba4d0c"),
-	// 		Name:          "اختبار",
-	// 		Depth:         1,
-	// 		Sort:          1,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      &documents,
-	// 		SuperParentID: &documents,
-	// 	},
-	// 	{
-	// 		ID:            parseUUID("895d5537-cdc5-43b9-9fda-77e01ef4c5f0"),
-	// 		Name:          "درس",
-	// 		Depth:         1,
-	// 		Sort:          2,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      &documents,
-	// 		SuperParentID: &documents,
-	// 	},
-
-	// 	{
-	// 		ID:            trainers,
-	// 		Name:          "مدربين",
-	// 		Depth:         0,
-	// 		Sort:          1,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      nil,
-	// 		SuperParentID: nil,
-	// 	},
-	// 	// Children
-	// 	{
-	// 		ID:            parseUUID("3896b02e-e098-413f-96fc-3d9835b77401"),
-	// 		Name:          "صيدلة",
-	// 		Depth:         1,
-	// 		Sort:          0,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      &trainers,
-	// 		SuperParentID: &trainers,
-	// 	},
-	// 	{
-	// 		ID:            programs,
-	// 		Name:          "برامج",
-	// 		Depth:         0,
-	// 		Sort:          2,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      nil,
-	// 		SuperParentID: nil,
-	// 	},
-	// 	// Children
-	// 	{
-	// 		ID:            parseUUID("ddbd3db0-a34e-4066-a2fb-68606e331b8e"),
-	// 		Name:          "طب",
-	// 		Depth:         1,
-	// 		Sort:          0,
-	// 		IsDisabled:    false,
-	// 		IsFeatured:    false,
-	// 		ParentID:      &programs,
-	// 		SuperParentID: &programs,
-	// 	},
 }

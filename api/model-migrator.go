@@ -7,8 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	config "bitbucket.org/sadeemTechnology/backend-config"
-	category "bitbucket.org/sadeemTechnology/backend-model-category"
+	"bitbucket.org/sadeemTechnology/backend-config"
+	"bitbucket.org/sadeemTechnology/backend-model-category"
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
 	"github.com/rs/zerolog"
 )
 
@@ -38,6 +39,11 @@ func ModelMigrator(
 			name: category.MigrationName,
 			up:   category.MigrationUp,
 			down: category.MigrationDown,
+		},
+		{
+			name: setting.MigrationName,
+			up:   setting.MigrationUp,
+			down: setting.MigrationDown,
 		},
 	}
 

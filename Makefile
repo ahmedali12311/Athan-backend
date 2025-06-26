@@ -20,10 +20,6 @@ update:
 # ============================================================================= 
 # Local Dev
 # ============================================================================= 
-air-local:
-	@set -a && source docker/builds/local/.env
-	@air
-
 ## air: runs the project locally using air docker image
 air:
 	@set -a && source docker/builds/local/.env

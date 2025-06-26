@@ -46,10 +46,12 @@ func (c *ControllerOTP) Request(ctx echo.Context) error {
 
 	expires := time.Now().UTC().Add(5 * time.Minute)
 
-	settings, err := c.Models.Setting.GetForOTP()
-	if err != nil {
-		return c.APIErr.Database(ctx, err, &result)
-	}
+	// TODO: get this
+	var settings *otp.Settings
+	// settings, err := c.Models.Setting.GetByKeys()
+	// if err != nil {
+	// 	return c.APIErr.Database(ctx, err, &result)
+	// }
 	input := &otp.Input{
 		Phone: *result.Phone,
 	}

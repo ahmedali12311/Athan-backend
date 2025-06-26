@@ -10,18 +10,18 @@ func Bool() bool {
 	return rand.Intn(2) == 1 //nolint: gosec // dw
 }
 
-func Int(min, max int) int {
-	if max < min {
+func Int(minval, maxval int) int {
+	if maxval < minval {
 		return -1
 	}
 	// min, max := 2, 8
 	// 2 + (8-2+1) +1 because Intn starts at 0
 	// 2 + 1...6
-	return min + rand.Intn(max-min+1) //nolint: gosec // dw
+	return minval + rand.Intn(maxval-minval+1) //nolint: gosec // dw
 }
 
-func Float64(min, max float64, acc int) float64 {
-	r := min + rand.Float64()*(max-min) //nolint: gosec // dw
+func Float64(minval, maxval float64, acc int) float64 {
+	r := minval + rand.Float64()*(maxval-minval) //nolint: gosec // dw
 	return numbers.Truncat(r, acc)
 }
 

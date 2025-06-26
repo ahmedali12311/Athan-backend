@@ -16,6 +16,7 @@ func Get(d *controller.Dependencies) *Controllers {
 }
 
 // scope ----------------------------------------------------------------------
+
 func (c *Controllers) scope(ctx echo.Context) *category.WhereScope {
 	scopes := c.Utils.CtxScopes(ctx)
 	var admin bool

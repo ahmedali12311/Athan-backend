@@ -3,7 +3,8 @@ package role_controller
 
 import (
 	"app/controller"
-	"app/models/role"
+
+	model "bitbucket.org/sadeemTechnology/backend-model"
 )
 
 func (m *Controllers) SetBasicRoutes(
@@ -14,7 +15,7 @@ func (m *Controllers) SetBasicRoutes(
 	f.GET("", m.Basic.Index).Name = "roles:index:public"
 	f.GET("/:id", m.Basic.Show).Name = "roles:show:public"
 
-	r := d.Requires(role.ScopeAdmin)
+	r := d.Requires(model.ScopeAdmin)
 
 	f.POST("", m.Basic.Store, r).Name = "roles:store:admin"
 	f.PUT("/:id", m.Basic.Update, r).Name = "roles:update:admin"

@@ -12,9 +12,6 @@ import (
 )
 
 const (
-	ScopeAdmin  = "admin"
-	ScopePublic = "public"
-
 	AdminRole    = 2
 	MerchantRole = 3
 	CustomerRole = 4

@@ -9,6 +9,7 @@ import (
 
 	"bitbucket.org/sadeemTechnology/backend-config"
 	"bitbucket.org/sadeemTechnology/backend-model-category"
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 
 	"github.com/rs/zerolog"
 	js "github.com/santhosh-tekuri/jsonschema/v5"
@@ -39,8 +40,6 @@ var (
 	roleSF []byte
 	//go:embed permission.json
 	permissionSF []byte
-	//go:embed setting.json
-	settingSF []byte
 	//go:embed wallet_transaction.json
 	WalletTrxSF []byte
 	//go:embed fcm_notification.json
@@ -102,10 +101,11 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"properties/line_string.json": lineStringSF,
 	}
 	modelFiles := map[string][]byte{
-		"category.json":           category.Schema,
+		"category.json": category.Schema,
+		"setting.json":  setting.Schema,
+
 		"permission.json":         permissionSF,
 		"role.json":               roleSF,
-		"setting.json":            settingSF,
 		"user.json":               userSF,
 		"wallet_transaction.json": WalletTrxSF,
 		"fcm_notification.json":   fcmNotificationSF,

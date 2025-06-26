@@ -6,47 +6,35 @@ import (
 	"net/http"
 	"slices"
 
-	"app/controller"
-	"app/models/setting"
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
 
 	"github.com/labstack/echo/v4"
 )
 
-type ControllerBasic struct {
-	*controller.Dependencies
-}
-
-// Scopes ---------------------------------------------------------------------
-
-func (c *ControllerBasic) publicScope(ctx echo.Context) bool {
-	scopes := c.Utils.CtxScopes(ctx)
-	return !slices.Contains(scopes, "admin")
-}
-
 // Actions --------------------------------------------------------------------
 
-func (c *ControllerBasic) Index(ctx echo.Context) error {
-	isPublic := c.publicScope(ctx)
-	indexResponse, err := c.Models.Setting.GetAll(ctx, isPublic)
+func (c *Controllers) Index(ctx echo.Context) error {
+	ws := c.scope(ctx)
+	indexResponse, err := c.Models.Setting.GetAll(ctx, ws)
 	if err != nil {
 		return c.APIErr.Database(ctx, err, nil)
 	}
 	return ctx.JSON(http.StatusOK, indexResponse)
 }
 
-func (c *ControllerBasic) Show(ctx echo.Context) error {
+func (c *Controllers) Show(ctx echo.Context) error {
 	var result setting.Model
 	if err := c.Utils.ReadIDParam(&result.ID, ctx); err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
-	isPublic := c.publicScope(ctx)
-	if err := c.Models.Setting.GetOne(&result, isPublic); err != nil {
+	ws := c.scope(ctx)
+	if err := c.Models.Setting.GetOne(&result, ws); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 	return ctx.JSON(http.StatusOK, result)
 }
 
-func (c *ControllerBasic) Store(ctx echo.Context) error {
+func (c *Controllers) Store(ctx echo.Context) error {
 	var result setting.Model
 	v, err := c.GetValidator(ctx, result.ModelName())
 	if err != nil {
@@ -71,12 +59,12 @@ func (c *ControllerBasic) Store(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, result)
 }
 
-func (c *ControllerBasic) Update(ctx echo.Context) error {
+func (c *Controllers) Update(ctx echo.Context) error {
 	var result setting.Model
 	if err := c.Utils.ReadIDParam(&result.ID, ctx); err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
-	if err := c.Models.Setting.GetOne(&result, false); err != nil {
+	if err := c.Models.Setting.GetOne(&result, nil); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 	v, err := c.GetValidator(ctx, result.ModelName())
@@ -93,7 +81,8 @@ func (c *ControllerBasic) Update(ctx echo.Context) error {
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	if err := c.Models.Setting.UpdateOne(&result, tx); err != nil {
+	ws := c.scope(ctx)
+	if err := c.Models.Setting.UpdateOne(&result, ws, tx); err != nil {
 		switch {
 		case errors.Is(err, sql.ErrNoRows):
 			return c.APIErr.Database(
@@ -112,12 +101,13 @@ func (c *ControllerBasic) Update(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, result)
 }
 
-func (c *ControllerBasic) Destroy(ctx echo.Context) error {
+func (c *Controllers) Destroy(ctx echo.Context) error {
 	var result setting.Model
 	if err := c.Utils.ReadIDParam(&result.ID, ctx); err != nil {
 		return c.APIErr.BadRequest(ctx, err)
 	}
-	if err := c.Models.Setting.GetOne(&result, false); err != nil {
+	ws := c.scope(ctx)
+	if err := c.Models.Setting.GetOne(&result, ws); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 	if slices.Contains(setting.CoreKeys, result.Key) {
@@ -131,7 +121,7 @@ func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 	}
 	defer func() { _ = tx.Rollback() }()
 
-	if err := c.Models.Setting.DeleteOne(&result, tx); err != nil {
+	if err := c.Models.Setting.DeleteOne(&result, ws, tx); err != nil {
 		return c.APIErr.Database(ctx, err, &result)
 	}
 	if err := tx.Commit(); err != nil {

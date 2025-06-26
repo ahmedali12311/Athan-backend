@@ -50,8 +50,7 @@ type SMS struct {
 func NewSMS(config SMSConfig, opts ...Option) (*SMS, error) {
 	var sms SMS
 	for _, opt := range opts {
-		err := opt(&sms.options)
-		if err != nil {
+		if err := opt(&sms.options); err != nil {
 			return nil, err
 		}
 	}
@@ -59,11 +58,11 @@ func NewSMS(config SMSConfig, opts ...Option) (*SMS, error) {
 	sms.config = config
 
 	if sms.config.Url == "" {
-		return nil, errors.New("sms url can't not be empty")
+		return nil, errors.New("sms url can't be empty")
 	}
 
 	if sms.config.Jwt == "" {
-		return nil, errors.New("sms jwt can't not be empty")
+		return nil, errors.New("sms jwt can't be empty")
 	}
 
 	return &sms, nil

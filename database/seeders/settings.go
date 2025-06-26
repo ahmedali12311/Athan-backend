@@ -3,7 +3,8 @@ package seeders
 import (
 	"log"
 
-	"app/models/setting"
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
+	pgtypes "bitbucket.org/sadeemTechnology/backend-pgtypes"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
@@ -12,22 +13,26 @@ import (
 func Settings(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	cols := []string{
 		"id",
+		"name",
 		"key",
 		"value",
 		"is_disabled",
 		"is_readonly",
 		"field_type",
 		"data_type",
+		"category_id",
 	}
 	for i := range settings {
 		values := []any{
 			settings[i].ID,
+			settings[i].Name,
 			settings[i].Key,
 			settings[i].Value,
 			settings[i].IsDisabled,
 			settings[i].IsReadOnly,
 			settings[i].FieldType,
 			settings[i].DataType,
+			settings[i].CategoryID,
 		}
 		genericSeeder(db, qb, "settings", cols, values)
 	}
@@ -44,8 +49,12 @@ func Settings(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 
 var settings = []setting.Model{
 	{
-		ID:         1,
-		Key:        "app_name",
+		ID: 1,
+		Name: pgtypes.JSONB{
+			"ar": "اسم التطبيق",
+			"en": "App Name",
+		},
+		Key:        setting.KeyAppName,
 		Value:      "اسم التطبيق",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -53,8 +62,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         2,
-		Key:        "about",
+		ID: 2,
+		Name: pgtypes.JSONB{
+			"ar": "عن التطبيق",
+			"en": "ِAbout",
+		},
+		Key:        setting.KeyAbout,
 		Value:      "عن التطبيق",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -62,8 +75,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         3,
-		Key:        "rules",
+		ID: 3,
+		Name: pgtypes.JSONB{
+			"ar": "قوانين التطبيق",
+			"en": "rules",
+		},
+		Key:        setting.KeyRules,
 		Value:      "قوانين التطبيق",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -71,8 +88,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         4,
-		Key:        "app_phone",
+		ID: 4,
+		Name: pgtypes.JSONB{
+			"ar": "هاتف",
+			"en": "Phone",
+		},
+		Key:        setting.KeyAppPhone,
 		Value:      "+218910001122",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -80,8 +101,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         5,
-		Key:        "app_whatsapp_url",
+		ID: 5,
+		Name: pgtypes.JSONB{
+			"ar": "رابط واتساب",
+			"en": "Whatsapp",
+		},
+		Key:        setting.KeyAppWhatsappUrl,
 		Value:      "whatsapp/910001122",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -89,8 +114,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         6,
-		Key:        "app_facebook_url",
+		ID: 6,
+		Name: pgtypes.JSONB{
+			"ar": "رابط فيسبوك",
+			"en": "Facebook",
+		},
+		Key:        setting.KeyAppFacebookUrl,
 		Value:      "facebook.com/app",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -98,8 +127,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         7,
-		Key:        "app_telegram_url",
+		ID: 7,
+		Name: pgtypes.JSONB{
+			"ar": "رابط تيليغرام",
+			"en": "Telegram",
+		},
+		Key:        setting.KeyAppTelegramUrl,
 		Value:      "telegram.com/910001122",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -107,8 +140,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         8,
-		Key:        "app_instagram_url",
+		ID: 8,
+		Name: pgtypes.JSONB{
+			"ar": "رابط انستاغرام",
+			"en": "Instagram",
+		},
+		Key:        setting.KeyAppInstagramUrl,
 		Value:      "instagram.com/app",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -116,8 +153,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         9,
-		Key:        "app_website_url",
+		ID: 9,
+		Name: pgtypes.JSONB{
+			"ar": "رابط الموقع",
+			"en": "Website",
+		},
+		Key:        setting.KeyAppWebsiteUrl,
 		Value:      "wwww.app.ly",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -125,8 +166,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         10,
-		Key:        "app_email_url",
+		ID: 10,
+		Name: pgtypes.JSONB{
+			"ar": "البريد الالكتروني",
+			"en": "Email",
+		},
+		Key:        setting.KeyAppEmailUrl,
 		Value:      "info@app.ly",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -134,17 +179,25 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         11,
-		Key:        "app_twitter_url",
-		Value:      "twitter.com/app",
+		ID: 11,
+		Name: pgtypes.JSONB{
+			"ar": "رابط اكس",
+			"en": "X",
+		},
+		Key:        "app_x_url", // TODO:
+		Value:      "x.com/app",
 		IsDisabled: false,
 		IsReadOnly: false,
 		FieldType:  "text",
 		DataType:   "string",
 	},
 	{
-		ID:         12,
-		Key:        "app_logo",
+		ID: 12,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppLogo,
 		Value:      "path/image.jpg",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -152,8 +205,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         13,
-		Key:        "app_color_primary",
+		ID: 13,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppColorPrimary,
 		Value:      "#6C04FC",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -161,8 +218,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         14,
-		Key:        "app_color_secondary",
+		ID: 14,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppColorSecondary,
 		Value:      "#4E6E5D",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -170,8 +231,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         15,
-		Key:        "app_color_on_primary",
+		ID: 15,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppColorOnPrimary,
 		Value:      "#C2E7DA",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -179,8 +244,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         16,
-		Key:        "app_color_on_secondary",
+		ID: 16,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppColorOnSecondary,
 		Value:      "#F1FFE7",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -188,8 +257,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         17,
-		Key:        "app_app_store_url",
+		ID: 17,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppAppStoreUrl,
 		Value:      "https://apps.apple.com/us/app",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -197,8 +270,12 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         18,
-		Key:        "app_google_play_url",
+		ID: 18,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppGooglePlayUrl,
 		Value:      "https://play.google.com/store/apps",
 		IsDisabled: false,
 		IsReadOnly: false,
@@ -206,63 +283,24 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         19,
-		Key:        "main_hero",
-		Value:      "path/image.jpg",
-		IsDisabled: false,
-		IsReadOnly: false,
-		FieldType:  "file",
-		DataType:   "string",
-	},
-	{
-		ID:         20,
-		Key:        "main_title",
-		Value:      "Main Title",
-		IsDisabled: false,
-		IsReadOnly: false,
-		FieldType:  "text",
-		DataType:   "string",
-	},
-	{
-		ID:         21,
-		Key:        "main_subtitle",
-		Value:      "Main Subtitle",
-		IsDisabled: false,
-		IsReadOnly: false,
-		FieldType:  "text",
-		DataType:   "string",
-	},
-	{
-		ID:         22,
-		Key:        "main_summary",
-		Value:      "Main Summary",
-		IsDisabled: false,
-		IsReadOnly: false,
-		FieldType:  "text",
-		DataType:   "string",
-	},
-	{
-		ID:         23,
-		Key:        "main_call_to_action",
-		Value:      "Register Now!",
-		IsDisabled: false,
-		IsReadOnly: false,
-		FieldType:  "text",
-		DataType:   "string",
-	},
-	{
-		ID:         24,
-		Key:        "app_privacy_policy",
+		ID: 19,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
+		Key:        setting.KeyAppPrivacyPolicy,
 		Value:      "privacy policy",
 		IsDisabled: false,
 		IsReadOnly: false,
 		FieldType:  "text",
 		DataType:   "string",
 	},
-
-	// TLync settings
-	{
-		ID:         25,
+	{ // TLync settings -------------------------------------------------------
+		ID: 20,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "tlync_endpoint",
 		Value:      "https://c7drkx2ege.execute-api.eu-west-2.amazonaws.com",
 		IsDisabled: true,
@@ -271,7 +309,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         26,
+		ID: 21,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "tlync_token",
 		Value:      "qS00000000000000000000000000000000000000",
 		IsDisabled: true,
@@ -280,7 +322,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         27,
+		ID: 22,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "tlync_store_id",
 		Value:      "wL00000000000000000000000000000000000000000000000000000000000000",
 		IsDisabled: true,
@@ -289,7 +335,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         28,
+		ID: 23,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "tlync_front_url",
 		Value:      "https://sadeem-tech.com",
 		IsDisabled: true,
@@ -297,9 +347,12 @@ var settings = []setting.Model{
 		FieldType:  "text",
 		DataType:   "string",
 	},
-	// OTP settings
-	{
-		ID:         29,
+	{ // OTP settings ---------------------------------------------------------
+		ID: 24,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "sadeem_otp_url",
 		Value:      "https://otp.sadeem-factory.com",
 		IsDisabled: true,
@@ -308,7 +361,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         30,
+		ID: 25,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "sadeem_otp_jwt",
 		Value:      "qS00000000000000000000000000000000000000",
 		IsDisabled: true,
@@ -317,7 +374,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         31,
+		ID: 26,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "sadeem_otp_env",
 		Value:      "development",
 		IsDisabled: true,
@@ -325,17 +386,12 @@ var settings = []setting.Model{
 		FieldType:  "textarea",
 		DataType:   "string",
 	},
-	{
-		ID:         32,
-		Key:        "sadeem_otp_key",
-		Value:      "qS00000000000000000000000000000000000000",
-		IsDisabled: true,
-		IsReadOnly: false,
-		FieldType:  "textarea",
-		DataType:   "string",
-	},
-	{
-		ID:         33,
+	{ // tyrian-ant settings --------------------------------------------------
+		ID: 27,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "payment_gateway_endpoint",
 		Value:      "https://tyrian-ant.sadeem-lab.com/api/v1",
 		IsDisabled: true,
@@ -344,7 +400,11 @@ var settings = []setting.Model{
 		DataType:   "string",
 	},
 	{
-		ID:         34,
+		ID: 28,
+		Name: pgtypes.JSONB{
+			"ar": "الشعار",
+			"en": "Logo",
+		},
 		Key:        "payment_gateway_api_key",
 		Value:      "qS00000000000000000000000000000000000000",
 		IsDisabled: true,

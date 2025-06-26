@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"app/controller"
-	"app/models/setting"
 	"app/models/user"
 	"bitbucket.org/sadeemTechnology/backend-config"
+	"bitbucket.org/sadeemTechnology/backend-model-setting"
 
 	"github.com/labstack/echo/v4"
 )
