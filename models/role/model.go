@@ -11,12 +11,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	AdminRole    = 2
-	MerchantRole = 3
-	CustomerRole = 4
-)
-
 type Model struct {
 	ID          int    `db:"id"          json:"id"`
 	Name        string `db:"name"        json:"name"`

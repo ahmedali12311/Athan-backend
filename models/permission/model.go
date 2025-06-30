@@ -5,15 +5,18 @@ import (
 	"net/url"
 
 	"bitbucket.org/sadeemTechnology/backend-finder"
+	validator "bitbucket.org/sadeemTechnology/backend-validator"
 )
 
 type Model struct {
-	ID     int    `db:"id"     json:"id"`
-	Method string `db:"method" json:"method"`
-	Path   string `db:"path"   json:"path"`
-	Action string `db:"action" json:"action"`
-	Model  string `db:"model"  json:"model"`
-	Scope  string `db:"scope"  json:"scope"`
+	ID         int    `db:"id"          json:"id"`
+	Method     string `db:"method"      json:"method"`
+	Path       string `db:"path"        json:"path"`
+	Action     string `db:"action"      json:"action"`
+	Model      string `db:"model"       json:"model"`
+	Scope      string `db:"scope"       json:"scope"`
+	IsLoggable bool   `db:"is_loggable" json:"is_loggable"`
+	IsVisible  bool   `db:"is_visible"  json:"is_visible"`
 }
 
 // Model ----------------------------------------------------------------------
@@ -72,4 +75,12 @@ func BuildMap(perms []Model) map[string][]string {
 		}
 	}
 	return m
+}
+
+func (m *Model) MergeAndValidate(v *validator.Validator) bool {
+	v.AssignBool("is_loggable", &m.IsLoggable)
+	v.AssignBool("is_visible", &m.IsVisible)
+
+	v.ValidateModelSchema(m, m.TableName(), v.Schema)
+	return v.Valid()
 }

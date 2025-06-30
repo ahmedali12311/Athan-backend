@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"app/models/permission"
-	"app/models/role"
 	"bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/goccy/go-json"
@@ -21,6 +20,38 @@ func (app *Application) routesGen(routes []*echo.Route) {
 	// TODO:
 	// 1. filter sensitve routes
 	// 2. serve routes permission with (api-key) protection
+
+	if _, err := app.DB.ExecContext(
+		context.Background(),
+		`
+            WITH sequenced AS (
+                SELECT
+                    id,
+                    ROW_NUMBER() OVER (ORDER BY id) AS new_sequence_id
+                FROM
+                    permissions
+            )
+
+            UPDATE permissions
+            SET id = sequenced.new_sequence_id
+            FROM sequenced
+            WHERE permissions.id = sequenced.id;
+        `,
+	); err != nil {
+		app.Logger.Fatal().Msgf("permissions sequence: %s", err.Error())
+	}
+
+	if _, err := app.DB.ExecContext(
+		context.Background(),
+		`
+            SELECT setval(
+                'permissions_id_seq',
+                (SELECT MAX(id) FROM permissions)
+            )
+        `,
+	); err != nil {
+		app.Logger.Fatal().Msgf("permissions sequence: %s", err.Error())
+	}
 
 	perms := &[]permission.Model{}
 	for _, v := range routes {
@@ -81,30 +112,35 @@ func (app *Application) routesGen(routes []*echo.Route) {
 			)
 		}
 
-		adminPerms, err := app.Models.Role.GrantByScope(role.AdminRole, "admin")
-		if err != nil {
-			app.Logger.Fatal().Msg(err.Error())
-		}
-		if adminPerms > 0 {
-			app.Logger.Info().Msgf(
-				"admin was granted %d new permissions",
-				adminPerms,
-			)
-		}
-
 		if err := app.Models.User.CreateSuperAdmin(superAdminID); err != nil {
 			app.Logger.Fatal().Msg(err.Error())
 		}
-		if _, err := app.DB.ExecContext(
-			context.Background(),
-			`
-            SELECT setval(
-                'permissions_id_seq',
-                (SELECT MAX(id) FROM permissions)
-            );
-            `,
-		); err != nil {
-			app.Logger.Fatal().Msgf("permissions sequence: %s", err.Error())
+
+		basicRoleID, err := app.Models.Role.CreateBasic()
+		if err != nil {
+			app.Logger.Fatal().Msg(err.Error())
+		}
+		basicRoleOwn, err := app.Models.Role.GrantByScope(basicRoleID, "own")
+		if err != nil {
+			app.Logger.Fatal().Msg(err.Error())
+		}
+		if basicRoleOwn > 0 {
+			app.Logger.
+				Info().
+				Msgf("basic was granted %d new own permissions", basicRoleOwn)
+		}
+		basicRolePublic, err := app.Models.Role.GrantByScope(
+			basicRoleID,
+			"public",
+		)
+		if err != nil {
+			app.Logger.Fatal().Msg(err.Error())
+		}
+		if basicRolePublic > 0 {
+			app.Logger.Info().Msgf(
+				"basic was granted %d new public permissions",
+				basicRolePublic,
+			)
 		}
 	}
 	// NOTE: permissions data is stored in memory to avoid querying the DB

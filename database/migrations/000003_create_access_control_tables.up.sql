@@ -8,12 +8,14 @@ CREATE TABLE roles
 
 CREATE TABLE permissions
 (
-    id     SERIAL PRIMARY KEY,
-    method TEXT NOT NULL,
-    path   TEXT NOT NULL,
-    model  TEXT NOT NULL,
-    action TEXT NOT NULL,
-    scope  TEXT NOT NULL,
+    id          SERIAL PRIMARY KEY,
+    method      TEXT NOT NULL,
+    path        TEXT NOT NULL,
+    model       TEXT NOT NULL,
+    action      TEXT NOT NULL,
+    scope       TEXT NOT NULL,
+    is_loggable BOOLEAN DEFAULT FALSE,
+    is_visible  BOOLEAN DEFAULT FALSE,
 
     UNIQUE (method, path, model, action, scope)
 );
@@ -26,10 +28,14 @@ CREATE TABLE role_permissions
     PRIMARY KEY (role_id, permission_id),
 
     CONSTRAINT fk_role_id FOREIGN KEY (role_id)
-    REFERENCES roles (id) ON DELETE CASCADE,
+    REFERENCES roles (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 
     CONSTRAINT fk_permission_id FOREIGN KEY (permission_id)
-    REFERENCES permissions (id) ON DELETE CASCADE
+    REFERENCES permissions (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 CREATE TABLE user_roles
@@ -40,10 +46,14 @@ CREATE TABLE user_roles
     PRIMARY KEY (user_id, role_id),
 
     CONSTRAINT fk_user_id FOREIGN KEY (user_id)
-    REFERENCES users (id) ON DELETE CASCADE,
+    REFERENCES users (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 
     CONSTRAINT fk_role_id FOREIGN KEY (role_id)
-    REFERENCES roles (id) ON DELETE CASCADE
+    REFERENCES roles (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 CREATE TABLE user_permissions
@@ -54,8 +64,12 @@ CREATE TABLE user_permissions
     PRIMARY KEY (user_id, permission_id),
 
     CONSTRAINT fk_user_id FOREIGN KEY (user_id)
-    REFERENCES users (id) ON DELETE CASCADE,
+    REFERENCES users (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
 
     CONSTRAINT fk_permission_id FOREIGN KEY (permission_id)
-    REFERENCES permissions (id) ON DELETE CASCADE
+    REFERENCES permissions (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
