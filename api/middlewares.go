@@ -108,7 +108,7 @@ func (app *Application) SetupMiddlewares(e *echo.Echo, isTest bool) {
 			Str("authorized_id", authorizedID).
 			Int("status", ctx.Response().Status).
 
-			// FIX: better logging and chagne detection
+			// FIX: better logging and change detection
 			// Str("request", sanitizeRequestBody(reqBody)).
 			// RawJSON("response", []byte(sanitizeRequestBody(resBody))).
 

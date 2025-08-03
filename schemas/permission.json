@@ -4,7 +4,13 @@
     "description": "permission model schema",
     "type": "object",
     "additionalProperties": false,
-    "required": ["method", "path", "model","action", "scope"],
+    "required": [
+        "method",
+        "path",
+        "model",
+        "action",
+        "scope"
+    ],
     "properties": {
         "id": {
             "type": "number",
@@ -12,7 +18,12 @@
         },
         "method": {
             "type": "string",
-            "enum": ["GET", "PUT", "POST", "DELETE"],
+            "enum": [
+                "GET",
+                "PUT",
+                "POST",
+                "DELETE"
+            ],
             "minLength": 3,
             "maxLength": 6
         },
