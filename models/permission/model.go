@@ -81,6 +81,6 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	v.AssignBool("is_loggable", &m.IsLoggable)
 	v.AssignBool("is_visible", &m.IsVisible)
 
-	v.ValidateModelSchema(m, m.TableName(), v.Schema)
+	v.ValidateModelSchema(m, v.Schema)
 	return v.Valid()
 }

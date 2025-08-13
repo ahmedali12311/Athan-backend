@@ -65,7 +65,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	v.AssignString("name", &m.Name, 1, 50)
 	v.UnmarshalInto("permissions", &m.Permissions)
 
-	v.ValidateModelSchema(m, m.TableName(), v.Schema)
+	v.ValidateModelSchema(m, v.Schema)
 	return v.Valid()
 }
 

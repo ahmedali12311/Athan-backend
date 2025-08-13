@@ -71,6 +71,7 @@ func (d *Dependencies) GetValidator(
 		Schema:  sch,
 		RootDIR: config.RootDIR,
 		DOMAIN:  config.DOMAIN,
+		Logger:  d.Utils.Logger,
 	}
 	v, err := validator.NewValidator(cfg)
 	if err != nil {

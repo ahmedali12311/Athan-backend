@@ -107,7 +107,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	v.UnmarshalInto("user", &m.User, ScopeAdmin)
 	v.AssignBool("is_confirmed", &m.IsConfirmed, ScopeAdmin)
 
-	v.ValidateModelSchema(m, m.TableName(), v.Schema)
+	v.ValidateModelSchema(m, v.Schema)
 	return v.Valid()
 }
 
