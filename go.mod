@@ -4,12 +4,12 @@ go 1.24.0
 
 require (
 	bitbucket.org/sadeemTechnology/backend-config v0.0.3
-	bitbucket.org/sadeemTechnology/backend-finder v0.0.15
+	bitbucket.org/sadeemTechnology/backend-finder v0.0.19
 	bitbucket.org/sadeemTechnology/backend-model v0.0.4
 	bitbucket.org/sadeemTechnology/backend-model-category v0.0.9
 	bitbucket.org/sadeemTechnology/backend-model-setting v0.0.4
 	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.4
-	bitbucket.org/sadeemTechnology/backend-validator v0.0.8
+	bitbucket.org/sadeemTechnology/backend-validator v0.0.9
 	firebase.google.com/go/v4 v4.18.0
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/ahmedalkabir/garabic v0.0.0-20240527214656-11fe9ba772f4
@@ -31,23 +31,23 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/ttacon/libphonenumber v1.2.1
 	golang.org/x/crypto v0.41.0
-	golang.org/x/exp v0.0.0-20250811191247-51f88131bc50
+	golang.org/x/exp v0.0.0-20250819193227-8b4c13bb791b
 	golang.org/x/text v0.28.0
-	google.golang.org/api v0.247.0
+	google.golang.org/api v0.248.0
 )
 
 require (
 	bitbucket.org/sadeemTechnology/backend-sorter v0.1.0 // indirect
 	cel.dev/expr v0.24.0 // indirect
-	cloud.google.com/go v0.121.5 // indirect
-	cloud.google.com/go/auth v0.16.4 // indirect
+	cloud.google.com/go v0.121.6 // indirect
+	cloud.google.com/go/auth v0.16.5 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.8.0 // indirect
 	cloud.google.com/go/firestore v1.18.0 // indirect
 	cloud.google.com/go/iam v1.5.2 // indirect
 	cloud.google.com/go/longrunning v0.6.7 // indirect
 	cloud.google.com/go/monitoring v1.24.2 // indirect
-	cloud.google.com/go/storage v1.56.0 // indirect
+	cloud.google.com/go/storage v1.56.1 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.53.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.53.0 // indirect
@@ -110,10 +110,10 @@ require (
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	google.golang.org/appengine/v2 v2.0.6 // indirect
-	google.golang.org/genproto v0.0.0-20250811230008-5f3141c8851a // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250811230008-5f3141c8851a // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250811230008-5f3141c8851a // indirect
-	google.golang.org/grpc v1.74.2 // indirect
+	google.golang.org/genproto v0.0.0-20250818200422-3122310a409c // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
+	google.golang.org/grpc v1.75.0 // indirect
 	google.golang.org/protobuf v1.36.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

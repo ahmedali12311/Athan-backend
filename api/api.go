@@ -12,7 +12,9 @@ import (
 	"app/models"
 	"app/models/permission"
 	"app/models/user"
+	privacy_policy "app/pkg/privacy_policy_generator"
 	"app/utilities"
+
 	"bitbucket.org/sadeemTechnology/backend-config"
 
 	firebase "firebase.google.com/go/v4"
@@ -58,17 +60,31 @@ func NewAPI(
 	logger *zerolog.Logger,
 	isTest bool,
 ) *Application {
+	// generate privacy policy for app
+	if err := privacy_policy.GenerateHTML(
+		"public/privacy-policy.html",
+	); err != nil {
+		logger.Fatal().Msgf(
+			"generate: error generating privacy-policy: %s",
+			err.Error(),
+		)
+	}
+	logger.Info().Msg("generated privacy-policy.html")
 	// init firebase app
 	opt := option.WithCredentialsFile(config.GoogleServiceAccount)
 	fb, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil && !isTest {
-		logger.Fatal().
-			Msgf("firebase: error initializing app: %s", err.Error())
+		logger.Fatal().Msgf(
+			"firebase: error initializing app: %s",
+			err.Error(),
+		)
 	}
 	fbm, err := fb.Messaging(context.Background())
 	if err != nil && !isTest {
-		logger.Fatal().
-			Msgf("couldn't get firebase messaging client, %s", err.Error())
+		logger.Fatal().Msgf(
+			"couldn't get firebase messaging client, %s",
+			err.Error(),
+		)
 	}
 	logger.Info().Msg("firebase app and messaging client initiated")
 

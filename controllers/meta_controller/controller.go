@@ -25,6 +25,13 @@ func (c *Controllers) SetPublicRoutes(
 	d *controller.RouterDependencies,
 ) {
 	d.E.GET("/meta", c.Index).Name = "meta:index:public"
+	d.E.GET("/privacy-policy.html", c.PrivacyPolicy).Name = "meta:privacy-policy:public"
+}
+
+func (c *Controllers) PrivacyPolicy(ctx echo.Context) error {
+	filePath := config.GetRootPath("public/privacy-policy.html")
+
+	return ctx.File(filePath)
 }
 
 func (c *Controllers) Index(ctx echo.Context) error {

@@ -12,6 +12,7 @@ app
 
 json_google/*
 public/uploads/*
+public/privacy-policy.html
 public/uploads/routes.json
 !public/uploads/logo.jpg
 
