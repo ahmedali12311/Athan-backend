@@ -3,11 +3,11 @@ module app
 go 1.24.0
 
 require (
-	bitbucket.org/sadeemTechnology/backend-config v0.0.3
+	bitbucket.org/sadeemTechnology/backend-config v0.0.4
 	bitbucket.org/sadeemTechnology/backend-finder v0.0.19
 	bitbucket.org/sadeemTechnology/backend-model v0.0.4
 	bitbucket.org/sadeemTechnology/backend-model-category v0.0.9
-	bitbucket.org/sadeemTechnology/backend-model-setting v0.0.4
+	bitbucket.org/sadeemTechnology/backend-model-setting v0.0.5
 	bitbucket.org/sadeemTechnology/backend-pgtypes v0.0.4
 	bitbucket.org/sadeemTechnology/backend-validator v0.0.9
 	firebase.google.com/go/v4 v4.18.0
@@ -114,6 +114,6 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
 	google.golang.org/grpc v1.75.0 // indirect
-	google.golang.org/protobuf v1.36.7 // indirect
+	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
