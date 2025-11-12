@@ -198,3 +198,13 @@ func (t *Translations) OTPSentSuccessfully() string {
 		},
 	})
 }
+
+func (t *Translations) UserTokenNotFound() string {
+	return t.Localizer.MustLocalize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:          "UserTokenNotFound",
+			Description: "User has no token",
+			Other:       "User has no token",
+		},
+	})
+}

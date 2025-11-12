@@ -207,3 +207,7 @@ other = "يجب أن يكون معرّف عالمي فريد صحيح."
 [WalletTransactionAlreadyConfirmed]
 description = "wallet transaction already confirmed"
 other = "عملية الدفع مؤكدة مسبقا"
+
+[UserTokenNotFound]
+description = "User has no token"
+other = "المستخدم لا يحتوي على رمز الاشعار"

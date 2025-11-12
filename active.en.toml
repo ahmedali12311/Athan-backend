@@ -207,3 +207,9 @@ other = "must be valid uuid."
 [WalletTransactionAlreadyConfirmed]
 description = "wallet transaction already confirmed"
 other = "wallet transaction already confirmed"
+
+
+
+[UserTokenNotFound]
+description = "User has no token"
+other = "User has no token"

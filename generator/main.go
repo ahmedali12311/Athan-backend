@@ -59,6 +59,11 @@ func main() {
 	} else {
 		log.Printf("Updated models with %s", modelName)
 	}
+	if err := updateTranslationsFile(modelName); err != nil {
+		log.Printf("Warning: Could not update translation: %v", err)
+	} else {
+		log.Printf("Updated translation with %s", modelName)
+	}
 
-	log.Printf("Successfully generated model and controller for table: %s", tableName)
+	log.Printf("Successfully generated model and controller with updating routes,translations,models,controllers for table : %s", tableName)
 }

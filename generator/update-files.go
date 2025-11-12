@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"unicode"
 )
 
 func updateAPIRoutesFile(modelName string) error {
@@ -212,4 +213,64 @@ func updateModelsFile(modelName string) error {
 
 	log.Printf("updated: %s with %s model", modelsFile, modelName)
 	return nil
+}
+
+func updateTranslationsFile(modelName string) error {
+	translationsFile := "../translations/models-name.go"
+
+	content, err := os.ReadFile(translationsFile)
+	if err != nil {
+		return fmt.Errorf("error reading translations file: %w", err)
+	}
+
+	lines := strings.Split(string(content), "\n")
+
+	insertIndex := -1
+	inMessages := false
+
+	for i, line := range lines {
+		if strings.Contains(line, "messages := []i18n.Message{") {
+			inMessages = true
+			continue
+		}
+
+		if inMessages && strings.Contains(line, "}") {
+			insertIndex = i
+			break
+		}
+	}
+
+	if insertIndex == -1 {
+		return fmt.Errorf("could not find messages slice in translations file")
+	}
+
+	newMessage := fmt.Sprintf("\t\t{ID: \"%s\", Other: \"%s\"},", strings.ToLower(modelName), formatModelName(modelName))
+
+	newLines := make([]string, 0, len(lines)+1)
+	newLines = append(newLines, lines[:insertIndex]...)
+	newLines = append(newLines, newMessage)
+	newLines = append(newLines, lines[insertIndex:]...)
+
+	err = os.WriteFile(translationsFile, []byte(strings.Join(newLines, "\n")), 0o644)
+	if err != nil {
+		return fmt.Errorf("error writing translations file: %w", err)
+	}
+
+	log.Printf("updated: %s with %s model translation", translationsFile, modelName)
+	return nil
+}
+
+func formatModelName(modelName string) string {
+	var result strings.Builder
+	for i, r := range modelName {
+		if i == 0 {
+			result.WriteRune(unicode.ToUpper(r))
+		} else if unicode.IsUpper(r) {
+			result.WriteString(" ")
+			result.WriteRune(unicode.ToLower(r))
+		} else {
+			result.WriteRune(r)
+		}
+	}
+	return result.String()
 }

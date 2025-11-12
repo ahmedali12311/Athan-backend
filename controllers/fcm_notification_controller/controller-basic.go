@@ -140,6 +140,7 @@ func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 func (c *ControllerBasic) NotifyUser(ctx echo.Context) error {
 	var result fcm.Model
 	// Initialize a new Validator instance.
+	t := c.Utils.CtxT(ctx)
 	ctxUser := c.Utils.CtxUser(ctx)
 	result.SenderID = &ctxUser.ID
 	v, err := c.GetValidator(ctx, result.ModelName())
@@ -161,6 +162,10 @@ func (c *ControllerBasic) NotifyUser(ctx echo.Context) error {
 		fcm.TokenTypeStandard,
 	)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) || err.Error() == "sql: no rows in result set" {
+			return c.APIErr.Database(ctx, errors.New(t.UserTokenNotFound()), &result)
+		}
+
 		return c.APIErr.Database(
 			ctx,
 			err,
