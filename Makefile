@@ -75,6 +75,28 @@ migration:
 ## migrate/force n=<version>: forces migration version number
 migrate/force:
 	migrate -path=./database/migrations -database=$(CONNECTION_STRING) force $(n)
+# ============================================================================= 
+# Docker Migrations
+# ============================================================================= 
+/PHONY: migrate/up migrate/up/all migrate/down migrate/down/all migrate/force
+## migrate/up n=<number>: migrates up n steps
+migrate.up:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database $(CONNECTION_STRING) up $(n)
+## migrate/up/all: migrates up to latest
+migrate.up.all:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database $(CONNECTION_STRING) up
+## migrate/down n=<number>: migrates down n steps
+migrate.down:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database $(CONNECTION_STRING) down $(n)
+## migrate/down/all: migrates down all steps
+migrate.down.all:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database $(CONNECTION_STRING) down -all
+## migration n=<file_name>: creates migration files up/down for file_name
+migration:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ create -seq -ext=.sql -dir=./migrations $(n)
+## migrate/force n=<version>: forces migration version number
+migrate.force:
+	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database=$(CONNECTION_STRING) force $(n)
 
 # ============================================================================= 
 # STANDALONE SERVER COMMANDS
