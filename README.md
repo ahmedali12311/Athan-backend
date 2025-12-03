@@ -1,6 +1,34 @@
-# Golang Sadeem Backend Template
 
+🕌 Prayer Notification System (Athan Project)
+The backend includes a sophisticated, schedule-driven system to send timely and hyper-localized push notifications for daily prayer times (Athan). This feature ensures high accuracy and minimal latency by integrating directly with the application scheduler and using PostgreSQL's time functionality.
 
+Key Features
+Minute-Level Precision: The core job runs every minute to check against the scheduled prayer times, guaranteeing notifications are sent precisely when the Athan is due.
+
+Topic-Based Targeting (Anonymous Users): Notifications are sent using FCM Topics derived from the city and prayer name (e.g., Tripoli_fajr, Benghazi_asr). This allows for highly scalable messaging that reaches all anonymous subscribers without managing individual user tokens.
+
+Dynamic, Localized Messaging: The system dynamically constructs the Arabic notification message based on the prayer time that is due:
+
+Title: Formatted as "حان الآن موعد صلاة [Prayer Name]" (e.g., “The time for Asr prayer is now.”).
+
+Body: Includes the specific prayer time and city (e.g., “العصر (17:05) في طرابلس”).
+
+Data Models: This system introduced specific PostgreSQL tables to manage the required data:
+
+daily_prayer_times: Stores the exact time for each of the five daily prayers for a given city, day, and month.
+
+adhkars, hadiths, special_topics, categories: Provides the content foundation for future features related to Islamic content and reminders.
+
+📜 Database Schemas Overview
+The template includes robust, production-ready schemas for core content and features:
+
+daily_prayer_times: The central table for the Athan scheduler, tracking daily prayer schedules by city.
+
+categories: A complex, hierarchical model supporting multi-level categorization with automated path tracking for fast retrieval.
+
+hadiths & adhkars: Structured content tables for religious texts and supplications, linked to the categories model.
+
+special_topics: Content for general or non-categorized announcements and information.
 
 ---
 
