@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"bitbucket.org/sadeemTechnology/backend-config"
-	"bitbucket.org/sadeemTechnology/backend-model-category"
+	config "bitbucket.org/sadeemTechnology/backend-config"
+	category "bitbucket.org/sadeemTechnology/backend-model-category"
 	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 
 	"github.com/rs/zerolog"
@@ -46,6 +46,8 @@ var (
 	fcmNotificationSF []byte
 	//go:embed user_notification.json
 	userNotificationSF []byte
+	//go:embed city.json
+	citySF []byte
 )
 
 type schemaRegisterar struct {
@@ -110,6 +112,7 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"wallet_transaction.json": WalletTrxSF,
 		"fcm_notification.json":   fcmNotificationSF,
 		"user_notification.json":  userNotificationSF,
+		"city.json":               citySF,
 	}
 	domain := config.DOMAIN + "/schemas"
 	SchemaMap := map[string]*js.Schema{}

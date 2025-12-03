@@ -1,9 +1,11 @@
 banner = "Banner"
 category = "Category"
+city = "City"
 document = "Document"
 fcm_notification = "FCM Notification"
 image = "Image"
 permission = "Permission"
+prayer_times = "Prayer Times"
 profile = "Profile"
 role = "Role"
 setting = "Setting"
@@ -120,6 +122,10 @@ other = "unauthorized access."
 description = "unsupported location."
 other = "location point of {{.Model}} not supported."
 
+[UserTokenNotFound]
+description = "User has no token"
+other = "User has no token"
+
 [ValidateBool]
 description = "validate input as a boolean."
 other = "must be a valid boolean."
@@ -207,9 +213,3 @@ other = "must be valid uuid."
 [WalletTransactionAlreadyConfirmed]
 description = "wallet transaction already confirmed"
 other = "wallet transaction already confirmed"
-
-
-
-[UserTokenNotFound]
-description = "User has no token"
-other = "User has no token"

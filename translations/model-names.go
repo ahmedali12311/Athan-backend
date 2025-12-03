@@ -19,6 +19,8 @@ func (t *Translations) TranslateModels() {
 		{ID: "fcm_notification", Other: "FCM Notification"},
 		{ID: "image", Other: "Image"},
 		{ID: "wallet_transaction", Other: "Wallet Transaction"},
+		{ID: "city", Other: "City"},
+		{ID: "prayer_times", Other: "Prayer Times"},
 	}
 
 	for i := range messages {

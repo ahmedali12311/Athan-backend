@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"app/models/permission"
-	"bitbucket.org/sadeemTechnology/backend-config"
 
+	config "bitbucket.org/sadeemTechnology/backend-config"
 	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"
 )
@@ -120,6 +120,7 @@ func (app *Application) routesGen(routes []*echo.Route) {
 		if err != nil {
 			app.Logger.Fatal().Msg(err.Error())
 		}
+
 		basicRoleOwn, err := app.Models.Role.GrantByScope(basicRoleID, "own")
 		if err != nil {
 			app.Logger.Fatal().Msg(err.Error())
@@ -129,10 +130,12 @@ func (app *Application) routesGen(routes []*echo.Route) {
 				Info().
 				Msgf("basic was granted %d new own permissions", basicRoleOwn)
 		}
+
 		basicRolePublic, err := app.Models.Role.GrantByScope(
 			basicRoleID,
 			"public",
 		)
+
 		if err != nil {
 			app.Logger.Fatal().Msg(err.Error())
 		}
@@ -142,9 +145,39 @@ func (app *Application) routesGen(routes []*echo.Route) {
 				basicRolePublic,
 			)
 		}
+
 	}
-	// NOTE: permissions data is stored in memory to avoid querying the DB
-	// every request
+	// customerRoleID, err := app.Models.Role.CreateCustomer()
+	// if err != nil {
+	// 	app.Logger.Fatal().Msg(err.Error())
+	// }
+	// customerRole, err := app.Models.Role.GrantByScope(customerRoleID, "customer")
+	// if err != nil {
+	// 	app.Logger.Fatal().Msg(err.Error())
+	// }
+	// if customerRole > 0 {
+	// 	app.Logger.
+	// 		Info().
+	// 		Msgf("customer was granted %d new permissions", customerRole)
+	// }
+	// if err != nil {
+	// 	app.Logger.Fatal().Msg(err.Error())
+	// }
+
+	adminID, err := app.Models.Role.CreateAdmin()
+	if err != nil {
+		app.Logger.Fatal().Msg(err.Error())
+	}
+	app.Logger.Info().Msgf("superadmin role id: %d", adminID)
+	adminRoleScope, err := app.Models.Role.GrantByScope(adminID, "admin")
+	if err != nil {
+		app.Logger.Fatal().Msg(err.Error())
+	}
+	if adminRoleScope > 0 {
+		app.Logger.
+			Info().
+			Msgf("admin was granted %d new permissions", adminID)
+	}
 
 	if err := app.DB.SelectContext(
 		context.Background(),

@@ -1,10 +1,12 @@
 package models
 
 import (
-	"bitbucket.org/sadeemTechnology/backend-model"
-	"bitbucket.org/sadeemTechnology/backend-model-category"
-	"bitbucket.org/sadeemTechnology/backend-model-setting"
+	model "bitbucket.org/sadeemTechnology/backend-model"
+	category "bitbucket.org/sadeemTechnology/backend-model-category"
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 
+	"app/models/city"
+	dailyprayertimes "app/models/daily-prayer-times"
 	"app/models/fcm_notification"
 	"app/models/permission"
 	"app/models/role"
@@ -33,6 +35,8 @@ type Models struct {
 	User             *user.Queries
 	UserNotification *user_notification.Queries
 	Wallet           *wallet.Queries
+	City             *city.Queries
+	DailyPrayerTimes *dailyprayertimes.Queries
 }
 
 func Setup(
@@ -69,5 +73,7 @@ func Setup(
 		User:             user.New(d),
 		UserNotification: user_notification.New(d),
 		Wallet:           wallet.New(d),
+		City:             city.New(d),
+		DailyPrayerTimes: dailyprayertimes.New(d),
 	}
 }

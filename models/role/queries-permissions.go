@@ -3,8 +3,7 @@ package role
 import (
 	"context"
 
-	"bitbucket.org/sadeemTechnology/backend-finder"
-
+	finder "bitbucket.org/sadeemTechnology/backend-finder"
 	"github.com/Masterminds/squirrel"
 )
 
@@ -40,6 +39,32 @@ func (m *Queries) GrantAllPermissions(roleID int) (int64, error) {
 	}
 	return affected, nil
 }
+func (m *Queries) CreateAdmin() (int, error) {
+	var id int
+	query := `
+        INSERT INTO roles (name) 
+        VALUES ('admin') 
+        ON CONFLICT (name) 
+        DO UPDATE SET name='admin'
+        RETURNING id;
+    `
+	if err := m.DB.GetContext(
+		context.Background(),
+		&id,
+		query,
+	); err != nil {
+		return 0, err
+	}
+
+	if _, err := m.DB.ExecContext(
+		context.Background(),
+		`SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles));`,
+	); err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
 
 func (m *Queries) GrantByScope(roleID int, scope string) (int64, error) {
 	perms := []int{}
@@ -48,11 +73,15 @@ func (m *Queries) GrantByScope(roleID int, scope string) (int64, error) {
 		context.Background(),
 		&perms,
 		`
-            SELECT id FROM permissions WHERE scope = $1
+            SELECT id FROM permissions WHERE scope IN ($1, 'own')
         `,
 		scope,
 	); err != nil {
 		return 0, err
+	}
+
+	if len(perms) == 0 {
+		return 0, nil
 	}
 
 	inserts := m.QB.
@@ -62,21 +91,24 @@ func (m *Queries) GrantByScope(roleID int, scope string) (int64, error) {
 		inserts = inserts.Values(roleID, v)
 	}
 	inserts = inserts.Suffix(`ON CONFLICT DO NOTHING`)
+
 	query, args, err := inserts.ToSql()
 	if err != nil {
 		return 0, err
 	}
+
 	result, err := m.DB.ExecContext(context.Background(), query, args...)
 	if err != nil {
 		return 0, err
 	}
+
 	affected, err := result.RowsAffected()
 	if err != nil {
 		return 0, err
 	}
+
 	return affected, nil
 }
-
 func (m *Queries) GetPermissions(role *Model) error {
 	role.Permissions = []int{}
 

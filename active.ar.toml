@@ -1,9 +1,11 @@
 banner = "إعلان"
 category = "الصنف"
+city = "المدينه"
 document = "مستند"
 fcm_notification = "إشعار"
 image = "صورة"
 permission = "صلاحية"
+prayer_times = "اوقات الصلاه"
 profile = "ملف شخصي"
 role = "دور"
 setting = "إعدادات"
@@ -120,6 +122,10 @@ other = "دخول غير مصرح"
 description = "unsupported location."
 other = "location point of {{.Model}} not supported."
 
+[UserTokenNotFound]
+description = "User has no token"
+other = "المستخدم لا يحتوي على رمز الاشعار"
+
 [ValidateBool]
 description = "validate input as a boolean."
 other = "يجب أن يكون قيمة نصية ترمز إلى قيمة منطقية."
@@ -207,7 +213,3 @@ other = "يجب أن يكون معرّف عالمي فريد صحيح."
 [WalletTransactionAlreadyConfirmed]
 description = "wallet transaction already confirmed"
 other = "عملية الدفع مؤكدة مسبقا"
-
-[UserTokenNotFound]
-description = "User has no token"
-other = "المستخدم لا يحتوي على رمز الاشعار"
