@@ -3,6 +3,7 @@ CREATE TABLE special_topics (
     topic TEXT NOT NULL,
     content TEXT NOT NULL,
     category_id  UUID  REFERENCES categories(id),
+    created_by_id uuid REFERENCES users(id),
     img           TEXT,
     thumb         TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),

@@ -2,6 +2,7 @@ package special_topics
 
 import (
 	"app/models/consts"
+	"app/models/user"
 	"net/url"
 	"time"
 
@@ -18,15 +19,17 @@ var (
 )
 
 type Model struct {
-	ID         uuid.UUID             `db:"id" json:"id"`
-	Topic      string                `db:"topic" json:"topic"`
-	Content    string                `db:"content" json:"content"`
-	CategoryID uuid.UUID             `db:"category_id" json:"-"`
-	Img        *string               `db:"img"           json:"img"`
-	Thumb      *string               `db:"thumb"         json:"thumb"`
-	CreatedAt  time.Time             `db:"created_at" json:"created_at"`
-	UpdatedAt  time.Time             `db:"updated_at" json:"updated_at"`
-	Category   category.MinimalModel `db:"category" json:"category"`
+	ID          uuid.UUID             `db:"id" json:"id"`
+	Topic       string                `db:"topic" json:"topic"`
+	Content     string                `db:"content" json:"content"`
+	CategoryID  uuid.UUID             `db:"category_id" json:"-"`
+	Img         *string               `db:"img"           json:"img"`
+	Thumb       *string               `db:"thumb"         json:"thumb"`
+	CreatedAt   time.Time             `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time             `db:"updated_at" json:"updated_at"`
+	Category    category.MinimalModel `db:"category" json:"category"`
+	CreatedByID uuid.UUID             `db:"created_by_id" json:"-"`
+	CreatedBy   user.MinimalModel     `db:"created_by" json:"created_by"`
 }
 
 type MinimalModel struct {
@@ -81,7 +84,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 
 	v.UnmarshalInto("category", m.Category)
 	if m.Category.ID != nil {
-		v.CategoryValidator(m.Category.ID, "type.id", consts.CategorySpecialTopicID)
+		v.CategoryValidator(m.Category.ID, "categories.id", consts.CategorySpecialTopicID)
 		m.CategoryID = *m.Category.ID
 	} else {
 		m.CategoryID = uuid.Nil

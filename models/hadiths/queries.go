@@ -16,6 +16,8 @@ var (
 		"hadiths.*",
 		"c.id as \"category.id\"",
 		"c.name as \"category.name\"",
+		"users.id as \"created_by.id\"",
+		"users.name as \"created_by.name\"",
 	}
 
 	inserts = &[]string{
@@ -23,9 +25,11 @@ var (
 		"source",
 		"topic",
 		"category_id",
+		"created_by_id",
 	}
 	baseJoins = &[]string{
-		"categories as c ON hadiths.category_id = categories.id",
+		"categories as c ON hadiths.category_id = c.id",
+		"users ON hadiths.created_by_id = users.id",
 	}
 )
 
@@ -35,6 +39,7 @@ func buildInput(m *Model) (*[]any, error) {
 		m.Source,
 		m.Topic,
 		m.CategoryID,
+		m.CreatedByID,
 	}
 	if len(*input) != len(*inserts) {
 		return nil, finder.ErrInputLengthMismatch(input, inserts)
@@ -88,8 +93,9 @@ func (m *Queries) GetAll(
 		Selects: selects,
 		Joins:   getJoins(ws),
 		GroupBys: &[]string{
-			"categories.id",
+			"c.id",
 			"hadiths.id",
+			"users.id",
 		},
 	}
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)

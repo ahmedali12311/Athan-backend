@@ -15,10 +15,12 @@ import (
 var (
 	selects = &[]string{
 		"special_topics.*",
-		config.SQLSelectURLPath("users", "img", "img"),
-		config.SQLSelectURLPath("users", "thumb", "thumb"),
+		config.SQLSelectURLPath("special_topics", "img", "img"),
+		config.SQLSelectURLPath("special_topics", "thumb", "thumb"),
 		"c.id as \"category.id\"",
 		"c.name as \"category.name\"",
+		"users.id as \"created_by.id\"",
+		"users.name as \"created_by.name\"",
 	}
 
 	inserts = &[]string{
@@ -27,9 +29,11 @@ var (
 		"category_id",
 		"img",
 		"thumb",
+		"created_by_id",
 	}
 	baseJoins = &[]string{
-		"categories as c ON special_topics.category_id = categories.id",
+		"categories as c ON special_topics.category_id = c.id",
+		"users ON special_topics.created_by_id = users.id",
 	}
 )
 
@@ -40,6 +44,7 @@ func buildInput(m *Model) (*[]any, error) {
 		m.CategoryID,
 		m.Img,
 		m.Thumb,
+		m.CreatedByID,
 	}
 	if len(*input) != len(*inserts) {
 		return nil, finder.ErrInputLengthMismatch(input, inserts)
@@ -93,8 +98,9 @@ func (m *Queries) GetAll(
 		Selects: selects,
 		Joins:   getJoins(ws),
 		GroupBys: &[]string{
-			"categories.id",
+			"c.id",
 			"special_topics.id",
+			"users.id",
 		},
 	}
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)

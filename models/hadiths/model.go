@@ -2,6 +2,7 @@ package hadiths
 
 import (
 	"app/models/consts"
+	"app/models/user"
 	"net/url"
 	"time"
 
@@ -18,14 +19,16 @@ var (
 )
 
 type Model struct {
-	ID         uuid.UUID             `db:"id"         json:"id"`
-	Text       string                `db:"text" json:"text"`
-	Source     string                `db:"source" json:"source"`
-	Topic      string                `db:"topic" json:"topic"`
-	CategoryID uuid.UUID             `db:"category_id" json:"-"`
-	CreatedAt  time.Time             `db:"created_at" json:"created_at"`
-	UpdatedAt  time.Time             `db:"updated_at" json:"updated_at"`
-	Category   category.MinimalModel `db:"category" json:"category"`
+	ID          uuid.UUID             `db:"id"         json:"id"`
+	Text        string                `db:"text" json:"text"`
+	Source      string                `db:"source" json:"source"`
+	Topic       string                `db:"topic" json:"topic"`
+	CategoryID  uuid.UUID             `db:"category_id" json:"-"`
+	CreatedAt   time.Time             `db:"created_at" json:"created_at"`
+	UpdatedAt   time.Time             `db:"updated_at" json:"updated_at"`
+	CreatedByID uuid.UUID             `db:"created_by_id" json:"-"`
+	CreatedBy   user.MinimalModel     `db:"created_by" json:"created_by"`
+	Category    category.MinimalModel `db:"category" json:"category"`
 }
 
 type MinimalModel struct {
@@ -77,7 +80,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 
 	v.UnmarshalInto("category", m.Category)
 	if m.Category.ID != nil {
-		v.CategoryValidator(m.Category.ID, "type.id", consts.CategoryHadithID)
+		v.CategoryValidator(m.Category.ID, "categories.id", consts.CategoryHadithID)
 		m.CategoryID = *m.Category.ID
 	} else {
 		m.CategoryID = uuid.Nil

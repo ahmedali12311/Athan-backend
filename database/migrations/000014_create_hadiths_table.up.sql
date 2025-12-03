@@ -4,6 +4,7 @@ CREATE TABLE hadiths (
     source VARCHAR(255) NOT NULL,
     topic VARCHAR(255) NOT NULL,
     category_id  UUID  NOT NULL REFERENCES categories(id),
+    created_by_id uuid REFERENCES users(id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
       

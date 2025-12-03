@@ -85,8 +85,6 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	if m.City.ID != nil {
 		v.UUIDExistsInDB(m.City.ID, "city_id", "id", "cities", true)
 		m.CityID = *m.City.ID
-	} else {
-		v.Check(false, "city", "must enter a city!")
 	}
 	timeFields := map[string]*string{
 		"fajr_first_time":  &m.FajrFirstTime,

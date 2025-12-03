@@ -80,6 +80,11 @@ func (c *ControllerBasic) Store(ctx echo.Context) error {
 	if valid := result.MergeAndValidate(v); !valid {
 		return c.APIErr.InputValidation(ctx, v)
 	}
+	ws := c.scope(ctx)
+
+	if ws.UserID != nil {
+		result.CreatedByID = *ws.UserID
+	}
 
 	tx, err := c.Models.DB.Beginx()
 	if err != nil {

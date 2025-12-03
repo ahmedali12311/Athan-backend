@@ -4,6 +4,8 @@ CREATE TABLE adhkars (
     source VARCHAR(255) NOT NULL,
     repeat INTEGER NOT NULL DEFAULT 1,
     category_id  UUID  NOT NULL REFERENCES categories(id),
+        created_by_id uuid REFERENCES users(id),
+
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
