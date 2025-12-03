@@ -2,18 +2,26 @@ package controllers
 
 import (
 	"app/controller"
+	"app/controllers/adhkars_controller"
 	"app/controllers/category_controller"
+	"app/controllers/daily_prayer_times_controller"
 	"app/controllers/fcm_notification_controller"
+	"app/controllers/hadiths_controller"
 	"app/controllers/meta_controller"
 	"app/controllers/permission_controller"
 	"app/controllers/role_controller"
 	"app/controllers/setting_controller"
+	"app/controllers/special_topics_controller"
 	"app/controllers/token_controller"
 	"app/controllers/user_controller"
 	"app/controllers/wallet_controller"
 )
 
 type Controllers struct {
+	Adhkars          *adhkars_controller.Controllers
+	SpecialTopics    *special_topics_controller.Controllers
+	Hadiths          *hadiths_controller.Controllers
+	DailyPrayerTimes *daily_prayer_times_controller.Controllers
 	// API ---------------------------------------------------------------------
 
 	Category *category_controller.Controllers
@@ -31,14 +39,18 @@ type Controllers struct {
 
 func Setup(d *controller.Dependencies) *Controllers {
 	return &Controllers{
-		Category:        category_controller.Get(d),
-		Meta:            meta_controller.Get(d),
-		Permission:      permission_controller.Get(d),
-		Role:            role_controller.Get(d),
-		Setting:         setting_controller.Get(d),
-		Token:           token_controller.Get(d),
-		FcmNotification: fcm_notification_controller.Get(d),
-		User:            user_controller.Get(d),
-		Wallet:          wallet_controller.Get(d),
+		Adhkars:          adhkars_controller.Get(d),
+		SpecialTopics:    special_topics_controller.Get(d),
+		Hadiths:          hadiths_controller.Get(d),
+		DailyPrayerTimes: daily_prayer_times_controller.Get(d),
+		Category:         category_controller.Get(d),
+		Meta:             meta_controller.Get(d),
+		Permission:       permission_controller.Get(d),
+		Role:             role_controller.Get(d),
+		Setting:          setting_controller.Get(d),
+		Token:            token_controller.Get(d),
+		FcmNotification:  fcm_notification_controller.Get(d),
+		User:             user_controller.Get(d),
+		Wallet:           wallet_controller.Get(d),
 	}
 }

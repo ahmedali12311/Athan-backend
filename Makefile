@@ -91,8 +91,7 @@ migrate.down:
 ## migrate/down/all: migrates down all steps
 migrate.down.all:
 	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ -database $(CONNECTION_STRING) down -all
-## migration n=<file_name>: creates migration files up/down for file_name
-migration:
+docker.migration:
 	docker run --rm -v ./database/migrations:/migrations --network $(NETWORK) migrate/migrate -path=/migrations/ create -seq -ext=.sql -dir=./migrations $(n)
 ## migrate/force n=<version>: forces migration version number
 migrate.force:

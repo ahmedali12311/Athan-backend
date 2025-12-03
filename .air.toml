@@ -4,8 +4,8 @@ tmp_dir = "./tmp"
 
 [build]
 args_bin = []
-bin = "./main"
-cmd = "go build -o ./main ./"
+bin = "./main.exe"
+cmd = "go build -o ./main.exe ./"
 delay = 0
 exclude_dir = [
     "database/migrations",

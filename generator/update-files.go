@@ -216,7 +216,7 @@ func updateModelsFile(modelName string) error {
 }
 
 func updateTranslationsFile(modelName string) error {
-	translationsFile := "../translations/models-name.go"
+	translationsFile := "../translations/model-names.go"
 
 	content, err := os.ReadFile(translationsFile)
 	if err != nil {

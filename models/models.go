@@ -6,14 +6,19 @@ import (
 	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
 
 	"app/models/city"
-	dailyprayertimes "app/models/daily-prayer-times"
+	"app/models/daily_prayer_times"
 	"app/models/fcm_notification"
 	"app/models/permission"
 	"app/models/role"
+	"app/models/special_topics"
 	"app/models/token"
 	"app/models/user"
 	"app/models/user_notification"
 	"app/models/wallet"
+
+	"app/models/hadiths"
+
+	"app/models/adhkars"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
@@ -23,8 +28,12 @@ import (
 )
 
 type Models struct {
-	DB *sqlx.DB
-	QB *squirrel.StatementBuilderType
+	Adhkars          *adhkars.Queries
+	SpecialTopics    *special_topics.Queries
+	Hadiths          *hadiths.Queries
+	DailyPrayerTimes *daily_prayer_times.Queries
+	DB               *sqlx.DB
+	QB               *squirrel.StatementBuilderType
 
 	Category         *category.Queries
 	FcmNotification  *fcm_notification.Queries
@@ -36,7 +45,6 @@ type Models struct {
 	UserNotification *user_notification.Queries
 	Wallet           *wallet.Queries
 	City             *city.Queries
-	DailyPrayerTimes *dailyprayertimes.Queries
 }
 
 func Setup(
@@ -61,8 +69,12 @@ func Setup(
 	}
 
 	return &Models{
-		DB: db,
-		QB: &qb,
+		Adhkars:          adhkars.New(d),
+		SpecialTopics:    special_topics.New(d),
+		Hadiths:          hadiths.New(d),
+		DailyPrayerTimes: daily_prayer_times.New(d),
+		DB:               db,
+		QB:               &qb,
 
 		Category:         category.New(d),
 		FcmNotification:  fcm_notification.New(d),
@@ -74,6 +86,5 @@ func Setup(
 		UserNotification: user_notification.New(d),
 		Wallet:           wallet.New(d),
 		City:             city.New(d),
-		DailyPrayerTimes: dailyprayertimes.New(d),
 	}
 }

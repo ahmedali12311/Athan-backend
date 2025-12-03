@@ -13,12 +13,14 @@ import (
 	"app/models/permission"
 	"app/models/user"
 	privacy_policy "app/pkg/privacy_policy_generator"
+	"app/pkg/scheduler"
 	"app/utilities"
 
-	"bitbucket.org/sadeemTechnology/backend-config"
+	config "bitbucket.org/sadeemTechnology/backend-config"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
+	"github.com/go-co-op/gocron"
 	"github.com/jmoiron/sqlx"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/rs/zerolog"
@@ -51,6 +53,7 @@ type Application struct {
 	FBM         *messaging.Client
 	CtxUser     *user.Model
 	Permissions []permission.Model
+	Scheduler   *gocron.Scheduler
 }
 
 func NewAPI(
@@ -104,10 +107,10 @@ func NewAPI(
 		logger.Fatal().Msgf("couldn't open db: %s", err.Error())
 	}
 	logger.Info().Msg("database connection pool established")
-	logger.Info().Msg("file:///" + config.GetRootPath(config.MigrationsRoot))
+	logger.Info().Msg("file://" + config.GetRootPath(config.MigrationsRoot))
 	ModelMigrator(logger, cfg)
 	mig, err := migrate.New(
-		"file:///"+config.GetRootPath(cfg.MigrationsRoot),
+		"file://"+config.GetRootPath(cfg.MigrationsRoot),
 		cfg.DSN,
 	)
 	if err != nil {
@@ -173,5 +176,18 @@ func NewAPI(
 		FBM:         fbm,
 		CtxUser:     nil,
 	}
+	newApi.Scheduler = scheduler.New(&scheduler.Config{
+		DB:     db,
+		FB:     fb,
+		FBM:    fbm,
+		Config: cfg,
+		Logger: logger,
+		Models: m,
+		Utils:  utils,
+
+		Lang:       "ar",
+		LangBundle: bundle,
+	})
+
 	return newApi
 }

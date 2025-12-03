@@ -486,7 +486,7 @@ func getJoins(ws *WhereScope) *[]string {
 }
 
 func wheres(ws *WhereScope) *[]squirrel.Sqlizer {
-	w := &[]squirrel.Sqlizer{}
+	w := []squirrel.Sqlizer{}
     if ws.IsAdmin {
        return &w
     }
@@ -497,7 +497,7 @@ func wheres(ws *WhereScope) *[]squirrel.Sqlizer {
 	if !ws.IsAdmin {
 	}
 	
-	return w
+	return &w
 }
 
 func (m *Queries) GetAll(

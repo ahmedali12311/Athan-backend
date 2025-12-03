@@ -4,7 +4,8 @@ import (
 	"app/api"
 	"app/schemas"
 	"app/translations"
-	"bitbucket.org/sadeemTechnology/backend-config"
+
+	config "bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,7 +21,7 @@ func main() {
 	bundle := translations.Setup(logger)
 	jschemas := schemas.BuildSchemas(logger)
 	app := api.NewAPI(cfg, bundle, jschemas, logger, false)
-
+	app.Scheduler.StartAsync()
 	if err := app.Serve(e); err != nil {
 		logger.Fatal().Msgf("app.Serve error: %s", err.Error())
 	}

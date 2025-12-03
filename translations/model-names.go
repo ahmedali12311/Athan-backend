@@ -6,6 +6,9 @@ import (
 
 func (t *Translations) TranslateModels() {
 	messages := []i18n.Message{
+		{ID: "adhkars", Other: "Adhkars"},
+		{ID: "special_topics", Other: "Special topics"},
+		{ID: "hadiths", Other: "Hadiths"},
 		{ID: "banner", Other: "Banner"},
 		{ID: "category", Other: "Category"},
 		{ID: "profile", Other: "Profile"},

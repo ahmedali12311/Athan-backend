@@ -29,7 +29,7 @@ func generateControllerFiles(modelName string) error {
 func generateRouterFile(modelName string) error {
 	controllerDir := fmt.Sprintf("%s_controller", strings.ToLower(modelName))
 	routerFile := filepath.Clean(
-		path.Join("./", "controllers", controllerDir, "router.go"),
+		path.Join("../", "controllers", controllerDir, "router.go"),
 	)
 
 	err := os.MkdirAll(filepath.Dir(routerFile), 0o755)
@@ -91,7 +91,7 @@ func (m *Controllers) SetRoutes(
 func generateControllerBasicFile(modelName string) error {
 	controllerDir := fmt.Sprintf("%s_controller", strings.ToLower(modelName))
 	basicFile := filepath.Clean(
-		path.Join("./", "controllers", controllerDir, "controller_basic.go"),
+		path.Join("../", "controllers", controllerDir, "controller_basic.go"),
 	)
 
 	file, err := os.Create(basicFile)
@@ -298,19 +298,22 @@ func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 	log.Printf("generated: %s\n", basicFile)
 	return nil
 }
-
 func generateControllersFile(modelName string) error {
 	controllerDir := fmt.Sprintf("%s_controller", strings.ToLower(modelName))
-	routerFile := filepath.Clean(
-		path.Join("./", "controllers", controllerDir, "router.go"),
+
+	// 💡 FIX: Define a correct variable for the controllers.go file path
+	controllersFile := filepath.Clean(
+		path.Join("../", "controllers", controllerDir, "controllers.go"),
 	)
 
-	err := os.MkdirAll(filepath.Dir(routerFile), 0o755)
+	// Ensure the directory exists (optional, but good practice)
+	err := os.MkdirAll(filepath.Dir(controllersFile), 0o755)
 	if err != nil {
 		return err
 	}
 
-	file, err := os.Create(routerFile)
+	// 💡 FIX: Use the correct file path variable to create the file
+	file, err := os.Create(controllersFile)
 	if err != nil {
 		return err
 	}
@@ -319,23 +322,26 @@ func generateControllersFile(modelName string) error {
 	content := fmt.Sprintf(`package %s_controller
 
 import (
-	"app/controller"
-	"app/models/%s"
+    "app/controller"
+    "app/models/%s"
 
-	"bitbucket.org/sadeemTechnology/backend-model"
-	"github.com/labstack/echo/v4"
+    "bitbucket.org/sadeemTechnology/backend-model"
+    "github.com/labstack/echo/v4"
 )
 
 type Controllers struct {
-	*controller.Dependencies
+    *controller.Dependencies
+    Basic *ControllerBasic
 }
 
 func Get(d *controller.Dependencies) *Controllers {
-	return &Controllers{d}
+    return &Controllers{
+        Dependencies: d,
+        Basic:        &ControllerBasic{Dependencies: d}, 
+    }
 }
-
 `,
-		modelName,
+		strings.ToLower(modelName), // 💡 FIX: Using strings.ToLower for package name consistency
 		modelName,
 	)
 
@@ -344,6 +350,7 @@ func Get(d *controller.Dependencies) *Controllers {
 		return err
 	}
 
-	log.Printf("generated: %s\n", routerFile)
+	// 💡 FIX: Log the correct file name
+	log.Printf("generated: %s\n", controllersFile)
 	return nil
 }

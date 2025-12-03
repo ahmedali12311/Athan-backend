@@ -7,7 +7,8 @@ import (
 	"strconv"
 
 	"app/controller"
-	"bitbucket.org/sadeemTechnology/backend-config"
+
+	config "bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/labstack/echo/v4"
 )
@@ -66,6 +67,10 @@ func (app *Application) Routes(e *echo.Echo, isTest bool) http.Handler {
 	app.Controllers.Setting.SetBasicRoutes(deps)
 	app.Controllers.Permission.SetBasicRoutes(deps)
 	app.Controllers.Wallet.SetBasicRoutes(deps)
+	app.Controllers.DailyPrayerTimes.SetBasicRoutes(deps)
+	app.Controllers.Hadiths.SetRoutes(deps)
+	app.Controllers.SpecialTopics.SetRoutes(deps)
+	app.Controllers.Adhkars.SetRoutes(deps)
 
 	// Generate Routes --------------------------------------------------------
 	app.routesGen(e.Routes())

@@ -1,6 +1,8 @@
 package daily_prayer_times_controller
 
-import "app/controller"
+import (
+	"app/controller"
+)
 
 type Controllers struct {
 	Basic *ControllerBasic
