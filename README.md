@@ -1,9 +1,6 @@
 # Golang Sadeem Backend Template
 
-![sadeem-folder](./art/folder-icon.png)
 
-Golang Sadeem Backend Template
-developed by [Sadeem Tech](https://sadeem-tech.com/)
 
 ---
 
