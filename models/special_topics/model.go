@@ -18,13 +18,15 @@ var (
 )
 
 type Model struct {
-	ID         uuid.UUID              `db:"id" json:"id"`
-	Topic      string                 `db:"topic" json:"topic"`
-	Content    string                 `db:"content" json:"content"`
-	CategoryID uuid.UUID              `db:"category_id" json:"-"`
-	CreatedAt  time.Time              `db:"created_at" json:"created_at"`
-	UpdatedAt  time.Time              `db:"updated_at" json:"updated_at"`
-	Category   *category.MinimalModel `db:"category" json:"category"`
+	ID         uuid.UUID             `db:"id" json:"id"`
+	Topic      string                `db:"topic" json:"topic"`
+	Content    string                `db:"content" json:"content"`
+	CategoryID uuid.UUID             `db:"category_id" json:"-"`
+	Img        *string               `db:"img"           json:"img"`
+	Thumb      *string               `db:"thumb"         json:"thumb"`
+	CreatedAt  time.Time             `db:"created_at" json:"created_at"`
+	UpdatedAt  time.Time             `db:"updated_at" json:"updated_at"`
+	Category   category.MinimalModel `db:"category" json:"category"`
 }
 
 type MinimalModel struct {
@@ -44,31 +46,22 @@ func (m *Model) Columns(pgInfo map[string][]string) *[]string {
 }
 
 func (m *Model) ModelName() string {
-	return "special_topics"
+	return "special_topic"
 }
 
 func (m *Model) TableName() string {
-	return "special_topicses"
+	return "special_topics"
 }
 
 func (m *Model) DefaultSearch() string {
-	return "name"
+	return "topic"
 }
 
 func (m *Model) SearchFields() *[]string {
-	return &[]string{"name", "description"}
+	return &[]string{"topic", "content"}
 }
-
 func (m *Model) Relations() *[]finder.RelationField {
-	return &[]finder.RelationField{
-		{
-			Table: "categorieses",
-			Join: &finder.Join{
-				From: "hadithses.category_id",
-				To:   "categorieses.id",
-			},
-		},
-	}
+	return &[]finder.RelationField{}
 }
 
 func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
@@ -81,8 +74,13 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	_ = m.Initialize(v.Data.Values, v.Conn)
+
+	if err := v.AssignImage("img", m, false); err != nil {
+		v.Check(false, "img", err.Error())
+	}
+
 	v.UnmarshalInto("category", m.Category)
-	if m.Category != nil && m.Category.ID != nil {
+	if m.Category.ID != nil {
 		v.CategoryValidator(m.Category.ID, "type.id", consts.CategorySpecialTopicID)
 		m.CategoryID = *m.Category.ID
 	} else {
@@ -92,4 +90,22 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	v.AssignString("topic", &m.Topic, 1, 255)
 	v.AssignString("content", &m.Content, 1, 255)
 	return v.Valid()
+}
+
+// Has Image ------------------------------------------------------------------
+
+func (m *Model) GetImg() *string {
+	return m.Img
+}
+
+func (m *Model) SetImg(name *string) {
+	m.Img = name
+}
+
+func (m *Model) GetThumb() *string {
+	return m.Thumb
+}
+
+func (m *Model) SetThumb(name *string) {
+	m.Thumb = name
 }

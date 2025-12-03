@@ -3,11 +3,15 @@ package daily_prayer_times_controller
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"app/controller"
 	"app/models/daily_prayer_times"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,9 +21,7 @@ type ControllerBasic struct {
 
 // Scopes ---------------------------------------------------------------------
 
-func (c *ControllerBasic) scope(
-	ctx echo.Context,
-) *daily_prayer_times.WhereScope {
+func (c *ControllerBasic) scope(ctx echo.Context) *daily_prayer_times.WhereScope {
 	scopes := c.Utils.CtxScopes(ctx)
 	ctxUser := c.Utils.CtxUser(ctx)
 
@@ -43,10 +45,31 @@ func (c *ControllerBasic) scope(
 		ws.UserID = &ctxUser.ID
 	}
 
+	if fd := ctx.QueryParam("from_day"); fd != "" {
+		if d, err := strconv.Atoi(fd); err == nil && d >= 1 && d <= 31 {
+			ws.FromDay = &d
+		}
+	}
+	if fm := ctx.QueryParam("from_month"); fm != "" {
+		if m, err := strconv.Atoi(fm); err == nil && m >= 1 && m <= 12 {
+			ws.FromMonth = &m
+		}
+	}
+
+	// Parse to_day, to_month
+	if td := ctx.QueryParam("to_day"); td != "" {
+		if d, err := strconv.Atoi(td); err == nil && d >= 1 && d <= 31 {
+			ws.ToDay = &d
+		}
+	}
+	if tm := ctx.QueryParam("to_month"); tm != "" {
+		if m, err := strconv.Atoi(tm); err == nil && m >= 1 && m <= 12 {
+			ws.ToMonth = &m
+		}
+	}
+
 	return ws
 }
-
-// Actions --------------------------------------------------------------------
 
 func (c *ControllerBasic) Index(ctx echo.Context) error {
 	ws := c.scope(ctx)
@@ -169,4 +192,43 @@ func (c *ControllerBasic) Destroy(ctx echo.Context) error {
 		return c.APIErr.InternalServer(ctx, err)
 	}
 	return ctx.JSON(http.StatusOK, result)
+}
+
+func (c *ControllerBasic) Rolling(ctx echo.Context) error {
+	cityIDStr := ctx.QueryParam("city_id")
+	if cityIDStr == "" {
+		return c.APIErr.BadRequest(ctx, errors.New("city_id is required"))
+	}
+
+	cityID, err := uuid.Parse(cityIDStr)
+	if err != nil {
+		return c.APIErr.BadRequest(ctx, err)
+	}
+
+	now := time.Now()
+	day := now.Day()
+	month := int(now.Month())
+
+	if dateParam := ctx.QueryParam("date"); dateParam != "" {
+		t, err := time.Parse("2006-01-02", dateParam)
+		if err != nil {
+			return c.APIErr.BadRequest(ctx, errors.New("invalid date format, use YYYY-MM-DD"))
+		}
+		day = t.Day()
+		month = int(t.Month())
+	}
+
+	times, err := c.Models.DailyPrayerTimes.GetRollingPrayerTimes(ctx.Request().Context(), cityID, day, month)
+	if err != nil {
+		return c.APIErr.Database(ctx, err, nil)
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]any{
+		"data": times,
+		"meta": map[string]any{
+			"from_date": fmt.Sprintf("%d-%02d-%02d", now.Year(), month, day),
+			"total":     len(times),
+			"note":      "30 days starting from today (inclusive)",
+		},
+	})
 }

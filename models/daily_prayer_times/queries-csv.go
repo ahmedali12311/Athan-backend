@@ -23,15 +23,15 @@ func (m *Queries) ParseCSV(
 	var entryLog []string
 
 	headers := []string{
-		"Day (1-31)",   // 0
-		"Month (1-12)", // 1
-		"Fajr 1 Time",  // 2
-		"Fajr 2 Time",  // 3
-		"Sunrise Time", // 4
-		"Dhuhr Time",   // 5
-		"Asr Time",     // 6
-		"Maghrib Time", // 7
-		"Isha Time",    // 8
+		"Day (1-31)",
+		"Fajr 1 Time",
+		"Fajr 2 Time",
+		"Sunrise Time",
+		"Dhuhr Time",
+		"Asr Time",
+		"Maghrib Time",
+		"Isha Time",
+		"Month (1-12)",
 	}
 
 	records, err := v.ParseCSV("csv", headers, true)
@@ -40,12 +40,11 @@ func (m *Queries) ParseCSV(
 		return nil, nil, err
 	}
 
-	tempModel := Model{City: &city.MinimalModel{}}
-
+	tempModel := Model{City: city.MinimalModel{}}
 	v.UnmarshalInto("city", tempModel.City)
 
 	var cityID uuid.UUID
-	if tempModel.City != nil && tempModel.City.ID != nil {
+	if tempModel.City.ID != nil {
 		v.UUIDExistsInDB(tempModel.City.ID, "city_id", "id", "cities", true)
 		cityID = *tempModel.City.ID
 	} else {
@@ -57,7 +56,7 @@ func (m *Queries) ParseCSV(
 
 	for i, r := range records {
 		day, dayErr := strconv.Atoi(r[0])
-		month, monthErr := strconv.Atoi(r[1])
+		month, monthErr := strconv.Atoi(r[8])
 
 		if dayErr != nil || day < 1 || day > 31 {
 			v.Check(false, fmt.Sprintf("day.%d", i+1), "Invalid day (must be 1-31).")
@@ -75,13 +74,13 @@ func (m *Queries) ParseCSV(
 			CityID:         cityID,
 			Day:            day,
 			Month:          month,
-			FajrFirstTime:  r[2],
-			FajrSecondTime: r[3],
-			SunriseTime:    r[4],
-			DhuhrTime:      r[5],
-			AsrTime:        r[6],
-			MaghribTime:    r[7],
-			IshaTime:       r[8],
+			FajrFirstTime:  r[1],
+			FajrSecondTime: r[2],
+			SunriseTime:    r[3],
+			DhuhrTime:      r[4],
+			AsrTime:        r[5],
+			MaghribTime:    r[6],
+			IshaTime:       r[7],
 			CreatedAt:      time.Now(),
 		}
 

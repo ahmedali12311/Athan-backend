@@ -18,14 +18,14 @@ var (
 )
 
 type Model struct {
-	ID         uuid.UUID              `db:"id" json:"id"`
-	Text       string                 `db:"text" json:"text"`
-	Source     string                 `db:"source" json:"source"`
-	Repeat     int                    `db:"repeat" json:"repeat"`
-	CategoryID uuid.UUID              `db:"category_id" json:"-"`
-	CreatedAt  time.Time              `db:"created_at" json:"created_at"`
-	UpdatedAt  time.Time              `db:"updated_at" json:"updated_at"`
-	Category   *category.MinimalModel `db:"category" json:"category"`
+	ID         uuid.UUID             `db:"id" json:"id"`
+	Text       string                `db:"text" json:"text"`
+	Source     string                `db:"source" json:"source"`
+	Repeat     int                   `db:"repeat" json:"repeat"`
+	CategoryID uuid.UUID             `db:"category_id" json:"-"`
+	CreatedAt  time.Time             `db:"created_at" json:"created_at"`
+	UpdatedAt  time.Time             `db:"updated_at" json:"updated_at"`
+	Category   category.MinimalModel `db:"category" json:"category"`
 }
 
 type MinimalModel struct {
@@ -45,31 +45,23 @@ func (m *Model) Columns(pgInfo map[string][]string) *[]string {
 }
 
 func (m *Model) ModelName() string {
-	return "adhkars"
+	return "adhkar"
 }
 
 func (m *Model) TableName() string {
-	return "adhkarses"
+	return "adhkars"
 }
 
 func (m *Model) DefaultSearch() string {
-	return "name"
+	return "text"
 }
 
 func (m *Model) SearchFields() *[]string {
-	return &[]string{"name", "description"}
+	return &[]string{"text", "source"}
 }
 
 func (m *Model) Relations() *[]finder.RelationField {
-	return &[]finder.RelationField{
-		{
-			Table: "categorieses",
-			Join: &finder.Join{
-				From: "adhkarses.category_id",
-				To:   "categorieses.id",
-			},
-		},
-	}
+	return &[]finder.RelationField{}
 }
 
 func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
@@ -84,7 +76,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	_ = m.Initialize(v.Data.Values, v.Conn)
 
 	v.UnmarshalInto("category", m.Category)
-	if m.Category != nil && m.Category.ID != nil {
+	if m.Category.ID != nil {
 		v.CategoryValidator(m.Category.ID, "type.id", consts.CategoryAdkharID)
 		m.CategoryID = *m.Category.ID
 	} else {

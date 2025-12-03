@@ -4,6 +4,7 @@ import (
 	"app/controller"
 	"app/controllers/adhkars_controller"
 	"app/controllers/category_controller"
+	"app/controllers/city_controller"
 	"app/controllers/daily_prayer_times_controller"
 	"app/controllers/fcm_notification_controller"
 	"app/controllers/hadiths_controller"
@@ -35,6 +36,7 @@ type Controllers struct {
 	FcmNotification *fcm_notification_controller.Controllers
 	User            *user_controller.Controllers
 	Wallet          *wallet_controller.Controllers
+	City            *city_controller.Controllers
 }
 
 func Setup(d *controller.Dependencies) *Controllers {
@@ -52,5 +54,6 @@ func Setup(d *controller.Dependencies) *Controllers {
 		FcmNotification:  fcm_notification_controller.Get(d),
 		User:             user_controller.Get(d),
 		Wallet:           wallet_controller.Get(d),
+		City:             city_controller.Get(d),
 	}
 }

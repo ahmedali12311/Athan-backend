@@ -13,7 +13,7 @@ import (
 
 var (
 	selects = &[]string{
-		"hadithses.*",
+		"hadiths.*",
 		"c.id as \"category.id\"",
 		"c.name as \"category.name\"",
 	}
@@ -25,7 +25,7 @@ var (
 		"category_id",
 	}
 	baseJoins = &[]string{
-		"categories ON hadithses.category_id = categories.id",
+		"categories as c ON hadiths.category_id = categories.id",
 	}
 )
 
@@ -87,6 +87,10 @@ func (m *Queries) GetAll(
 		Wheres:  wheres(ws),
 		Selects: selects,
 		Joins:   getJoins(ws),
+		GroupBys: &[]string{
+			"categories.id",
+			"hadiths.id",
+		},
 	}
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)
 }

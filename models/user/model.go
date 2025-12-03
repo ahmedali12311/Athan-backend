@@ -6,12 +6,12 @@ import (
 	"net/url"
 	"time"
 
-	"bitbucket.org/sadeemTechnology/backend-finder"
-	"bitbucket.org/sadeemTechnology/backend-model"
-	"bitbucket.org/sadeemTechnology/backend-pgtypes"
-	"bitbucket.org/sadeemTechnology/backend-validator"
+	finder "bitbucket.org/sadeemTechnology/backend-finder"
+	model "bitbucket.org/sadeemTechnology/backend-model"
+	pgtypes "bitbucket.org/sadeemTechnology/backend-pgtypes"
+	validator "bitbucket.org/sadeemTechnology/backend-validator"
 
-	"bitbucket.org/sadeemTechnology/backend-config"
+	config "bitbucket.org/sadeemTechnology/backend-config"
 
 	"github.com/google/uuid"
 )

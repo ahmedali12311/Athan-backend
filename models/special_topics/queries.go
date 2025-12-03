@@ -3,6 +3,7 @@ package special_topics
 import (
 	"net/url"
 
+	config "bitbucket.org/sadeemTechnology/backend-config"
 	finder "bitbucket.org/sadeemTechnology/backend-finder"
 	model "bitbucket.org/sadeemTechnology/backend-model"
 	"github.com/Masterminds/squirrel"
@@ -13,7 +14,9 @@ import (
 
 var (
 	selects = &[]string{
-		"special_topicses.*",
+		"special_topics.*",
+		config.SQLSelectURLPath("users", "img", "img"),
+		config.SQLSelectURLPath("users", "thumb", "thumb"),
 		"c.id as \"category.id\"",
 		"c.name as \"category.name\"",
 	}
@@ -22,9 +25,11 @@ var (
 		"topic",
 		"content",
 		"category_id",
+		"img",
+		"thumb",
 	}
 	baseJoins = &[]string{
-		"categories ON hadithses.category_id = categories.id",
+		"categories as c ON special_topics.category_id = categories.id",
 	}
 )
 
@@ -33,6 +38,8 @@ func buildInput(m *Model) (*[]any, error) {
 		m.Topic,
 		m.Content,
 		m.CategoryID,
+		m.Img,
+		m.Thumb,
 	}
 	if len(*input) != len(*inserts) {
 		return nil, finder.ErrInputLengthMismatch(input, inserts)
@@ -85,6 +92,10 @@ func (m *Queries) GetAll(
 		Wheres:  wheres(ws),
 		Selects: selects,
 		Joins:   getJoins(ws),
+		GroupBys: &[]string{
+			"categories.id",
+			"special_topics.id",
+		},
 	}
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)
 }

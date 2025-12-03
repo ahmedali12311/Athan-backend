@@ -2,7 +2,9 @@ CREATE TABLE special_topics (
     id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
     topic TEXT NOT NULL,
     content TEXT NOT NULL,
-        category_id  UUID  REFERENCES categories(id),
+    category_id  UUID  REFERENCES categories(id),
+    img           TEXT,
+    thumb         TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

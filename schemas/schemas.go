@@ -48,6 +48,14 @@ var (
 	userNotificationSF []byte
 	//go:embed city.json
 	citySF []byte
+	//go:embed adkhar.json
+	adkharSF []byte
+	//go:embed daily_prayer_time.json
+	dailyPrayerTimesSF []byte
+	//go:embed hadith.json
+	hadithsSF []byte
+	//go:embed special_topic.json
+	specialTopicsSF []byte
 )
 
 type schemaRegisterar struct {
@@ -113,6 +121,10 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"fcm_notification.json":   fcmNotificationSF,
 		"user_notification.json":  userNotificationSF,
 		"city.json":               citySF,
+		"adkhar.json":             adkharSF,
+		"daily_prayer_time.json":  dailyPrayerTimesSF,
+		"hadith.json":             hadithsSF,
+		"special_topic.json":      specialTopicsSF,
 	}
 	domain := config.DOMAIN + "/schemas"
 	SchemaMap := map[string]*js.Schema{}

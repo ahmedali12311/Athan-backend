@@ -24,7 +24,7 @@ func (m *Queries) CreateSuperAdmin(roleID int) error {
         VALUES (
             $1,
             'superadmin',
-            'superadmin@sadeem-tech.com',
+            'superadmin@example.com',
             'ACFE1828',
             $2
         ) 

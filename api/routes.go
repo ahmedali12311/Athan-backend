@@ -71,6 +71,7 @@ func (app *Application) Routes(e *echo.Echo, isTest bool) http.Handler {
 	app.Controllers.Hadiths.SetRoutes(deps)
 	app.Controllers.SpecialTopics.SetRoutes(deps)
 	app.Controllers.Adhkars.SetRoutes(deps)
+	app.Controllers.City.SetBasicRoutes(deps)
 
 	// Generate Routes --------------------------------------------------------
 	app.routesGen(e.Routes())

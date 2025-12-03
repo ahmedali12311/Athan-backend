@@ -46,4 +46,5 @@ VALUES
 ('b81cb64e-2db3-4602-a97e-78e1741717b1', 'الكفرة', (SELECT st_geomfromgeojson('{"type":"Point","coordinates":[23.2598148, 24.1325483]}'))),
 ('ca2eb404-4a61-4284-9221-2eb5bd427d09', 'شحات', (SELECT st_geomfromgeojson('{"type":"Point","coordinates":[21.8592076, 32.8049799]}'))),
 ('d1170490-368b-47f9-9520-ca8c37704bdb', 'درنة', (SELECT st_geomfromgeojson('{"type":"Point","coordinates":[22.6364145, 32.757385]}'))),
+('46e594c7-1d5b-4e8a-8f0a-6f4e3c9d2a1b', 'مرزق', (SELECT st_geomfromgeojson('{"type":"Point","coordinates":[25.92237457490026, 13.92566401344491]}'))),
 ('ee4f03bd-d271-4ddf-ae5f-857e1e00c647', 'اوجلة', (SELECT st_geomfromgeojson('{"type":"Point","coordinates":[21.2911149, 29.1326919]}')));

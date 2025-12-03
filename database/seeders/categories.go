@@ -3,9 +3,9 @@ package seeders
 import (
 	"app/models"
 
-	"bitbucket.org/sadeemTechnology/backend-model-category"
-	"bitbucket.org/sadeemTechnology/backend-model-setting"
-	"bitbucket.org/sadeemTechnology/backend-pgtypes"
+	category "bitbucket.org/sadeemTechnology/backend-model-category"
+	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
+	pgtypes "bitbucket.org/sadeemTechnology/backend-pgtypes"
 	"github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
@@ -112,6 +112,27 @@ var categories = []categorySeed{
 				Name: pgtypes.JSONB{
 					"ar": "خدمة بوابة الدفع",
 					"en": "Payment Gateway",
+				},
+			},
+			{
+				ID: uuid.MustParse("f1e2d3c4-b5a6-7c8d-9e0f-1a2b3c4d5e6f"),
+				Name: pgtypes.JSONB{
+					"ar": "حديث",
+					"en": "Hadith",
+				},
+			},
+			{
+				ID: uuid.MustParse("a5e3e8e0-62a9-4a1a-9e3a-7a1b3b9b3b1a"),
+				Name: pgtypes.JSONB{
+					"ar": "موضوع خاص",
+					"en": "Special Topic",
+				},
+			},
+			{
+				ID: uuid.MustParse("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
+				Name: pgtypes.JSONB{
+					"ar": "أذكار",
+					"en": "Adhkar",
 				},
 			},
 		},

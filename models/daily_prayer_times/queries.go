@@ -17,9 +17,9 @@ import (
 
 var (
 	selects = &[]string{
-		"daily_prayer_timeses.*",
-		"c.id as \"city.id\"",
-		"c.name as \"city.name\"",
+		"daily_prayer_times.*",
+		"cities.id as \"city.id\"",
+		"cities.name as \"city.name\"",
 	}
 
 	inserts = &[]string{
@@ -35,7 +35,7 @@ var (
 		"isha_time",
 	}
 	baseJoins = &[]string{
-		"cities ON daily_prayer_timeses.city_id = cities.id",
+		"cities ON daily_prayer_times.city_id = cities.id",
 	}
 )
 
@@ -76,24 +76,87 @@ type WhereScope struct {
 	IsPublic    bool
 	UserID      *uuid.UUID
 	QueryParams url.Values
+
+	FromDay   *int
+	FromMonth *int
+	ToDay     *int
+	ToMonth   *int
 }
 
 func getJoins(ws *WhereScope) *[]string {
 	return baseJoins
 }
 
+// models/daily_prayer_times/queries.go
+
 func wheres(ws *WhereScope) *[]squirrel.Sqlizer {
 	w := []squirrel.Sqlizer{}
-	if ws.IsAdmin {
-		return &w
+
+	if cityID := ws.QueryParams.Get("city_id"); cityID != "" {
+		if uid, err := uuid.Parse(cityID); err == nil {
+			w = append(w, squirrel.Eq{"daily_prayer_times.city_id": uid})
+		}
 	}
 
-	if !ws.IsAdmin {
+	if ws.FromDay != nil && ws.FromMonth != nil {
+		fromDay := *ws.FromDay
+		fromMonth := *ws.FromMonth
+
+		if ws.ToDay != nil && ws.ToMonth != nil {
+			toDay := *ws.ToDay
+			toMonth := *ws.ToMonth
+
+			orConditions := squirrel.Or{
+				squirrel.And{
+					squirrel.Eq{"month": fromMonth},
+					squirrel.GtOrEq{"day": fromDay},
+					squirrel.LtOrEq{"day": toDay},
+				},
+				squirrel.Gt{"month": fromMonth},
+				squirrel.Lt{"month": toMonth},
+				squirrel.And{
+					squirrel.Eq{"month": toMonth},
+					squirrel.LtOrEq{"day": toDay},
+				},
+			}
+
+			if fromMonth == toMonth {
+				orConditions = squirrel.Or{
+					squirrel.And{
+						squirrel.Eq{"month": fromMonth},
+						squirrel.GtOrEq{"day": fromDay},
+						squirrel.LtOrEq{"day": toDay},
+					},
+				}
+			} else if fromMonth > toMonth {
+				orConditions = squirrel.Or{
+					squirrel.And{
+						squirrel.Eq{"month": fromMonth},
+						squirrel.GtOrEq{"day": fromDay},
+					},
+					squirrel.Gt{"month": fromMonth},
+					squirrel.Lt{"month": toMonth},
+					squirrel.And{
+						squirrel.Eq{"month": toMonth},
+						squirrel.LtOrEq{"day": toDay},
+					},
+				}
+			}
+
+			w = append(w, orConditions)
+		} else {
+			w = append(w, squirrel.Or{
+				squirrel.And{
+					squirrel.Eq{"month": fromMonth},
+					squirrel.GtOrEq{"day": fromDay},
+				},
+				squirrel.Gt{"month": fromMonth},
+			})
+		}
 	}
 
 	return &w
 }
-
 func (m *Queries) GetAll(
 	ctx echo.Context,
 	ws *WhereScope,
@@ -105,6 +168,11 @@ func (m *Queries) GetAll(
 		Wheres:  wheres(ws),
 		Selects: selects,
 		Joins:   getJoins(ws),
+		GroupBys: &[]string{
+			"cities.id",
+			"daily_prayer_times.id",
+		},
+		OverrideSort: "daily_prayer_times.month ASC, daily_prayer_times.day ASC",
 	}
 	return finder.IndexBuilder[*Model](ctx.QueryParams(), c)
 }
@@ -184,4 +252,49 @@ func (m *Queries) GetDueCities(
 		return []CityDue{}, nil
 	}
 	return results, err
+}
+
+func (m *Queries) GetRollingPrayerTimes(
+	ctx context.Context,
+	cityID uuid.UUID,
+	startDay, startMonth int,
+) ([]*Model, error) {
+	query := `
+        SELECT 
+            dpt.id,
+            dpt.day,
+            dpt.month,
+            dpt.fajr_first_time,
+            dpt.fajr_second_time,
+            dpt.sunrise_time,
+            dpt.dhuhr_time,
+            dpt.asr_time,
+            dpt.maghrib_time,
+            dpt.isha_time,
+            dpt.created_at,
+            dpt.updated_at,
+            c.id AS "city.id",
+            c.name AS "city.name"
+        FROM daily_prayer_times dpt
+        JOIN cities c ON dpt.city_id = c.id
+        WHERE dpt.city_id = $1
+        ORDER BY
+            CASE 
+                WHEN dpt.month > $2 THEN 1
+                WHEN dpt.month < $2 THEN 1
+                WHEN dpt.month = $2 AND dpt.day < $3 THEN 1
+                ELSE 0
+            END ASC,
+            dpt.month ASC,
+            dpt.day ASC
+        LIMIT 30
+    `
+
+	var results []*Model
+	err := m.DB.SelectContext(ctx, &results, query, cityID, startMonth, startDay)
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }
