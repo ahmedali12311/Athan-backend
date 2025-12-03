@@ -25,3 +25,5 @@ notes.md
 .DS_Store
 devbox.json
 devbox.lock
+json_google/api_key.json
+*.json
