@@ -1,8 +1,12 @@
 vendor
 .env
-!docker/builds/**/.env
-.idea
+docker/builds/*/.env
+docker/builds/**/.env
+docker/**/.env
+**/.env
+.env.idea
 tmp
+docker
 main
 main.exe
 app
@@ -11,6 +15,8 @@ app
 !private/documents
 
 json_google/*
+
+
 public/uploads/*
 public/privacy-policy.html
 public/uploads/routes.json
