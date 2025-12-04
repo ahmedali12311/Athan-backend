@@ -41,7 +41,7 @@ func (m *Queries) ParseCSV(
 	}
 
 	tempModel := Model{City: city.MinimalModel{}}
-	v.UnmarshalInto("city", tempModel.City)
+	v.UnmarshalInto("city", &tempModel.City)
 
 	var cityID uuid.UUID
 	if tempModel.City.ID != nil {

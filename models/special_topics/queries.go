@@ -17,8 +17,8 @@ var (
 		"special_topics.*",
 		config.SQLSelectURLPath("special_topics", "img", "img"),
 		config.SQLSelectURLPath("special_topics", "thumb", "thumb"),
-		"c.id as \"category.id\"",
-		"c.name as \"category.name\"",
+		"categories.id as \"category.id\"",
+		"categories.name as \"category.name\"",
 		"users.id as \"created_by.id\"",
 		"users.name as \"created_by.name\"",
 	}
@@ -32,7 +32,7 @@ var (
 		"created_by_id",
 	}
 	baseJoins = &[]string{
-		"categories as c ON special_topics.category_id = c.id",
+		"categories  ON special_topics.category_id = categories.id",
 		"users ON special_topics.created_by_id = users.id",
 	}
 )
@@ -98,7 +98,7 @@ func (m *Queries) GetAll(
 		Selects: selects,
 		Joins:   getJoins(ws),
 		GroupBys: &[]string{
-			"c.id",
+			"categories.id",
 			"special_topics.id",
 			"users.id",
 		},
@@ -128,6 +128,7 @@ func (m *Queries) CreateOne(created *Model, tx *sqlx.Tx) error {
 		Input:   input,
 		Inserts: inserts,
 		Selects: selects,
+		Joins:   baseJoins,
 	}
 	return finder.CreateOne(created, c)
 }
@@ -144,6 +145,8 @@ func (m *Queries) UpdateOne(updated *Model, ws *WhereScope, tx *sqlx.Tx) error {
 		Wheres:  wheres(ws),
 		Inserts: inserts,
 		Selects: selects,
+		Joins:   baseJoins,
+
 		OptimisticLock: &finder.OptimisticLock{
 			Name:  "updated_at",
 			Value: updated.UpdatedAt,
@@ -158,6 +161,7 @@ func (m *Queries) DeleteOne(deleted *Model, ws *WhereScope, tx *sqlx.Tx) error {
 		QB:      m.QB,
 		Wheres:  wheres(ws),
 		Selects: selects,
+		Joins:   baseJoins,
 	}
 	return finder.DeleteOne(deleted, c)
 }

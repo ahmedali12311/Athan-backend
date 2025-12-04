@@ -1,7 +1,7 @@
 package seeders
 
 import (
-	"app/models"
+	"app/models/consts"
 
 	category "bitbucket.org/sadeemTechnology/backend-model-category"
 	setting "bitbucket.org/sadeemTechnology/backend-model-setting"
@@ -30,19 +30,21 @@ func Categories(db *sqlx.DB, qb *squirrel.StatementBuilderType) {
 	data := []category.Model{}
 
 	for i := range categories {
+		categories[i].Model.SuperParentID = &categories[i].Model.ID
 		data = append(data, categories[i].Model)
 
 		if len(categories[i].Children) > 0 {
 			for c := range categories[i].Children {
 				categories[i].Children[c].Sort = c
-				categories[i].Children[c].Depth = categories[i].Depth + 1
-				categories[i].Children[c].ParentID = &categories[i].ID
-				categories[i].Children[c].SuperParentID = &categories[i].ID
+				categories[i].Children[c].Depth = categories[i].Model.Depth + 1
+				categories[i].Children[c].ParentID = &categories[i].Model.ID
+				categories[i].Children[c].SuperParentID = &categories[i].Model.ID
 
 				data = append(data, categories[i].Children[c])
 			}
 		}
 	}
+
 	for i := range data {
 		m := data[i]
 		values := []any{
@@ -73,66 +75,108 @@ var categories = []categorySeed{
 		},
 		Children: []category.Model{
 			{
-				ID: uuid.MustParse(models.CategorySettingSocialID),
+				ID: uuid.MustParse(consts.CategorySettingSocialID),
 				Name: pgtypes.JSONB{
 					"ar": "وسائل تواصل",
 					"en": "Social Links",
 				},
 			},
 			{
-				ID: uuid.MustParse(models.CategorySettingGeneralID),
+				ID: uuid.MustParse(consts.CategorySettingGeneralID),
 				Name: pgtypes.JSONB{
 					"ar": "عامة",
 					"en": "General",
 				},
 			},
 			{
-				ID: uuid.MustParse(models.CategorySettingPricingID),
+				ID: uuid.MustParse(consts.CategorySettingPricingID),
 				Name: pgtypes.JSONB{
 					"ar": "تسعير",
 					"en": "Pricing",
 				},
 			},
 			{
-				ID: uuid.MustParse(models.CategorySettingTlyncID),
+				ID: uuid.MustParse(consts.CategorySettingTlyncID),
 				Name: pgtypes.JSONB{
 					"ar": "تي لنك",
 					"en": "TLync",
 				},
+				IsDisabled: true,
 			},
 			{
-				ID: uuid.MustParse(models.CategorySettingResalaID),
+				ID: uuid.MustParse(consts.CategorySettingResalaID),
 				Name: pgtypes.JSONB{
 					"ar": "خدمة رسالة",
 					"en": "Resala",
 				},
+				IsDisabled: true,
 			},
 			{
-				ID: uuid.MustParse(models.CategorySettingTyrianAntID),
+				ID: uuid.MustParse(consts.CategorySettingTyrianAntID),
 				Name: pgtypes.JSONB{
 					"ar": "خدمة بوابة الدفع",
 					"en": "Payment Gateway",
 				},
+				IsDisabled: true,
 			},
+		},
+	},
+	{
+		Model: category.Model{
+			ID: uuid.MustParse(consts.CategorySpecialTopicID),
+			Name: pgtypes.JSONB{
+				"ar": "مواضيع خاصة",
+				"en": "Special Toopics",
+			},
+			Depth: 0,
+			Sort:  1,
+		},
+		Children: []category.Model{
 			{
-				ID: uuid.MustParse("f1e2d3c4-b5a6-7c8d-9e0f-1a2b3c4d5e6f"),
+				ID: uuid.New(),
 				Name: pgtypes.JSONB{
-					"ar": "حديث",
-					"en": "Hadith",
+					"ar": "موضوع هام ",
+					"en": "Important topic",
 				},
 			},
+		},
+	},
+	{
+		Model: category.Model{
+			ID: uuid.MustParse("f1e2d3c4-b5a6-7c8d-9e0f-1a2b3c4d5e6f"),
+			Name: pgtypes.JSONB{
+				"ar": "حديث",
+				"en": "Hadith",
+			},
+			Depth: 0,
+			Sort:  2,
+		},
+		Children: []category.Model{
 			{
-				ID: uuid.MustParse("a5e3e8e0-62a9-4a1a-9e3a-7a1b3b9b3b1a"),
+				ID: uuid.New(),
 				Name: pgtypes.JSONB{
-					"ar": "موضوع خاص",
-					"en": "Special Topic",
+					"ar": "أحاديث صحيحه",
+					"en": "Sahih Hadiths",
 				},
 			},
+		},
+	},
+	{
+		Model: category.Model{
+			ID: uuid.MustParse("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
+			Name: pgtypes.JSONB{
+				"ar": "أذكار",
+				"en": "Adkhar",
+			},
+			Depth: 0,
+			Sort:  3,
+		},
+		Children: []category.Model{
 			{
-				ID: uuid.MustParse("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
+				ID: uuid.New(), // Generate a new UUID or use a specific one
 				Name: pgtypes.JSONB{
-					"ar": "أذكار",
-					"en": "Adhkar",
+					"ar": "أذكار الصباح",
+					"en": "Morning Adkhar",
 				},
 			},
 		},

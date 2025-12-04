@@ -92,6 +92,7 @@ func (m *Queries) GetAll(
 		Wheres:  wheres(ws),
 		Selects: selects,
 		Joins:   getJoins(ws),
+
 		GroupBys: &[]string{
 			"c.id",
 			"adhkars.id",
@@ -123,6 +124,7 @@ func (m *Queries) CreateOne(created *Model, tx *sqlx.Tx) error {
 		Input:   input,
 		Inserts: inserts,
 		Selects: selects,
+		Joins:   baseJoins,
 	}
 	return finder.CreateOne(created, c)
 }
@@ -139,6 +141,8 @@ func (m *Queries) UpdateOne(updated *Model, ws *WhereScope, tx *sqlx.Tx) error {
 		Wheres:  wheres(ws),
 		Inserts: inserts,
 		Selects: selects,
+		Joins:   baseJoins,
+
 		OptimisticLock: &finder.OptimisticLock{
 			Name:  "updated_at",
 			Value: updated.UpdatedAt,
@@ -153,6 +157,7 @@ func (m *Queries) DeleteOne(deleted *Model, ws *WhereScope, tx *sqlx.Tx) error {
 		QB:      m.QB,
 		Wheres:  wheres(ws),
 		Selects: selects,
+		Joins:   baseJoins,
 	}
 	return finder.DeleteOne(deleted, c)
 }

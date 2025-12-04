@@ -78,7 +78,7 @@ func (m *Model) Initialize(v url.Values, conn finder.Connection) bool {
 func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 	_ = m.Initialize(v.Data.Values, v.Conn)
 
-	v.UnmarshalInto("category", m.Category)
+	v.UnmarshalInto("category", &m.Category)
 	if m.Category.ID != nil {
 		v.CategoryValidator(m.Category.ID, "categories.id", consts.CategoryHadithID)
 		m.CategoryID = *m.Category.ID

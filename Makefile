@@ -150,7 +150,7 @@ dh/down:
 	docker compose -f ./docker/builds/lab/docker-compose.yml down
 
 dh/push: dh
-	docker tag sadeemtech/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_IMG}
+	docker tag ogjughead/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_IMG}
 	docker tag ogjughead/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_NAME}:latest
 	docker push ${CONTAINER_REG}/${CONTAINER_IMG}
 	docker push ${CONTAINER_REG}/${CONTAINER_NAME}:latest

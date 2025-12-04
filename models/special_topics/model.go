@@ -82,7 +82,7 @@ func (m *Model) MergeAndValidate(v *validator.Validator) bool {
 		v.Check(false, "img", err.Error())
 	}
 
-	v.UnmarshalInto("category", m.Category)
+	v.UnmarshalInto("category", &m.Category)
 	if m.Category.ID != nil {
 		v.CategoryValidator(m.Category.ID, "categories.id", consts.CategorySpecialTopicID)
 		m.CategoryID = *m.Category.ID

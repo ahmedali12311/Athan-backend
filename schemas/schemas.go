@@ -48,8 +48,8 @@ var (
 	userNotificationSF []byte
 	//go:embed city.json
 	citySF []byte
-	//go:embed adkhar.json
-	adkharSF []byte
+	//go:embed adhkar.json
+	adhkarSF []byte
 	//go:embed daily_prayer_time.json
 	dailyPrayerTimesSF []byte
 	//go:embed hadith.json
@@ -121,7 +121,7 @@ func BuildSchemas(logger *zerolog.Logger) map[string]*js.Schema {
 		"fcm_notification.json":   fcmNotificationSF,
 		"user_notification.json":  userNotificationSF,
 		"city.json":               citySF,
-		"adkhar.json":             adkharSF,
+		"adhkar.json":             adhkarSF,
 		"daily_prayer_time.json":  dailyPrayerTimesSF,
 		"hadith.json":             hadithsSF,
 		"special_topic.json":      specialTopicsSF,
