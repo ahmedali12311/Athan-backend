@@ -24,16 +24,19 @@ VOLUME /public
 VOLUME /private
 
 COPY --from=builder ["/build/main", "/main"]
-COPY --from=builder ["/build/public", "/public"]
+COPY --from=builder ["/build/public", "/public_build"] 
 COPY --from=builder ["/build/private", "/private"]
-COPY --from=builder ["/build/database/migrations/", "/migrations"]
+COPY --from=builder ["/build/database/migrations/", "/database/migrations"]
 COPY --from=builder ["/build/database/seeders/", "/seeders"]
 COPY --from=builder ["/build/json_google", "/json_google"]
 COPY --from=builder ["/build/docker/builds/lab/.env", "/.env"]
 COPY --from=builder ["/build/active.ar.toml", "/active.ar.toml"]
 COPY --from=builder ["/build/active.en.toml", "/active.en.toml"]
 COPY --from=builder ["/etc/ssl/certs/ca-certificates.crt", "/etc/ssl/certs/ca-certificates.crt"]
+COPY ./entrypoint.sh /entrypoint.sh 
 
 EXPOSE 8000
 
-ENTRYPOINT ["/main"]
+RUN chmod +x /entrypoint.sh        
+
+ENTRYPOINT ["/entrypoint.sh"]    

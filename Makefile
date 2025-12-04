@@ -132,3 +132,32 @@ inspect:
 ## prune-dangled-volumes: clear system dangled volumes
 prune-dangled-volumes:
 	docker volume ls -q -f dangling=true | xargs -r docker volume rm
+
+
+# ============================================================================= 
+# hub.docker.com: Production
+# ============================================================================= 
+#
+CONTAINER_NAME:=${CONTAINER_NAME}
+CONTAINER_TAG:=${APP_VER}.$(shell git rev-list --count HEAD).$(shell git describe --always)
+CONTAINER_IMG:=${CONTAINER_NAME}:${CONTAINER_TAG}
+
+.PHONY: dh dh/down dh/local dh/local/down dh/factory dh/factory/down dh/push db/conn volumes prune ps inspect prune-dangled-volumes
+dh:
+	export CONTAINER_TAG=${CONTAINER_TAG}
+	docker compose -f ./docker/builds/lab/docker-compose.yml up --build -d
+dh/down:
+	docker compose -f ./docker/builds/lab/docker-compose.yml down
+
+dh/push: dh
+	docker tag sadeemtech/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_IMG}
+	docker tag ogjughead/${CONTAINER_IMG} ${CONTAINER_REG}/${CONTAINER_NAME}:latest
+	docker push ${CONTAINER_REG}/${CONTAINER_IMG}
+	docker push ${CONTAINER_REG}/${CONTAINER_NAME}:latest
+dh/factory:
+	export CONTAINER_TAG=${CONTAINER_NAME}:factory
+	docker compose -f ./docker/builds/factory/docker-compose.yml up --build -d
+	docker push ${CONTAINER_REG}/${CONTAINER_NAME}:factory
+dh/factory/down:
+	docker compose -f ./docker/builds/factory/docker-compose.yml down
+
